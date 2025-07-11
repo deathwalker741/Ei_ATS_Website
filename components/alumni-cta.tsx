@@ -24,19 +24,19 @@ export function AlumniCTA() {
   }, [])
 
   return (
-    <section id="alumni-cta" className="py-20 bg-gray-50">
+    <section id="alumni-cta" className="py-10 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-[#850101] rounded-2xl p-8 md:p-12 text-white">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Speak With Our Alumni</h2>
-              <p className="text-xl text-gray-100 mb-8">
+              <h2 className="text-4xl font-bold mb-6">Connect with Our Alumni</h2>
+              <p className="text-base text-gray-100 mb-8">
                 Connect with students who have participated in Ei ASSET Talent Search and learn about their experiences
                 and success stories.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
-                  <a href="/contact#send-message">
+                  <a href="/schedule-call">
                   <MessageSquare className="h-5 w-5 mr-2" />
                   Schedule a Call
                   </a>
@@ -62,7 +62,7 @@ export function AlumniCTA() {
                       index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                     }`}
                     onError={(e) => {
-                      console.error(`Failed to load image: ${image}`)
+                      // Failed to load image - handled gracefully
                       e.currentTarget.src = '/placeholder.jpg'
                     }}
                   />

@@ -2,15 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { executeQuery } from '@/lib/database'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-here'
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  throw new Error('JWT_SECRET environment variable is required. Please check your .env.local file.')
+})()
 
 function verifyToken(request: NextRequest) {
   const token = request.cookies.get('school-token')?.value
   if (!token) {
-    throw new Error('No token provided')
+    throw new Error('No authentication token provided')
   }
-  
-  return jwt.verify(token, JWT_SECRET) as any
+
+  try {
+    return jwt.verify(token, JWT_SECRET) as any
+  } catch (error) {
+    throw new Error('Invalid or expired token')
+  }
 }
 
 export async function GET(request: NextRequest) {
@@ -40,7 +46,7 @@ export async function GET(request: NextRequest) {
       ORDER BY a.class, a.section, GREATEST(a.epirt, a.mpirt, a.spirt) DESC
     `
     
-    const studentsResults = await executeQuery(studentsQuery, [schoolCode]) as any[]
+    const studentsResults = await executeQuery(studentsQuery, [schoolCode], 'school') as any[]
 
     // Process student data
     const processedStudents = studentsResults.map((row: any) => {
@@ -84,7 +90,7 @@ export async function GET(request: NextRequest) {
 
     // Get school info
     const schoolQuery = `SELECT schoolno, schoolname, city FROM schools WHERE schoolno = ?`
-    const schoolResults = await executeQuery(schoolQuery, [schoolCode]) as any[]
+    const schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
     const schoolInfo = schoolResults[0]
 
     const responseData = {

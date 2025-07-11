@@ -1,9 +1,10 @@
 import Link from "next/link"
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react"
+import { Facebook, Twitter, Linkedin, Youtube } from "lucide-react"
+import { footerConfig } from "@/lib/footer-config"
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-[#262626] text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -19,79 +20,94 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/" className="text-gray-400 hover:text-white">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/programmes" className="text-gray-400 hover:text-white">
-                  Programmes
-                </Link>
-              </li>
-              <li>
-                <Link href="/for-students" className="text-gray-400 hover:text-white">
-                  For Students
-                </Link>
-              </li>
-              <li>
-                <Link href="/for-schools" className="text-gray-400 hover:text-white">
-                  For Schools
-                </Link>
-              </li>
-              <li>
-                <Link href="/resources" className="text-gray-400 hover:text-white">
-                  Resources
-                </Link>
-              </li>
-            </ul>
+          {/* Auto-Generated Sitemap */}
+          <div className="md:col-span-2">
+            <h3 className="font-semibold mb-4">Sitemap</h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
+              {footerConfig.sitemap.map((section, index) => (
+                <div key={index}>
+                  <h4 className="font-semibold mb-2 text-white">{section.title}</h4>
+                  <ul className="space-y-1">
+                    {section.links.map((link, linkIndex) => (
+                      <li key={linkIndex}>
+                        {link.external ? (
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 hover:underline"
+                          >
+                            {link.name}
+                          </a>
+                        ) : (
+                          <Link href={link.href} className="text-blue-400 hover:underline">
+                            {link.name}
+                          </Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Legal */}
+          {/* Auto-Generated Legal */}
           <div>
             <h3 className="font-semibold mb-4">Legal</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/terms" className="text-gray-400 hover:text-white">
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-gray-400 hover:text-white">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/refund" className="text-gray-400 hover:text-white">
-                  Refund Policy
-                </Link>
-              </li>
+              {footerConfig.legal.map((link, index) => (
+                <li key={index}>
+                  <Link href={link.href} className="text-gray-400 hover:text-white">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Auto-Generated Contact */}
           <div>
             <h3 className="font-semibold mb-4">Contact</h3>
             <div className="space-y-2 text-sm text-gray-400">
-              <p>eitalentsearch@ei.study</p>
-              <p>+91 80 4718 7451</p>
-              <p>Mon-Sat, 9AM-6PM</p>
+              <p>{footerConfig.contact.email}</p>
+              <p>{footerConfig.contact.phone}</p>
+              <p>{footerConfig.contact.hours}</p>
             </div>
             <div className="flex space-x-4 mt-4">
-              <Facebook className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
-              <Twitter className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
-              <Linkedin className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
-              <Instagram className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
+              <Link href={footerConfig.social.facebook} target="_blank" aria-label="Facebook" className="hover:text-white">
+                <Facebook className="h-5 w-5 text-gray-400 hover:text-white" />
+              </Link>
+              <Link href={footerConfig.social.twitter} target="_blank" aria-label="Twitter" className="hover:text-white">
+                <Twitter className="h-5 w-5 text-gray-400 hover:text-white" />
+              </Link>
+              <Link href={footerConfig.social.linkedin} target="_blank" aria-label="LinkedIn" className="hover:text-white">
+                <Linkedin className="h-5 w-5 text-gray-400 hover:text-white" />
+              </Link>
+              <Link href={footerConfig.social.youtube} target="_blank" aria-label="YouTube" className="hover:text-white">
+                <Youtube className="h-5 w-5 text-gray-400 hover:text-white" />
+              </Link>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2025 Educational Initiatives Pvt Ltd. All rights reserved.</p>
+        {/* Quick registration CTA */}
+        <div className="mt-8 text-center">
+          <Link
+            href="https://ats.ei.study/ats_registration.php"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-[#850101] hover:bg-[#650101] text-white font-semibold px-6 py-3 rounded-md transition-colors"
+          >
+            Register Now
+          </Link>
+        </div>
+
+        {/* Auto-Generated Company Info */}
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400 space-y-1">
+          <p>&copy; {footerConfig.company.copyright}</p>
+          <p>{footerConfig.company.address}</p>
+          <p>{footerConfig.company.cin}</p>
         </div>
       </div>
     </footer>

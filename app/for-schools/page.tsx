@@ -1,16 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { School, Upload, Users, BarChart3, ExternalLink, CheckCircle, UserPlus, Mail, ArrowRight, Info, FileText } from "lucide-react"
+import { School, Upload, Users, BarChart3, CheckCircle, UserPlus, Mail, ArrowRight, Info, FileText, Download } from "lucide-react"
 
 const schoolTools = [
   {
     title: "Bulk Registration Tool",
     description:
-      "Register multiple students efficiently with our bulk registration system. Save 10% on registration costs and streamline your enrollment process.",
+      "Register multiple students efficiently with our bulk registration system. Save 10% on registration fee and streamline your enrollment process.",
     icon: Upload,
     link: "#bulk-registration",
     color: "bg-blue-100 text-blue-700",
-    features: ["10% cost savings", "Excel template", "Streamlined process", "Dedicated support"],
+    features: ["10% discount on fee", "Excel template", "Streamlined process", "Dedicated support"],
   },
   {
     title: "School Admin Login",
@@ -24,11 +24,11 @@ const schoolTools = [
   {
     title: "Nominate Students",
     description:
-      "Non-ASSET schools can nominate their top 25% performing students to participate in the ATS test. Submit your school's brightest talents.",
+      "Non-ASSET schools can nominate their top 15% performing students to participate in the Ei ATS test. Submit your school's brightest talents.",
     icon: UserPlus,
     link: "#non-asset-schools",
     color: "bg-purple-100 text-purple-700",
-    features: ["Top 25% nomination", "Student selection criteria", "Academic merit basis", "Direct test access"],
+    features: ["Top 15% nomination", "Student selection criteria", "Academic merit basis", "Direct test access"],
   },
 ]
 
@@ -38,7 +38,7 @@ const benefits = [
   "Streamlined registration process",
   "Recognition for your school's achievements",
   "Professional development opportunities",
-  "Partnership with leading universities",
+  "Partnership with leading partner programmes",
 ]
 
 
@@ -47,14 +47,14 @@ export default function ForSchoolsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-20">
+      <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">For Schools & Educators</h1>
-              <p className="text-xl text-gray-100 mb-8">
+              <h1 className="text-4xl font-bold mb-6">For Schools & Educators</h1>
+              <p className="text-base text-gray-100 mb-8">
                 Empower your institution with comprehensive tools to identify, nurture, and celebrate academically
-                gifted students through ATS 2025.
+                gifted students through Ei ATS 2025.
               </p>
               <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
                 <a href="#school-tools">
@@ -64,7 +64,7 @@ export default function ForSchoolsPage() {
             </div>
             <div className="relative">
               <img
-                src="/schools1.png"
+                src="/ATS Posts/4.png"
                 alt="Teachers and students in classroom"
                 className="rounded-lg shadow-2xl"
               />
@@ -74,11 +74,11 @@ export default function ForSchoolsPage() {
       </section>
 
       {/* School Tools */}
-      <section id="school-tools" className="py-20">
+      <section id="school-tools" className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">School Administration Tools</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">School Dashboard</h2>
+            <p className="text-base text-gray-600 max-w-3xl mx-auto">
               Comprehensive tools designed to make student registration and management seamless for educational
               institutions.
             </p>
@@ -111,11 +111,11 @@ export default function ForSchoolsPage() {
                   <Button asChild className="w-full bg-[#850101] hover:bg-[#650101]">
                     {tool.link.startsWith('/') || tool.link.startsWith('#') ? (
                       <a href={tool.link}>
-                        Learn More <ExternalLink className="h-4 w-4 ml-2" />
+                        {tool.title === 'School Admin Login' ? 'Log in' : 'Learn More'}
                       </a>
                     ) : (
                       <a href={tool.link} target="_blank" rel="noopener noreferrer">
-                        Access Tool <ExternalLink className="h-4 w-4 ml-2" />
+                        Access Tool
                       </a>
                     )}
                   </Button>
@@ -127,15 +127,15 @@ export default function ForSchoolsPage() {
       </section>
 
       {/* Bulk Registration Highlight */}
-      <section id="bulk-registration" className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <section id="bulk-registration" className="py-8 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
                 <Upload className="h-8 w-8 text-blue-600" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Bulk Registration of ATS Qualifiers by School</h2>
-              <p className="text-xl text-gray-600 mb-8">
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Bulk Registration of Ei ATS Qualifiers by School</h2>
+              <p className="text-base text-gray-600 mb-8">
                 Schools can do bulk registration of the students that have qualified and save 10% of the total registration fee amount.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -176,17 +176,17 @@ export default function ForSchoolsPage() {
       </section>
 
       {/* Non ASSET Schools Section */}
-      <section id="non-asset-schools" className="py-20 bg-gray-50">
+      <section id="non-asset-schools" className="py-10 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Non ASSET Schools</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Non ASSET Schools</h2>
+            <p className="text-base text-gray-600 max-w-3xl mx-auto">
               Non ASSET Schools can register their students through nominating their students by sending their student details on mail. This mail should be sent from school.
             </p>
             <div className="mt-6 bg-orange-100 border border-orange-300 rounded-lg p-4 max-w-2xl mx-auto">
               <p className="text-orange-800 font-semibold">
                 <Users className="inline h-5 w-5 mr-2" />
-                Schools can nominate up to top 25% students that school believes as high academically talented students
+                Schools can nominate up to top 15% students that school believes as high academically talented students
               </p>
             </div>
           </div>
@@ -224,37 +224,24 @@ export default function ForSchoolsPage() {
                   </div>
                 </div>
 
-                {/* Required Student Details */}
-                <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-6 mb-6">
-                  <h4 className="text-lg font-semibold text-yellow-900 mb-4 flex items-center">
+                {/* Download Registration Form */}
+                <div className="bg-green-50 border border-green-300 rounded-lg p-6 mb-6 text-center">
+                  <h4 className="text-lg font-semibold text-green-900 mb-4 flex items-center justify-center">
                     <FileText className="h-5 w-5 mr-2" />
-                    Important Student Details to Include in Email
+                    Ei ATS Registration Form for Non&nbsp;ASSET Schools
                   </h4>
-                  <div className="grid md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <h5 className="font-semibold text-gray-900 mb-2">School Information:</h5>
-                      <ul className="space-y-1 text-gray-700">
-                        <li>• School name</li>
-                        <li>• City</li>
-                        <li>• School contact person name and contact</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h5 className="font-semibold text-gray-900 mb-2">Student Information:</h5>
-                      <ul className="space-y-1 text-gray-700">
-                        <li>• Full name of the student</li>
-                        <li>• Date of Birth</li>
-                        <li>• Grade</li>
-                        <li>• Section</li>
-                        <li>• Parent name</li>
-                        <li>• Parent number</li>
-                        <li>• Parent mail ID</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="mt-4 text-xs text-gray-600 italic">
-                    * The contact details are strictly for communication of ATS related details such as exam and result communications
-                  </div>
+                  <p className="text-sm text-gray-700 mb-4 max-w-xl mx-auto">
+                    Download the registration form, fill in the required student and school details, and email the completed sheet from your official school email address to
+                    <span className="font-semibold mx-1">eitalentsearch@ei.study</span>.
+                  </p>
+                  <a
+                    href="/ATS%20Registration%20Form%20for%20non%20ASSET%20schools-2025.xlsx"
+                    download
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#850101] text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <Download className="h-5 w-5" />
+                    Download Form
+                  </a>
                 </div>
 
                 <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-6">
@@ -285,7 +272,7 @@ export default function ForSchoolsPage() {
       </section>
 
       {/* Benefits Section */}
-      <section id="why-partner-ats" className="py-20 bg-gray-50">
+      <section id="why-partner-ats" className="py-10 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -296,8 +283,8 @@ export default function ForSchoolsPage() {
               />
             </div>
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Why Partner with ATS?</h2>
-              <p className="text-xl text-gray-600 mb-8">
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Why Partner with Ei ATS?</h2>
+              <p className="text-base text-gray-600 mb-8">
                 Join hundreds of schools worldwide in identifying and nurturing academically gifted students.
               </p>
               <div className="space-y-4">
@@ -319,9 +306,9 @@ export default function ForSchoolsPage() {
       <section id="school-cta" className="pt-24 pb-12 bg-[#850101] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <School className="h-16 w-16 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold mb-4">Ready to Get Your School Involved?</h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Join the ATS community and help your students unlock their academic potential
+          <h2 className="text-4xl font-bold mb-4">Ready to Get Your School Involved?</h2>
+          <p className="text-base text-gray-200 mb-8">
+            Join the Ei ATS community and help your students unlock their academic potential
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>

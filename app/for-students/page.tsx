@@ -4,33 +4,33 @@ import { User, FileText, Award, Download, ExternalLink } from "lucide-react"
 
 const studentResources = [
   {
-    title: "Student Portal",
-    description:
-      "Access your personalized dashboard, view test results, track your progress, and manage your ATS journey.",
-    icon: User,
-    link: "https://ats.ei.study/student_portal/index.php",
-    color: "bg-blue-100 text-blue-700",
-    features: ["View test results", "Track progress", "Access study materials", "Update profile"],
-  },
-  {
-    title: "PAN ID Retriever",
-    description: "Retrieve your unique PAN ID for ATS registration and access to all student services and resources.",
-    icon: FileText,
-    link: "https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html",
-    color: "bg-green-100 text-green-700",
-    features: ["Retrieve PAN ID", "Registration assistance", "Account recovery", "Support access"],
-  },
-  {
-    title: "Certificate Downloader",
-    description: "Download your official ATS certificates, participation certificates, and achievement awards.",
+    title: "Download your Ei ATS Qualifying Certificate",
+    description: "Download your official Ei ATS certificates.",
     icon: Download,
     link: "https://ats.ei.study/ats_qualifier_certificate.php",
     color: "bg-purple-100 text-purple-700",
-    features: ["Download certificates", "Print awards", "Verify credentials", "Share achievements"],
+    features: ["Download certificates"],
+  },
+  {
+    title: "Ei ASSET PAN ID Retriever",
+    description: "Retrieve your unique Ei ASSET PAN ID for Ei ATS registration.",
+    icon: FileText,
+    link: "https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html",
+    color: "bg-green-100 text-green-700",
+    features: ["Retrieve PAN ID"],
+  },
+  {
+    title: "Student Test Portal",
+    description:
+      "Access your personalized dashboard, view test results, track progress, practice with mock tests, and take the Ei ATS test on the Ei ATS Test Portal.",
+    icon: User,
+    link: "https://ats.ei.study/student_portal/index.php",
+    color: "bg-blue-100 text-blue-700",
+    features: ["View test results", "Track progress", "Ei ATS test portal", "Mock test portal"],
   },
   {
     title: "Awards & Recognition",
-    description: "View the complete list of ATS winners, scholars, and achievers. See where you stand among the best.",
+    description: "View the complete list of Ei ATS winners, scholars, and achievers. See where you stand among the best.",
     icon: Award,
     link: "https://ats.ei.study/reward_winners_india.php",
     color: "bg-yellow-100 text-yellow-700",
@@ -53,12 +53,12 @@ export default function ForStudentsPage() {
 
 
       {/* Student Tools */}
-      <section id="student-tools" className="py-20 pt-32">
+      <section id="student-tools" className="py-10 pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Student Tools & Resources</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Access all your student resources in one place. Manage your ATS journey with ease.
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Student Tools & Resources</h2>
+            <p className="text-base text-gray-600 max-w-3xl mx-auto">
+              Access all your student resources in one place. Manage your Ei ATS journey with ease.
             </p>
           </div>
 
@@ -99,13 +99,13 @@ export default function ForStudentsPage() {
       </section>
 
       {/* Benefits Section */}
-      <section id="why-join-ats" className="py-20 bg-white">
+      <section id="why-join-ats" className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Why Join ATS?</h2>
-              <p className="text-xl text-gray-600 mb-8">
-                Being part of ATS opens doors to exceptional opportunities and recognition for your academic excellence.
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Why Join Ei ATS?</h2>
+              <p className="text-base text-gray-600 mb-8">
+                Being part of Ei ATS opens doors to exceptional opportunities and recognition for your academic excellence.
               </p>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -130,16 +130,16 @@ export default function ForStudentsPage() {
       </section>
 
       {/* CTA Section */}
-      <section id="student-cta" className="py-16 bg-[#850101] text-white">
+      <section id="student-cta" className="py-8 bg-[#850101] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Join thousands of gifted students who have unlocked their potential through ATS
+          <h2 className="text-4xl font-bold mb-4">Ready to Start Your Journey?</h2>
+          <p className="text-base text-gray-200 mb-8">
+            Join thousands of gifted students who have unlocked their potential through Ei ATS
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
               <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
-                Register for ATS 2025
+                Register for Ei ATS 2025
               </a>
             </Button>
             <Button
@@ -149,7 +149,7 @@ export default function ForStudentsPage() {
               asChild
             >
               <a href="https://ats.ei.study/student_portal/index.php" target="_blank" rel="noopener noreferrer">
-                Access Student Portal
+                Access Student Test Portal
               </a>
             </Button>
           </div>

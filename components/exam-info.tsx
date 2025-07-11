@@ -1,8 +1,14 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, Users, BookOpen, CheckCircle, Home } from "lucide-react"
+import { useRegion } from "@/components/region-context"
+import { REGIONAL_DATES } from "@/lib/dates"
 
 export function ExamInfo() {
+  const { region } = useRegion()
+  const dates = REGIONAL_DATES[region]
   const examDetails = [
     {
       icon: Home,
@@ -22,16 +28,16 @@ export function ExamInfo() {
     {
       icon: Calendar,
       title: "Test Window",
-      description: "November 28 - December 1, 2025",
+      description: dates.testWindowShort,
     },
   ]
 
   return (
-    <section id="exam-info" className="py-20 bg-white">
+    <section id="exam-info" className="py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Exam Information</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Exam Information</h2>
+          <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
             Comprehensive assessment designed to identify academically gifted students
           </p>
         </div>
@@ -53,23 +59,35 @@ export function ExamInfo() {
         <div className="bg-[#850101] rounded-2xl p-8 text-white">
           <div className="text-center">
               <h3 className="text-2xl font-bold mb-6">Important Dates</h3>
-            <div className="space-y-4 max-w-2xl mx-auto">
-              <div className="flex items-center gap-3 justify-center">
+            <div className="space-y-4 w-fit mx-auto text-left">
+              <div className="flex items-start gap-3 text-left">
                   <CheckCircle className="h-5 w-5 text-green-300" />
                   <span>
-                    <strong>Early Bird Deadline:</strong> November 9, 2025
+                    <strong>Early Registration Close Date:</strong> {dates.early}
                   </span>
                 </div>
-              <div className="flex items-center gap-3 justify-center">
+              <div className="flex items-start gap-3 text-left">
                   <CheckCircle className="h-5 w-5 text-green-300" />
                   <span>
-                    <strong>Final Registration Deadline:</strong> November 30, 2025
+                    <strong>Regular Registration Closes:</strong> {dates.regular}
                   </span>
                 </div>
-              <div className="flex items-center gap-3 justify-center">
+              <div className="flex items-start gap-3 text-left">
                   <CheckCircle className="h-5 w-5 text-green-300" />
                   <span>
-                    <strong>Test Window:</strong> November 28 - December 1, 2025
+                    <strong>Late Registration Closes:</strong> {dates.late}
+                  </span>
+                </div>
+              <div className="flex items-start gap-3 text-left">
+                  <CheckCircle className="h-5 w-5 text-green-300" />
+                  <span>
+                    <strong>Test Window:</strong> {dates.testWindow}
+                  </span>
+                </div>
+              <div className="flex items-start gap-3 text-left">
+                  <CheckCircle className="h-5 w-5 text-green-300" />
+                  <span>
+                    <strong>Results Announced:</strong> {dates.results}
                   </span>
                 </div>
               </div>

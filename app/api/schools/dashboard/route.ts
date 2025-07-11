@@ -2,15 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { executeQuery } from '@/lib/database'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-here'
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  throw new Error('JWT_SECRET environment variable is required. Please check your .env.local file.')
+})()
 
 function verifyToken(request: NextRequest) {
   const token = request.cookies.get('school-token')?.value
   if (!token) {
-    throw new Error('No token provided')
+    throw new Error('No authentication token provided')
   }
-  
-  return jwt.verify(token, JWT_SECRET) as any
+
+  try {
+    return jwt.verify(token, JWT_SECRET) as any
+  } catch (error) {
+    throw new Error('Invalid or expired token')
+  }
 }
 
 export async function GET(request: NextRequest) {
@@ -25,7 +31,7 @@ export async function GET(request: NextRequest) {
       FROM schools 
       WHERE schoolno = ?
     `
-    const schoolResults = await executeQuery(schoolQuery, [schoolCode]) as any[]
+    const schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
     
     if (schoolResults.length === 0) {
       return NextResponse.json({ error: 'School not found' }, { status: 404 })
@@ -43,7 +49,7 @@ export async function GET(request: NextRequest) {
       WHERE a.schoolcode = ? AND a.programmeDetailID = 113
     `
     
-    const currentYearResults = await executeQuery(currentYearQuery, [schoolCode]) as any[]
+    const currentYearResults = await executeQuery(currentYearQuery, [schoolCode], 'school') as any[]
     const currentYear = currentYearResults[0]
 
     // Get last year stats (2024)
@@ -56,7 +62,7 @@ export async function GET(request: NextRequest) {
       WHERE a.schoolcode = ? AND a.programmeDetailID = 101
     `
     
-    const lastYearResults = await executeQuery(lastYearQuery, [schoolCode]) as any[]
+    const lastYearResults = await executeQuery(lastYearQuery, [schoolCode], 'school') as any[]
     const lastYear = lastYearResults[0]
 
     // Calculate percentages

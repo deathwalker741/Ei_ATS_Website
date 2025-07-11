@@ -4,7 +4,11 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import IntelligentChatbot from "@/components/intelligent-chatbot"
+import BackToTopButton from "@/components/back-to-top"
+import FloatingChat from "@/components/floating-chat"
+import { Toaster } from "@/components/ui/toaster"
+import NotificationBar from "@/components/notification-bar"
+import { RegionProvider } from "@/components/region-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,12 +25,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
-        <IntelligentChatbot />
+    <html lang="en" className="scroll-smooth no-scrollbar overflow-x-hidden">
+      <body className={`${inter.className} overflow-x-hidden no-scrollbar`}>
+        <RegionProvider>
+          <Header />
+          <NotificationBar />
+          <main className="pt-24">
+            {children}
+            <Footer />
+          </main>
+        </RegionProvider>
+        <FloatingChat />
+        <BackToTopButton />
+        <Toaster />
       </body>
     </html>
   )

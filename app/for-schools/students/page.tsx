@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
   ArrowLeft, 
   Users, 
@@ -17,6 +16,7 @@ import {
   CheckCircle,
   Clock
 } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 
 interface Student {
   panNumber: string
@@ -60,6 +60,7 @@ export default function StudentsPage() {
   const [studentsData, setStudentsData] = useState<StudentsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
 
   useEffect(() => {
@@ -78,6 +79,16 @@ export default function StudentsPage() {
       const data = await response.json()
       
       if (response.ok) {
+        // Normalize: ensure panNumber is always a string to avoid runtime errors when filtering/searching
+        const normalizeStudent = (student: any) => ({
+          ...student,
+          panNumber: student?.panNumber != null ? String(student.panNumber) : ''
+        })
+
+        data.students.registered = data.students.registered.map(normalizeStudent)
+        data.students.pending = data.students.pending.map(normalizeStudent)
+        data.students.all = data.students.all.map(normalizeStudent)
+
         setStudentsData(data)
       } else {
         setError(data.error || 'Failed to load students data')
@@ -133,9 +144,6 @@ export default function StudentsPage() {
                     S.No
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    School ID
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     ATS PAN
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -160,9 +168,6 @@ export default function StudentsPage() {
                   >
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                       {index + 1}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {student.schoolStudentId}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
                       {student.panNumber}
@@ -198,6 +203,11 @@ export default function StudentsPage() {
     </Card>
   )
 
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+    setSearchQuery(searchQuery.trimStart())
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -223,6 +233,19 @@ export default function StudentsPage() {
     return null
   }
 
+  const filterStudents = (students: Student[]) => {
+    if (!searchQuery.trim()) return students
+    const query = searchQuery.toLowerCase()
+    return students.filter(s =>
+      s.studentName.toLowerCase().includes(query) ||
+      s.panNumber.toLowerCase().includes(query) ||
+      s.classSection.toLowerCase().includes(query)
+    )
+  }
+
+  const filteredPending = filterStudents(studentsData.students.pending)
+  const filteredRegistered = filterStudents(studentsData.students.registered)
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -233,7 +256,7 @@ export default function StudentsPage() {
               <Button
                 onClick={() => router.push('/for-schools/dashboard')}
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-[#850101]"
+                className="bg-transparent border-white text-white hover:bg-white hover:text-[#850101]"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Dashboard
@@ -283,6 +306,17 @@ export default function StudentsPage() {
           </Card>
         </div>
 
+        {/* Search */}
+        <form onSubmit={handleSearch} className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name, ATS PAN, or class..."
+            className="sm:max-w-sm"
+          />
+          <Button type="submit">Search</Button>
+        </form>
+
         {/* Note */}
         <Alert className="mb-6 bg-blue-50 border-blue-200">
           <AlertDescription className="text-blue-800">
@@ -291,35 +325,20 @@ export default function StudentsPage() {
           </AlertDescription>
         </Alert>
 
-        {/* Students Tables */}
-        <Tabs defaultValue="pending" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="pending" className="flex items-center">
-              <AlertTriangle className="h-4 w-4 mr-2" />
-              Pending Registrations ({studentsData.summary.totalPending})
-            </TabsTrigger>
-            <TabsTrigger value="registered" className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Registered Students ({studentsData.summary.totalRegistered})
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="pending">
+        {/* Tables side-by-side on md+ screens, stacked on smaller devices */}
+        <div className="grid gap-10 md:grid-cols-2">
             <StudentTable 
-              students={studentsData.students.pending} 
-              title="Pending Registrations" 
+            students={filteredPending} 
+            title={`Pending Registrations`} 
               icon={<AlertTriangle className="h-5 w-5" />}
             />
-          </TabsContent>
 
-          <TabsContent value="registered">
             <StudentTable 
-              students={studentsData.students.registered} 
-              title="Registered Students" 
+            students={filteredRegistered} 
+            title={`Registered Students`} 
               icon={<CheckCircle className="h-5 w-5" />}
             />
-          </TabsContent>
-        </Tabs>
+        </div>
       </div>
     </div>
   )

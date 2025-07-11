@@ -52,7 +52,7 @@ export default function SchoolLoginPage() {
           <div className="mx-auto h-12 w-12 bg-[#850101] rounded-full flex items-center justify-center mb-4">
             <School className="h-6 w-6 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">School Portal</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-2">School Portal</h2>
           <p className="text-gray-600">
             Access your school's ATS registration data and student information
           </p>
@@ -129,9 +129,8 @@ export default function SchoolLoginPage() {
               <div className="text-sm text-gray-600 space-y-2">
                 <p><strong>Login Instructions:</strong></p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>Use your official school code as provided by ATS</li>
-                  <li>Default password is "ats2025" or your school code</li>
-                  <li>Contact support if you need assistance</li>
+                  <li>Use your school code as username</li>
+                  <li>Contact support for password information</li>
                 </ul>
               </div>
             </div>

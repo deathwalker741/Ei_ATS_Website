@@ -71,6 +71,9 @@ html {
   body {
     @apply bg-background text-foreground;
   }
+  p {
+    @apply text-base md:text-lg;
+  }
 }
 
 /* Custom scrollbar */
@@ -200,6 +203,15 @@ html {
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
 
@@ -410,4 +422,13 @@ html {
 
 .shadow-professional-xl {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Hide scrollbar globally while keeping scroll capability */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

@@ -1,391 +1,378 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Badge } from '@/components/ui/badge'
-import { MessageCircle, Send, X, Bot, User, Minimize2, Maximize2 } from 'lucide-react'
+import React, { useState, useEffect, useRef } from "react"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Send, X, Bot, User, Loader2, Star, BarChart3 } from "lucide-react"
+import { chatStorage, saveChatMessage, getChatHistory, endChatSession, clearChatData } from "@/lib/chat-storage"
+import type { ChatMessage } from "@/lib/chat-storage"
 
-interface Message {
-  id: string
-  text: string
-  isBot: boolean
-  timestamp: Date
-  suggestions?: string[]
+interface Props {
+  open: boolean
+  onOpenChange: (o: boolean) => void
 }
 
-interface ChatbotKnowledge {
-  [key: string]: {
-    keywords: string[]
-    response: string
-    suggestions?: string[]
-  }
+// Create a comprehensive knowledge base from website content
+const createKnowledgeBase = () => {
+  return `You are an intelligent assistant EXCLUSIVELY for Ei ATS (Educational Initiatives Academic Talent Search). You can ONLY answer questions related to Ei ATS content and information.
+
+STRICT GUIDELINES:
+- ONLY answer questions about Ei ATS, registration, exams, universities, programmes, eligibility, dates, fees, or contact information
+- If asked about ANYTHING unrelated to Ei ATS, politely decline and redirect to Ei ATS topics
+- Do NOT answer general questions about education, other programmes, personal advice, or any non-Ei ATS topics
+- Do NOT provide information outside your knowledge base below
+
+KEY EI ATS INFORMATION:
+
+TEST DETAILS & DATES:
+- India 2025: November 28-30, 2025
+- International (UAE & GCC) 2025: March 25-29, 2025
+- Format: Online proctored test, 60 minutes per subject
+- Subjects: English, Maths, Science (choose 1, 2, or all 3)
+- Level: Two grades above student's current level
+- No preparation required, no negative marking
+
+ELIGIBILITY:
+- Grades 4-8 students who score in top 15 percentile in ASSET test
+- OR attain Stanine 9 in CAT4
+
+FEES:
+- India: INR 1700 (early), INR 2700 (late) for 1 subject; INR 2200-3300 for 2-3 subjects
+- International: AED 170-250 per subject (Late fee: AED 300)
+
+REGISTRATION DEADLINES (International 2025):
+- Early Registration: Until March 16, 2025
+- Regular Registration: Until March 23, 2025
+- Late Registration: Until March 28, 2025
+
+RECOGNITION & AWARDS:
+- Bronze Scholar (85-89%): Certificate + Medal
+- Silver Scholar (90-94%): Certificate + Medal  
+- Gold Scholar (95-99%): Certificate + Medal
+- Top grade toppers: Eligible for iPads, tablets, Kindles, Apple Watches
+
+UNIVERSITY PARTNERS: Johns Hopkins CTY, UC Berkeley ATDP, Northwestern CTD, Purdue GER2I, SIG, GenWise
+
+CONTACT:
+- India: eitalentsearch@ei.study, +91 80 4718 7451
+- International: atsinternational@ei.study
+- Website: www.ats.ei.study
+
+RESPONSE RULES:
+- For Ei ATS questions: Provide detailed, helpful answers using the knowledge base
+- For non-Ei ATS questions: Say "I'm specifically designed to help with Ei ATS questions only. Could you ask me something about our Academic Talent Search programme, registration, exams, or university partnerships instead?"
+- Always stay focused on Ei ATS content
+- Be professional, encouraging, and supportive about the Ei ATS programme
+
+Remember: You ONLY discuss Ei ATS. Redirect all other topics back to Ei ATS-related questions.`;
 }
 
-const chatbotKnowledge: ChatbotKnowledge = {
-  // Comprehensive ATS Program Information
-  ats_program: {
-    keywords: ["what is ats", "ats program", "talent search", "academic talent search", "program overview", "ei asset"],
-    response: "ATS (Academic Talent Search) by Educational Initiatives is a comprehensive platform for identifying and nurturing academically gifted students through rigorous assessment and world-class educational opportunities.\n\nProgram Highlights:\n• 15+ years of excellence in talent identification\n• 1000+ alumni from 100+ schools globally\n• 100+ courses delivered since inception\n• Identifying the top 2% of gifted students worldwide",
-    suggestions: ["Tell me about universities", "How to register?", "What are the statistics?"]
-  },
+const SYSTEM_PROMPT = createKnowledgeBase();
 
-  // Detailed Exam Information
-  exam_details: {
-    keywords: ["exam", "test", "assessment", "dates", "schedule", "when is exam", "format", "subjects", "duration"],
-    response: "ATS 2025 Exam Details:\n\nTest Schedule:\n• Test Window: November 28 - December 1, 2025\n• Format: Online test at home\n• Duration: 3 hours total\n\nSubjects & Format:\n• English: 60 minutes\n• Math: 60 minutes\n• Science: 60 minutes\n\nEligibility:\n• Grades 4-8 students\n• Top 15th percentile in any subject\n\nRegistration Deadlines:\n• Early Bird: November 9, 2025\n• Final Deadline: November 30, 2025",
-    suggestions: ["Sample papers?", "How to prepare?", "Registration process?"]
-  },
+export default function IntelligentChatbot({ open, onOpenChange }: Props) {
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [userRating, setUserRating] = useState<number | null>(null)
+  const [showRating, setShowRating] = useState(true)
+  const logRef = useRef<HTMLDivElement>(null)
 
-  // Detailed Registration Process
-  registration: {
-    keywords: ["register", "registration", "how to apply", "sign up", "enrollment", "join ats", "deadline"],
-    response: "ATS 2025 Registration Process:\n\nStep-by-Step Process:\n1. Visit https://ats.ei.study/ats_registration.php\n2. Complete online registration form\n3. Submit required documents\n4. Pay registration fee (250 AED or equivalent)\n5. Take the assessment test\n\nImportant Dates:\n• Early Bird Deadline: November 9, 2025\n• Final Deadline: November 30, 2025\n• Test Window: November 28 - December 1, 2025",
-    suggestions: ["What documents needed?", "Payment methods?", "Test preparation?"]
-  },
-
-  // Comprehensive University Partnerships
-  universities: {
-    keywords: ["universities", "colleges", "partners", "johns hopkins", "northwestern", "uc berkeley", "purdue", "sig", "genwise"],
-    response: "ATS University Partners:\n\nJohns Hopkins CTY:\n• Grades 2-12 programs\n• Online and campus-based courses\n• Eligibility: 98th percentile required\n\nUC Berkeley ATDP:\n• Summer residential program\n• Grades 7-10\n• Eligibility: 80%+ priority, 50-79% with portfolio\n\nNorthwestern CTD:\n• Ages 3-12 programs\n• Online and residential options\n• Eligibility: 90%+ direct, below 90% with portfolio\n\nPurdue GER²I:\n• COMET, STAR & PULSAR programs\n• Grades 5-12\n• Eligibility: 90%+ direct, 50-89% with portfolio\n\nSummer Institute for the Gifted (SIG):\n• 2-3 week residential programs\n• Ages 5-17\n• Eligibility: 90th percentile\n\nGENWISE Programme:\n• Computational thinking focus\n• Math puzzles and science investigations\n• Higher-order skill development",
-    suggestions: ["Eligibility criteria?", "Application process?", "Program details?"]
-  },
-
-  // Detailed Rewards Structure
-  rewards: {
-    keywords: ["rewards", "medals", "certificates", "bronze", "silver", "gold", "scholar", "recognition"],
-    response: "ATS Rewards Structure:\n\nGold Scholar (95-99 percentile):\n• Medal + Certificate\n• Highest recognition level\n\nSilver Scholar (90-94 percentile):\n• Medal + Certificate\n• High achievement recognition\n\nBronze Scholar (85-89 percentile):\n• Medal + Certificate\n• Achievement recognition\n\nParticipation Certificate:\n• All participants receive official recognition\n• Acknowledges academic participation\n\nImportant Note:\n• Minimum 300 participants required per grade for award qualification",
-    suggestions: ["How are percentiles calculated?", "When do I receive awards?", "What's the selection criteria?"]
-  },
-
-  // Comprehensive Resources
-  resources: {
-    keywords: ["resources", "preparation", "study materials", "sample papers", "practice tests", "aqad", "brochure"],
-    response: "ATS Resources Available:\n\nSample Papers:\n• Official ATS format with answer keys\n• All subjects covered\n• Download: https://ei.study/wp-content/uploads/2025/01/Sample-Questions-Ei-ASSET-Final-File.pdf\n\nAQAD Platform:\n• Performance analytics & personalized insights\n• Access: www.aqad.in\n• Detailed progress tracking\n\nATS Brochure:\n• Complete program guide\n• Download: https://ats.ei.study/documents/ATS-India2024.pdf\n\nArticles & Insights:\n• Success stories & expert guidance\n• Study tips and university guides\n• Access: https://ei.study/blogs/\n\nVideo Testimonials:\n• 200+ testimonials from students, parents & schools\n• Real success stories and experiences",
-    suggestions: ["Download sample papers", "Access AQAD platform", "View testimonials"]
-  },
-
-  // Detailed Contact Information
-  contact: {
-    keywords: ["contact", "phone", "email", "address", "support", "help", "bengaluru", "schedule a call", "schedule call", "call", "appointment"],
-    response: "Contact Information:\n\nTo Schedule a Call or Send a Message:\n• Visit our contact form: /contact#send-message\n• Fill out the contact form with your details\n• Our team will respond within 24 hours\n\nDirect Contact:\n• Email: eitalentsearch@ei.study\n• Phone: +91 80 4718 7451\n• Hours: Monday-Saturday, 9AM-6PM\n\nOffice Address:\nEducational Initiatives Pvt Ltd\nThe CUBE - Karle Town Center\nBengaluru, India\n\nWebsite: https://ats.ei.study\nCompany CIN: U80211GJ2000PTC038692103",
-    suggestions: ["Send message", "Visit office", "Live webinars"]
-  },
-
-  // Fees and Payment
-  fees: {
-    keywords: ["fee", "cost", "price", "payment", "how much", "charges", "250 aed"],
-    response: "ATS Registration Fee:\n\nCost: 250 AED or equivalent in local currency\n\nFee Includes:\n• Comprehensive assessment\n• Performance analysis\n• Certificates and recognition\n• Access to all resources\n• University partnership opportunities\n• Ongoing support\n\nEarly Bird Benefits:\n• Register by November 9, 2025 for additional benefits\n• Enhanced support and priority access",
-    suggestions: ["Payment methods?", "Refund policy?", "Financial assistance?"]
-  },
-
-  // Detailed Eligibility
-  eligibility: {
-    keywords: ["age", "grade", "eligibility", "who can apply", "requirements", "15th percentile"],
-    response: "Eligibility Criteria:\n\nGrade Requirements:\n• Students in grades 4-8 are eligible\n\nAcademic Requirements:\n• Top 15th percentile in any subject (English, Math, or Science)\n• Based on school assessments\n\nGeographic Scope:\n• Open to students globally\n• No geographic restrictions\n\nAssessment Philosophy:\n• Based on academic potential\n• Not just current performance\n• All students with passion for learning encouraged to apply",
-    suggestions: ["How to check percentile?", "Grade-wise programs?", "International students?"]
-  },
-
-  // Success Stories & Statistics
-  success_stories: {
-    keywords: ["success", "testimonials", "results", "achievements", "stories", "alumni", "1000+"],
-    response: "ATS Success Statistics:\n\nAlumni Network:\n• 1000+ alumni from 100+ schools globally\n• Students across multiple countries\n\nProgram Achievements:\n• 100+ courses delivered since inception\n• 15+ years of excellence in talent identification\n• Top 2% global reach in identifying gifted students\n\nSuccess Stories:\n• 200+ video testimonials from students, parents, and schools\n• Students admitted to top universities worldwide\n• Scholarship recipients and academic achievers\n• International competition winners",
-    suggestions: ["Watch testimonials", "Alumni achievements", "University admissions"]
-  },
-
-  // AQAD Platform Details
-  aqad: {
-    keywords: ["aqad", "platform", "analytics", "performance", "dashboard", "insights"],
-    response: "AQAD Platform (Advanced Question Analysis Dashboard):\n\nKey Features:\n• Detailed performance analytics\n• Personalized learning insights\n• Progress tracking\n• Skill assessment\n\nAccess Information:\n• Website: www.aqad.in\n• Login with student credentials\n• Secure student dashboard\n\nBenefits:\n• Performance analysis\n• Learning insights\n• Progress tracking\n• Personalized reports\n\nPurpose:\n• Optimize learning paths\n• Identify strengths and weaknesses\n• Guide academic development",
-    suggestions: ["How to login?", "Platform tutorial?", "Performance reports?"]
-  },
-
-  // Webinars & Support
-  webinars: {
-    keywords: ["webinar", "online session", "live class", "workshop", "expert"],
-    response: "ATS Webinars & Support:\n\nWebinar Features:\n• Regular sessions on exam preparation\n• University application guidance\n• Career guidance sessions\n• Expert-led educational content\n\nAccess Information:\n• Free for registered students\n• Website: https://ei.study/webinars/\n• Live and recorded sessions available\n\nTopics Covered:\n• Study strategies and preparation tips\n• University partnerships and applications\n• Success stories and motivation\n• Academic planning and career guidance\n\nSchedule:\n• Check website for upcoming sessions\n• Access to past recordings\n• Regular updates on new content",
-    suggestions: ["Upcoming webinars?", "Register for session", "Past recordings?"]
-  },
-
-  // FAQ Information
-  faq: {
-    keywords: ["faq", "frequently asked", "common questions", "doubts", "clarification"],
-    response: "Frequently Asked Questions:\n\nWho is eligible?\n• Students in grades 4-8 with top 15th percentile in any subject\n\nWhat is the exam format?\n• Computer-based test: English, Math, Science (60 minutes each)\n\nWhat are the university benefits?\n• Access to Johns Hopkins CTY, UC Berkeley, Northwestern programs\n\nWhat rewards are available?\n• Bronze (85-89%), Silver (90-94%), Gold (95-99%) scholars get medals + certificates\n\nWhat is the registration fee?\n• 250 AED or equivalent in local currency\n\nWhen are the important dates?\n• Early Bird: November 9, 2025\n• Final Deadline: November 30, 2025\n• Test Window: November 28 - December 1, 2025",
-    suggestions: ["Detailed eligibility?", "Exam preparation?", "University partnerships?"]
-  },
-
-  // Technical Support
-  technical_support: {
-    keywords: ["technical", "login", "website", "error", "access", "problem"],
-    response: "Technical Support:\n\nWebsite Issues:\n• Clear browser cache and try again\n• Use updated browser versions\n• Check internet connection\n\nLogin Problems:\n• Use registered email address\n• Reset password if needed\n• Contact support for account issues\n\nAQAD Platform Access:\n• Use student credentials\n• Contact support if access issues persist\n\nContact for Technical Help:\n• Email: eitalentsearch@ei.study\n• Phone: +91 80 4718 7451\n• Hours: Monday-Saturday, 9AM-6PM",
-    suggestions: ["Contact technical support", "Clear browser cache", "Reset password"]
-  }
-}
-
-const quickQuestions = [
-  "What is ATS program?",
-  "How to register for ATS 2025?",
-  "When are the exam dates?",
-  "Which universities partner with ATS?",
-  "What are the rewards and recognition?",
-  "What resources are available?",
-  "What's the registration fee?",
-  "Who is eligible for ATS?",
-  "How can I contact support?",
-  "What is AQAD platform?",
-  "Are there webinars available?",
-  "What are the success statistics?"
-]
-
-export default function IntelligentChatbot() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: "Hello! I'm your comprehensive ATS assistant with detailed knowledge about every aspect of our Academic Talent Search program.\n\nI can help you with:\n• Program details & statistics\n• Exam dates & format\n• University partnerships\n• Rewards structure\n• Fees & registration\n• Resources & AQAD platform\n• Contact information\n• Webinars & support\n\nAsk me anything!",
-      isBot: true,
-      timestamp: new Date(),
-      suggestions: quickQuestions.slice(0, 3)
+  // Initialize with welcome message and load history
+  useEffect(() => {
+    const initializeChat = async () => {
+      // Load chat history
+      try {
+        const history = await getChatHistory(20)
+        if (history.length > 0) {
+          setMessages(history)
+        } else {
+          // Set welcome message if no history
+          setMessages([{
+            id: 'welcome',
+            text: "Hello! I'm your intelligent Ei ATS assistant. I can help you with questions about our Academic Talent Search programme, registration process, exam details, university partnerships, and much more. What would you like to know?",
+            isBot: true,
+            timestamp: new Date()
+          }])
+        }
+      } catch (error) {
+        console.warn('Failed to load chat history:', error)
+        // Fallback to welcome message
+        setMessages([{
+          id: 'welcome',
+          text: "Hello! I'm your intelligent Ei ATS assistant. How can I help you today?",
+          isBot: true,
+          timestamp: new Date()
+        }])
+      }
     }
-  ])
-  const [inputValue, setInputValue] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    if (open) {
+      initializeChat()
+    }
+  }, [open])
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    if (open) setTimeout(() => logRef.current?.scrollIntoView({ behavior: "smooth" }), 100)
+  }, [messages, open])
 
-  const findBestResponse = (userMessage: string): { response: string; suggestions?: string[] } => {
-    const lowerMessage = userMessage.toLowerCase()
-    
-    // Find the best matching knowledge entry
-    let bestResponse = ""
-    let bestSuggestions: string[] | undefined = undefined
-    let highestScore = 0
-    
-    Object.entries(chatbotKnowledge).forEach(([key, knowledge]) => {
-      const score = knowledge.keywords.reduce((acc, keyword) => {
-        if (lowerMessage.includes(keyword.toLowerCase())) {
-          return acc + keyword.length
-        }
-        return acc
-      }, 0)
-      
-      if (score > highestScore) {
-        highestScore = score
-        bestResponse = knowledge.response
-        bestSuggestions = knowledge.suggestions
-      }
+  const addMessage = (msg: ChatMessage) => {
+    setMessages((m) => [...m, msg])
+    // Save to storage
+    saveChatMessage(msg).catch(error => {
+      console.warn('Failed to save message:', error)
     })
+  }
+
+  const callAI = async (userMessage: string): Promise<string> => {
+    const startTime = Date.now()
     
-    if (bestResponse && highestScore > 0) {
-      return {
-        response: bestResponse,
-        suggestions: bestSuggestions
+    try {
+      // Build conversation context
+      const recentMessages = messages
+        .slice(-6) // Last 6 messages for context
+        .map(m => ({
+          role: m.isBot ? "assistant" : "user",
+          content: m.text
+        }));
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            ...recentMessages,
+            { role: "user", content: userMessage }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API call failed: ${response.status}`);
       }
-    }
-    
-    // Enhanced fallback responses for common interactions
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey') || lowerMessage.includes('good morning') || lowerMessage.includes('good afternoon')) {
-      return {
-        response: "Hello! Welcome to ATS (Academic Talent Search). I'm your comprehensive assistant with detailed knowledge about every aspect of our program.\n\nWhat would you like to know about ATS 2025?",
-        suggestions: ["What is ATS program?", "Exam dates and format", "Registration process"]
+
+      const data = await response.json();
+      const responseTime = Date.now() - startTime
+      
+      // Add response time metadata to the response
+      if (data.response) {
+        return data.response;
       }
-    }
-    
-    if (lowerMessage.includes('thank') || lowerMessage.includes('thanks') || lowerMessage.includes('appreciate')) {
-      return {
-        response: "You're very welcome! I'm always here to provide detailed information about ATS.\n\nIs there anything else you'd like to know about our program, registration, universities, or resources?",
-        suggestions: ["View testimonials", "University partnerships", "Contact support"]
-      }
-    }
-    
-    if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye') || lowerMessage.includes('see you')) {
-      return {
-        response: "Goodbye! Best wishes for your ATS journey.\n\nRemember, you can always reach us for additional support:\n• Email: eitalentsearch@ei.study\n• Phone: +91 80 4718 7451\n\nGood luck!",
-        suggestions: ["Register now", "Contact support", "Download resources"]
-      }
-    }
-    
-    return {
-      response: "I have comprehensive knowledge about every detail of the ATS website and program.\n\nFor specific questions not in my database, please contact our support team:\n• Email: eitalentsearch@ei.study\n• Phone: +91 80 4718 7451\n\nHere are the main topics I can help with:",
-      suggestions: quickQuestions.slice(0, 4)
+      
+      return "I'm sorry, I couldn't process that request. Please try again.";
+    } catch (error) {
+      console.warn('AI API Error:', error)
+      return "I'm experiencing some technical difficulties right now. For immediate assistance, please contact our support team at eitalentsearch@ei.study or call +91 80 4718 7451.";
     }
   }
 
-  const handleSendMessage = async (text: string) => {
-    if (!text.trim()) return
+  const send = async () => {
+    const trimmed = input.trim()
+    if (!trimmed || isLoading) return
 
-    const userMessage: Message = {
+    const startTime = Date.now()
+
+    // Add user message
+    const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      text: text.trim(),
+      text: trimmed,
       isBot: false,
       timestamp: new Date()
     }
+    addMessage(userMessage)
+    setInput("")
+    setIsLoading(true)
 
-    setMessages(prev => [...prev, userMessage])
-    setInputValue('')
-    setIsTyping(true)
-
-    // Simulate AI thinking time
-    setTimeout(() => {
-      const { response, suggestions } = findBestResponse(text)
+    try {
+      // Get AI response
+      const aiResponse = await callAI(trimmed)
+      const responseTime = Date.now() - startTime
       
-      const botMessage: Message = {
+      // Add bot response with metadata
+      const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        text: response,
+        text: aiResponse,
         isBot: true,
         timestamp: new Date(),
-        suggestions
+        metadata: {
+          responseTime,
+          confidence: 0.95 // You could implement actual confidence scoring
+        }
       }
-
-      setMessages(prev => [...prev, botMessage])
-      setIsTyping(false)
-    }, 1000 + Math.random() * 1000) // Random delay between 1-2 seconds
+      addMessage(botMessage)
+    } catch (error) {
+      console.warn('Error getting AI response:', error)
+      addMessage({
+        id: (Date.now() + 1).toString(),
+        text: "I apologize, but I'm having trouble connecting right now. Please contact our support team directly at eitalentsearch@ei.study for immediate assistance.",
+        isBot: true,
+        timestamp: new Date()
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleSuggestionClick = (suggestion: string) => {
-    handleSendMessage(suggestion)
+  const handleRating = (rating: number) => {
+    setUserRating(rating)
+    setShowRating(false)
+    endChatSession(rating)
   }
 
-  if (!isOpen) {
-    return (
-      <Button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-[#850101] hover:bg-[#650101] shadow-lg z-50"
-        size="lg"
-      >
-        <MessageCircle className="h-6 w-6" />
-      </Button>
-    )
+  const dismissRating = () => {
+    setShowRating(false)
+  }
+
+  const clearChat = () => {
+    setMessages([{
+      id: 'welcome-new',
+      text: "Hello! I'm your intelligent Ei ATS assistant. How can I help you today?",
+      isBot: true,
+      timestamp: new Date()
+    }])
+    setUserRating(null)
+    setShowRating(true)
+    clearChatData()
+  }
+
+  const handleClose = () => {
+    // End session when closing
+    if (userRating) {
+      endChatSession(userRating)
+    }
+    onOpenChange(false)
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${
-      isMinimized ? 'w-80 h-16' : 'w-96 h-[600px]'
-    }`}>
-      <Card className="h-full shadow-2xl border-2 border-[#850101]">
-        <CardHeader className="bg-[#850101] text-white p-4 rounded-t-lg">
-          <div className="flex items-center justify-between">
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-[700px] flex flex-col h-[80vh]">
+        <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-2">
-              <Bot className="h-5 w-5" />
-              <CardTitle className="text-lg">ATS Assistant</CardTitle>
-              <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs">
-                Online
-              </Badge>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMinimized(!isMinimized)}
-                className="text-white hover:bg-[#650101] h-8 w-8 p-0"
-              >
-                {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsOpen(false)}
-                className="text-white hover:bg-[#650101] h-8 w-8 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+            <Bot className="h-5 w-5 text-[#850101]" />
+            <DialogTitle className="text-lg font-semibold">Ei ATS AI Assistant</DialogTitle>
+            {/* Removed session number from header */}
           </div>
-        </CardHeader>
-
-        {!isMinimized && (
-          <>
-            <CardContent className="p-0 flex-1 h-[480px]">
-              <ScrollArea className="h-full p-4">
-                <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={clearChat}
+              className="text-xs"
+            >
+              Clear Chat
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleClose}
+              aria-label="Close chat"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        
+        <div className="flex-1 overflow-y-auto p-4 space-y-4" aria-live="polite">
                   {messages.map((message) => (
-                    <div key={message.id} className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}>
-                      <div className={`flex items-start gap-2 max-w-[80%] ${message.isBot ? 'flex-row' : 'flex-row-reverse'}`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          message.isBot ? 'bg-[#850101] text-white' : 'bg-gray-300 text-gray-700'
-                        }`}>
-                          {message.isBot ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
+            <div
+              key={message.id}
+              className={`flex gap-3 ${message.isBot ? 'justify-start' : 'justify-end'}`}
+            >
+              {message.isBot && (
+                <div className="w-8 h-8 rounded-full bg-[#850101] flex items-center justify-center flex-shrink-0">
+                  <Bot className="h-4 w-4 text-white" />
                         </div>
-                        <div className="space-y-2">
-                          <div className={`rounded-lg p-3 ${
+              )}
+              <div className={`max-w-[80%] rounded-lg px-3 py-2 ${
                             message.isBot 
-                              ? 'bg-gray-100 text-gray-800' 
+                  ? 'bg-gray-100 text-gray-900' 
                               : 'bg-[#850101] text-white'
                           }`}>
-                            <p className="text-sm whitespace-pre-line">{message.text}</p>
-                          </div>
-                          {message.suggestions && (
-                            <div className="flex flex-wrap gap-2">
-                              {message.suggestions.map((suggestion, index) => (
-                                <Button
-                                  key={index}
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleSuggestionClick(suggestion)}
-                                  className="text-xs h-7 border-[#850101] text-[#850101] hover:bg-[#850101] hover:text-white"
-                                >
-                                  {suggestion}
-                                </Button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
+                <div className="text-sm whitespace-pre-wrap">{message.text}</div>
+                <div className="text-xs opacity-70 mt-1">
+                  {new Date(message.timestamp).toLocaleTimeString()}
+                  {/* Removed response time (xxx ms) from message UI */}
+                </div>
                       </div>
+              {!message.isBot && (
+                <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+                  <User className="h-4 w-4 text-gray-600" />
+                </div>
+              )}
                     </div>
                   ))}
                   
-                  {isTyping && (
-                    <div className="flex justify-start">
-                      <div className="flex items-start gap-2">
-                        <div className="w-8 h-8 rounded-full bg-[#850101] text-white flex items-center justify-center">
-                          <Bot className="h-4 w-4" />
+          {isLoading && (
+            <div className="flex justify-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#850101] flex items-center justify-center">
+                <Loader2 className="h-4 w-4 text-white animate-spin" />
                         </div>
-                        <div className="bg-gray-100 rounded-lg p-3">
-                          <div className="flex gap-1">
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="bg-gray-100 rounded-lg px-3 py-2">
+                <div className="text-sm text-gray-600">AI is thinking...</div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div ref={messagesEndRef} />
-              </ScrollArea>
-            </CardContent>
+          )}
+          <div ref={logRef} />
+        </div>
+
+        {/* Rating Section */}
+        {messages.length > 2 && !userRating && showRating && (
+          <div className="p-3 bg-blue-50 border-t">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-sm font-medium">How helpful was this conversation?</div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={dismissRating}
+                className="h-6 w-6 p-0 hover:bg-gray-200"
+                aria-label="Dismiss rating"
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            </div>
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <Button
+                  key={rating}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleRating(rating)}
+                  className="p-1"
+                >
+                  <Star className="h-4 w-4" />
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
 
             <div className="p-4 border-t">
               <div className="flex gap-2">
                 <Input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Ask me anything about ATS..."
-                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(inputValue)}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask me anything about Ei ATS..."
+              onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), send())}
+              disabled={isLoading}
                   className="flex-1"
                 />
                 <Button
-                  onClick={() => handleSendMessage(inputValue)}
-                  disabled={!inputValue.trim() || isTyping}
+              onClick={send}
+              disabled={isLoading || !input.trim()}
+              size="icon"
                   className="bg-[#850101] hover:bg-[#650101]"
                 >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
+          <div className="text-xs text-gray-500 mt-2 text-center">
+            Chat history is automatically saved. Database: {chatStorage.isDatabaseEnabled() ? '✅' : '❌'}
             </div>
-          </>
-        )}
-      </Card>
     </div>
+      </DialogContent>
+    </Dialog>
   )
 } 

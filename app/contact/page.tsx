@@ -3,11 +3,12 @@
 import type React from "react"
 
 import { useState } from "react"
+import { toast } from "@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, Phone, Clock, MapPin, Send } from "lucide-react"
+import { Phone, Send } from "lucide-react"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -18,11 +19,30 @@ export default function ContactPage() {
     message: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log("Form submitted:", formData)
-    // You can add actual form submission logic here
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      toast({ title: 'Message sent', description: 'We will get back to you soon.' })
+      setSubmitted(true)
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
+    } catch (err) {
+      console.error(err)
+      toast({ title: 'Submission failed', description: 'Please try again later.', variant: 'destructive' })
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -32,37 +52,12 @@ export default function ContactPage() {
     })
   }
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email",
-      details: "eitalentsearch@ei.study",
-      description: "Send us your questions anytime",
-    },
-    {
-      icon: Phone,
-      title: "Phone",
-      details: "+91 80 4718 7451",
-      description: "Call us for immediate assistance",
-    },
-    {
-      icon: Clock,
-      title: "Working Hours",
-      details: "Mon-Sat, 9 AM – 6 PM IST",
-      description: "We're here to help during business hours",
-    },
-    {
-      icon: MapPin,
-      title: "Location",
-      details: "Bengaluru, India",
-      description: "Educational Initiatives Pvt Ltd",
-    },
-  ]
+  // Contact info grid removed; details now live exclusively in the global footer.
 
   const faqs = [
     {
       question: "When is the registration deadline?",
-      answer: "Early bird registration ends November 9, 2025. Final deadline is November 30, 2025.",
+      answer: "Registration deadlines for ATS 2025 are: Early Bird – 9 Nov 2025, Regular – 23 Nov 2025, and Late – 30 Nov 2025.",
     },
     {
       question: "What is the exam format?",
@@ -81,52 +76,36 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-20">
+      <section className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
-          <p className="text-xl text-gray-100 max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
+          <p className="text-base text-gray-100 max-w-3xl mx-auto">
             Have questions about ATS 2025? We're here to help you navigate your academic journey. Reach out to our
             expert team for guidance and support.
           </p>
         </div>
       </section>
 
-      {/* Contact Information */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get in Touch</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Multiple ways to reach us for all your ATS-related queries
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {contactInfo.map((info, index) => (
-              <Card key={index} className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-[#850101] rounded-full flex items-center justify-center mx-auto mb-4">
-                    <info.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#850101] mb-2">{info.title}</h3>
-                  <p className="text-gray-900 font-semibold mb-2">{info.details}</p>
-                  <p className="text-gray-600 text-sm">{info.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Contact Information grid removed to consolidate details into the footer */}
 
       {/* Contact Form and FAQ */}
-      <section id="send-message" className="py-20 bg-white">
+      <section id="send-message" className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Send us a Message</h2>
               <Card className="border-0 shadow-lg">
                 <CardContent className="p-8">
+                  {submitted ? (
+                    <div className="text-center space-y-4">
+                      <h3 className="text-2xl font-bold text-[#850101]">Thank You!</h3>
+                      <p className="text-gray-700">Your message has been received. Our team will respond shortly.</p>
+                      <Button className="bg-[#850101] hover:bg-[#650101] text-white" onClick={() => setSubmitted(false)}>
+                        Send Another Message
+                      </Button>
+                    </div>
+                  ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -209,13 +188,14 @@ export default function ContactPage() {
                       Send Message <Send className="h-4 w-4 ml-2" />
                     </Button>
                   </form>
+                  )}
                 </CardContent>
               </Card>
             </div>
 
             {/* FAQ Section */}
             <div id="faq">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
               <div className="space-y-4">
                 {faqs.map((faq, index) => (
                   <Card key={index} className="border border-gray-200">
@@ -245,11 +225,11 @@ export default function ContactPage() {
       </section>
 
       {/* Office Information */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-10 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Office</h2>
-            <p className="text-xl text-gray-600">Educational Initiatives Pvt Ltd</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Office</h2>
+            <p className="text-base text-gray-600">Educational Initiatives Pvt Ltd</p>
           </div>
 
           <Card className="max-w-4xl mx-auto border-0 shadow-lg">
@@ -289,15 +269,15 @@ export default function ContactPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-[#850101] text-white">
+      <section className="py-8 bg-[#850101] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Begin Your ATS Journey?</h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Don't wait! Register now for ATS 2025 and unlock your academic potential
+          <h2 className="text-4xl font-bold mb-4">Ready to Begin Your Ei ATS Journey?</h2>
+          <p className="text-base text-gray-200 mb-8">
+            Don't wait! Register for Ei ATS 2025 and unlock your academic potential
           </p>
           <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
             <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
-              Register for ATS 2025
+              Register for Ei ATS 2025
             </a>
           </Button>
         </div>

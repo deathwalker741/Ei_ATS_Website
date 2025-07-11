@@ -35,14 +35,14 @@ export function HeroSection() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   // Helper to map filename tokens to full university / programme names
-  const getCaption = (src: string) => {
-    if (src.includes("ucb")) return "UC Berkeley ATDP Program"
-    if (src.includes("jhcty")) return "Johns Hopkins CTY Program"
-    if (src.includes("nw")) return "Northwestern CTD Program"
-    if (src.includes("pgeri")) return "Purdue GERI Program"
-    if (src.includes("sig")) return "Summer Institute for the Gifted (SIG)"
+  const getProgrammeName = (src: string): string => {
+    if (src.includes("ucb")) return "UC Berkeley ATDP Programme"
+    if (src.includes("jhcty")) return "Johns Hopkins CTY Programme"
+    if (src.includes("nw")) return "Northwestern CTD Programme"
+    if (src.includes("pgeri")) return "Purdue GER2I Programme"
+    if (src.includes("sig")) return "SIG Programme"
     if (src.includes("summerprogramme")) return "ASSET/GenWise Summer Programme"
-    return ""
+    return "University Programme"
   }
 
   useEffect(() => {
@@ -53,13 +53,13 @@ export function HeroSection() {
     return () => clearInterval(interval)
   }, [images.length])
   return (
-    <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-20">
+    <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">Is Your Child Academically Gifted?</h1>
-            <p className="text-xl mb-8 text-gray-100">
-              Find Out By Enrolling Your Child for the Ei ASSET Talent Search 2025
+            <h1 className="text-4xl font-bold mb-6 leading-tight">Give Your Child the Opportunity to Discover Their True Potential</h1>
+            <p className="text-base md:text-lg mb-8 text-gray-100">
+              Enroll Them in the Ei ASSET Talent Search 2025 Today!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
@@ -71,8 +71,11 @@ export function HeroSection() {
                 size="lg"
                 variant="outline"
                 className="border-white text-white bg-transparent hover:bg-white hover:text-[#850101] font-semibold"
+                asChild
               >
+                <a href="#about">
                 Learn More
+                </a>
               </Button>
             </div>
             <div className="flex items-center gap-8 text-sm">
@@ -91,17 +94,17 @@ export function HeroSection() {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="relative w-full h-[400px] md:h-[500px]">
-              <img
-                src={images[currentImageIndex]}
-                alt="Gifted students learning"
-                className="rounded-lg shadow-2xl object-contain w-full h-full transition-opacity duration-300"
-              />
+          <div className="relative w-full h-[400px] md:h-[500px]">
+            <img
+              src={images[currentImageIndex]}
+              alt="Gifted students learning"
+              className="rounded-lg shadow-2xl object-contain w-full h-full transition-opacity duration-300"
+            />
             </div>
-            {getCaption(images[currentImageIndex]) && (
-              <div key={getCaption(images[currentImageIndex])} className="mt-4 animate-fade-in-up">
+            {getProgrammeName(images[currentImageIndex]) && (
+              <div key={getProgrammeName(images[currentImageIndex])} className="mt-4 animate-fade-in-up">
                 <span className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm text-sm md:text-base font-semibold uppercase tracking-wide text-white shadow-professional-lg">
-                  {getCaption(images[currentImageIndex])}
+                  {getProgrammeName(images[currentImageIndex])}
                 </span>
               </div>
             )}

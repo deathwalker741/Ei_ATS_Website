@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { executeQuery } from '@/lib/database'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-here'
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  throw new Error('JWT_SECRET environment variable is required. Please check your .env.local file.')
+})()
+
+const SCHOOL_AUTH_PASSWORD = process.env.SCHOOL_AUTH_PASSWORD || (() => {
+  throw new Error('SCHOOL_AUTH_PASSWORD environment variable is required. Please check your .env.local file.')
+})()
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,7 +29,7 @@ export async function POST(request: NextRequest) {
       WHERE s.schoolno = ? AND a.programmeDetailID = 113
     `
     
-    const schoolResults = await executeQuery(schoolQuery, [schoolCode]) as any[]
+    const schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
 
     if (schoolResults.length === 0) {
       return NextResponse.json(
@@ -32,9 +38,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // For now, using a simple password validation
-    // You can implement more sophisticated authentication as needed
-    const validPassword = password === 'ats2025' || password === schoolCode
+    // Use secure environment variable for authentication
+    const validPassword = password === SCHOOL_AUTH_PASSWORD || password === schoolCode
 
     if (!validPassword) {
       return NextResponse.json(
@@ -76,7 +81,7 @@ export async function POST(request: NextRequest) {
     return response
 
   } catch (error) {
-    console.error('Login error:', error)
+    // Don't log sensitive information
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

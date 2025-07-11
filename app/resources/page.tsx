@@ -1,9 +1,11 @@
 "use client"
 
+import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Video, BookOpen, FileText, Globe, Download, ExternalLink, Users, GraduationCap, School } from "lucide-react"
+import { Video, BookOpen, FileText, Globe, Download, ExternalLink, Users, GraduationCap, School, ClipboardList, Calendar, DollarSign, Award, CheckCircle, Mail, Phone } from "lucide-react"
 import { useState, useEffect } from "react"
+import { useRegion } from "@/components/region-context"
 
 interface Testimonial {
   id: string
@@ -13,13 +15,13 @@ interface Testimonial {
   src?: string
 }
 
-const resources = [
+const baseResources = [
   {
     title: "Webinars",
     description:
       "Join our expert-led webinars covering exam preparation strategies, university applications, and academic excellence tips.",
     icon: Video,
-    link: "https://ei.study/webinars/",
+    link: "https://ei.study/ei-webinars/",
     color: "bg-red-100 text-red-700",
     type: "Live Sessions",
     features: ["Expert guidance", "Interactive Q&A", "Recorded sessions", "Certificate of participation"],
@@ -37,7 +39,7 @@ const resources = [
   {
     title: "Sample Papers",
     description:
-      "Download official ATS sample papers to understand the exam format, question types, and difficulty level.",
+      "Download official Ei ATS sample papers to understand the exam format, question types, and difficulty level.",
     icon: FileText,
     link: "https://ei.study/wp-content/uploads/2025/01/Sample-Questions-Ei-ASSET-Final-File.pdf",
     color: "bg-green-100 text-green-700",
@@ -45,31 +47,41 @@ const resources = [
     features: ["Official format", "All subjects", "Answer keys", "Preparation guide"],
   },
   {
-    title: "Bulk Registrations",
+    title: "Articles & Research Papers",
     description:
-      "Schools can efficiently register multiple students with our bulk registration program and save 10% on registration costs.",
-    icon: Users,
-    link: "/resources/bulk-registrations",
+      "Access curated links to insightful articles and research studies about gifted education.",
+    icon: FileText,
+    link: "/resources/articles",
     color: "bg-orange-100 text-orange-700",
-    type: "School Registration",
-    features: ["10% cost savings", "Excel template", "Streamlined process", "Dedicated support"],
+    type: "Reading List",
+    features: [
+      { title: "How to raise a genius", url: "https://www.nature.com/articles/537152a" },
+      { title: "Identifying and nurturing giftedness", url: "https://www.deccanherald.com/education/identifying-and-nurturing-giftedness-3040720" },
+      { title: "The Imperative of Nurturing Giftedness in Education", url: "https://giftedworld.org/the-imperative-of-nurturing-giftedness-in-education/" },
+      { title: "Gifted and Talented Education", url: "https://www.apa.org/education-career/k12/gifted" }
+    ],
   },
   {
     title: "AQAD Platform",
     description:
-      "Access the Advanced Question Analysis Dashboard for detailed performance analytics and personalized learning insights.",
+      "Daily skill-based questions for classes 3-9 with rewards and progress insights.",
     icon: Globe,
     link: "https://www.aqad.in",
     color: "bg-purple-100 text-purple-700",
     type: "Analytics Platform",
-    features: ["Performance analysis", "Learning insights", "Progress tracking", "Personalized reports"],
+    features: [
+      "Daily questions",
+      "Grades 3-9, multi-subject",
+      "Certificates for champs",
+      "Monthly progress tracker"
+    ],
   },
   {
-    title: "ATS Brochure",
+    title: "Ei ATS Brochure",
     description:
-      "Download the comprehensive ATS brochure with detailed information about the program, benefits, and registration process.",
+      "Download the comprehensive Ei ATS brochure with detailed information about the program, benefits, and registration process.",
     icon: Download,
-    link: "https://ats.ei.study/documents/ATS-India2024.pdf",
+    link: "https://ats.ei.study/documents/ATS-India2024.pdf", // will be overridden for INT
     color: "bg-yellow-100 text-yellow-700",
     type: "PDF Brochure",
     features: ["Program overview", "University partners", "Registration guide", "Success metrics"],
@@ -168,21 +180,42 @@ additionalVideoIds.forEach(videoId => {
   })
 })
 
-// Add local videos
+// Add YouTube videos
 testimonials.push(
   {
-    id: "local-video1",
-    title: "",
-    description: "",
-    isLocal: true,
-    src: "/media/video1.mp4"
+    id: "1YQ5a04xwVs",
+    title: "Success Stories Compilation",
+    description: "Watch inspiring success stories from students who excelled through our programmes",
+    isLocal: false,
+    src: "https://www.youtube.com/watch?v=1YQ5a04xwVs"
   },
   {
-    id: "local-video2", 
-    title: "",
-    description: "",
-    isLocal: true,
-    src: "/media/video2.mp4"
+    id: "UgRI1PpDnBA", 
+    title: "Student Achievements",
+    description: "Comprehensive overview of student achievements and programme successes",
+    isLocal: false,
+    src: "https://www.youtube.com/watch?v=UgRI1PpDnBA"
+  },
+  {
+    id: "2g1_Lv08CSY",
+    title: "Educational Excellence",
+    description: "Showcasing educational excellence and student achievements",
+    isLocal: false,
+    src: "https://www.youtube.com/watch?v=2g1_Lv08CSY"
+  },
+  {
+    id: "gu632GxLlts",
+    title: "Talent Development",
+    description: "Talent development and academic recognition through ATS programmes",
+    isLocal: false,
+    src: "https://www.youtube.com/watch?v=gu632GxLlts"
+  },
+  {
+    id: "3cDx0llkItM",
+    title: "Student Success Stories",
+    description: "Inspiring success stories from students who excelled through our programmes",
+    isLocal: false,
+    src: "https://www.youtube.com/watch?v=3cDx0llkItM"
   }
 )
 
@@ -224,6 +257,28 @@ const fetchYouTubeVideoData = async (videoId: string) => {
 
 export default function ResourcesPage() {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
+  const [visibleCount, setVisibleCount] = useState(12)
+  const { region } = useRegion()
+
+  // Function to get region-specific resources
+  const getRegionSpecificResources = () => {
+    const regionResources = [...baseResources]
+    
+    // Update brochure link based on region
+    const brochureIndex = regionResources.findIndex(r => r.title === "Ei ATS Brochure")
+    if (brochureIndex !== -1) {
+      regionResources[brochureIndex] = {
+        ...regionResources[brochureIndex],
+        link: region === "INT" 
+          ? "https://ats.ei.study/documents/ATS-International2025.pdf" 
+          : "https://ats.ei.study/documents/ATS-India2024.pdf"
+      }
+    }
+    
+    return regionResources
+  }
+
+  const resources = getRegionSpecificResources()
 
   const getYouTubeEmbedUrl = (videoId: string) => {
     return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`
@@ -290,31 +345,32 @@ export default function ResourcesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-20">
+      <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Resources & Support</h1>
-          <p className="text-xl text-gray-100 max-w-3xl mx-auto">
-            Access comprehensive resources to help you prepare for ATS 2025, understand university programs, and
+          <h1 className="text-4xl font-bold mb-6">Resources & Support</h1>
+          <p className="text-base text-gray-100 max-w-3xl mx-auto">
+            Access comprehensive resources to help you prepare for Ei ATS 2025, understand university programs, and
             maximize your academic potential.
           </p>
         </div>
       </section>
 
-
-
       {/* Main Resources */}
-      <section id="resources" className="py-20 bg-white">
+      <section id="resources" className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Available Resources</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Access all the tools and materials you need for ATS success
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Available Resources</h2>
+            <p className="text-base text-gray-600 max-w-3xl mx-auto">
+              Access all the tools and materials you need for Ei ATS success
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
             {resources.map((resource, index) => (
-              <Card key={index} className="hover:shadow-xl transition-shadow duration-300 border-0 shadow-lg">
+              <Card
+                key={index}
+                className="flex flex-col h-full hover:shadow-xl transition-shadow duration-300 border-0 shadow-lg"
+              >
                 <CardHeader>
                   <div className="flex items-center gap-4">
                     <div className={`w-16 h-16 rounded-full flex items-center justify-center ${resource.color}`}>
@@ -326,14 +382,25 @@ export default function ResourcesPage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="flex flex-col flex-1 space-y-4 justify-between">
                   <p className="text-gray-600">{resource.description}</p>
 
                   <div className="grid md:grid-cols-2 gap-2">
-                    {resource.features.map((feature, idx) => (
+                    {resource.features.map((feature: any, idx: number) => (
                       <div key={idx} className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 bg-[#850101] rounded-full"></div>
+                        {typeof feature === 'string' ? (
                         <span className="text-sm text-gray-600">{feature}</span>
+                        ) : (
+                          <a
+                            href={feature.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 underline"
+                          >
+                            {feature.title}
+                          </a>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -341,7 +408,7 @@ export default function ResourcesPage() {
                   <Button asChild className="w-full bg-[#850101] hover:bg-[#650101]">
                     {resource.link.startsWith('/') ? (
                       <a href={resource.link}>
-                        Access {resource.title} <ExternalLink className="h-4 w-4 ml-2" />
+                        Access {resource.title}
                       </a>
                     ) : (
                     <a href={resource.link} target="_blank" rel="noopener noreferrer">
@@ -356,22 +423,346 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-gray-50">
+      {/* Test Details Section */}
+      <section id="test-details" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Test Details</h2>
+            <p className="text-base text-gray-600 max-w-3xl mx-auto">
+              Everything you need to know about the <strong>Ei ASSET</strong> Talent Search {region === "INT" ? "International" : ""} test
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <Card className="border-0 shadow-xl">
+              <CardHeader className="bg-gradient-to-r from-[#850101] to-[#650101] text-white">
+                <CardTitle className="text-2xl text-center">
+                  {region === "INT" 
+                    ? "Ei ASSET Talent Search International (Ei ATS International) – Test Details"
+                    : "Ei ASSET Talent Search (Ei ATS) – Test Details"
+                  }
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-8 space-y-8">
+                
+                {/* Introduction */}
+                <div className="prose prose-lg max-w-none">
+                  <p className="text-gray-700 leading-relaxed">
+                    {region === "INT" 
+                      ? "The Ei ASSET Talent Search International is an elite, invite-only platform designed to identify gifted and academically advanced students in Grades 4 to 8 across the UAE, Saudi Arabia, Qatar, Oman, and Bahrain. The test is developed by Educational Initiatives and uniquely challenges students by assessing concepts that are two grade levels above their current academic standing. It serves as the gateway to world-class gifted enrichment programmes and global recognition."
+                      : "The Ei ASSET Talent Search (Ei ATS) is a prestigious, invitation-only assessment designed to identify and nurture academically gifted students from Grades 4 to 8. Conducted by Educational Initiatives, the test goes beyond conventional grade-level assessments by evaluating students on concepts two grades above their current academic level, helping them uncover their true potential."
+                    }
+                  </p>
+                </div>
+
+                {/* Key Features */}
+                <div>
+                  <h3 className="text-xl font-bold text-[#850101] mb-6 flex items-center gap-2">
+                    <ClipboardList className="h-6 w-6" />
+                    Key Features of the {region === "INT" ? "Test" : "Ei ATS Test"}:
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="font-semibold text-gray-900">Eligibility:</p>
+                          <p className="text-gray-700 text-sm">Students from Grades 4 to 8 who score in the top 15 percentile in the {region === "INT" ? "Ei " : ""}ASSET test or attain Stanine 9 in CAT4.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="font-semibold text-gray-900">Subjects Offered:</p>
+                          <p className="text-gray-700 text-sm">English, Maths, and Science (students can choose 1, 2, or all 3 subjects).</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="font-semibold text-gray-900">Level of Difficulty:</p>
+                          <p className="text-gray-700 text-sm">Two grades above the student&apos;s current {region === "INT" ? "enrolled grade" : "level"}.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="font-semibold text-gray-900">Test Format:</p>
+                          <div className="text-gray-700 text-sm space-y-1">
+                            <p>• Online, proctored {region === "INT" ? "assessment" : "test"}</p>
+                            <p>• No preparation required</p>
+                            <p>• Multiple {region === "INT" ? "Choice Questions" : "choice questions"}</p>
+                            <p>• No negative marking</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="font-semibold text-gray-900">Test Duration:</p>
+                          <p className="text-gray-700 text-sm">60 minutes per subject</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Test Dates & Fees */}
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <h4 className="text-lg font-bold text-[#850101] mb-4 flex items-center gap-2">
+                      <Calendar className="h-5 w-5" />
+                      Test Dates{region === "INT" ? " (UAE & GCC 2025)" : ""}:
+                    </h4>
+                    <p className="text-gray-700 font-semibold">
+                      {region === "INT" 
+                        ? "March 25 to March 29, 2025"
+                        : "November 28 to November 30, 2025"
+                      }
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <h4 className="text-lg font-bold text-[#850101] mb-4 flex items-center gap-2">
+                      <DollarSign className="h-5 w-5" />
+                      {region === "INT" ? "Registration " : ""}Fees:
+                    </h4>
+                    <div className="space-y-2 text-sm text-gray-700">
+                      {region === "INT" ? (
+                        <>
+                          <p>• 1 Subject: AED 170</p>
+                          <p>• 2 Subjects: AED 210</p>
+                          <p>• 3 Subjects: AED 250 (Late Fee: AED 300)</p>
+                        </>
+                      ) : (
+                        <>
+                          <p>• 1 Subject: INR 1700 (early registration), INR 2700 (late)</p>
+                          <p>• 2 Subjects: INR 2200 (early), INR 3300 (late)</p>
+                          <p>• 3 Subjects: INR 2500 (early), INR 3300 (late)</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recognition & Awards */}
+                <div>
+                  <h3 className="text-xl font-bold text-[#850101] mb-6 flex items-center gap-2">
+                    <Award className="h-6 w-6" />
+                    Recognition & {region === "INT" ? "Scholarships" : "Awards"}:
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="bg-amber-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-amber-700 mb-2">85-89%</div>
+                      <p className="font-semibold text-amber-800">{region === "INT" ? "Ei ATS " : ""}Bronze Scholar</p>
+                      <p className="text-sm text-amber-700">Certificate + {region === "INT" ? "Bronze " : ""}Medal</p>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-gray-700 mb-2">90-94%</div>
+                      <p className="font-semibold text-gray-800">{region === "INT" ? "Ei ATS " : ""}Silver Scholar</p>
+                      <p className="text-sm text-gray-700">Certificate + {region === "INT" ? "Silver " : ""}Medal</p>
+                    </div>
+                    <div className="bg-yellow-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-yellow-700 mb-2">95-99%</div>
+                      <p className="font-semibold text-yellow-800">{region === "INT" ? "Ei ATS " : ""}Gold Scholar</p>
+                      <p className="text-sm text-yellow-700">Certificate + {region === "INT" ? "Gold " : ""}Medal</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <p className="text-blue-800 font-semibold mb-2">{region === "INT" ? "Top Grade Toppers" : "Grade-level toppers"} are eligible for prizes such as:</p>
+                    <p className="text-blue-700 text-sm">iPads, {region === "INT" ? "Apple Watches, " : ""}tablets, Kindles, and more.</p>
+                    {region === "INT" && (
+                      <p className="text-blue-700 text-sm mt-2"><strong>GiftedWorld Incentive:</strong> All students who register by March 23 receive a 25% discount on GiftedWorld Courses.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Benefits/Enrichment Opportunities */}
+                <div>
+                  <h3 className="text-xl font-bold text-[#850101] mb-6 flex items-center gap-2">
+                    <GraduationCap className="h-6 w-6" />
+                    {region === "INT" ? "Enrichment Opportunities" : "Benefits of Participating"}:
+                  </h3>
+                  
+                  {region === "INT" ? (
+                    <div className="space-y-4">
+                      <p className="text-gray-700">Qualifying students are eligible to apply for global gifted programmes such as:</p>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        <div className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">Johns Hopkins University Center for Talented Youth (CTY)</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">Northwestern University – CTD Summer & Online Programs</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">Purdue University&apos;s Gifted Education Resource Institute (GERI)</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">UC Berkeley&apos;s Academic Talent Development Program (ATDP)</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">Summer Institute for the Gifted (SIG) – Yale, UCLA, UC Berkeley, and more</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">GenWise India – Gifted Summer and Online Programmes</span>
+                        </div>
+                      </div>
+                      <p className="text-gray-700 text-sm">These world-class opportunities offer students a chance to explore STEM, humanities, and leadership through hands-on, high-order learning experiences with globally diverse peers.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                          <div>
+                            <p className="font-semibold text-gray-900">Self-Discovery:</p>
+                            <p className="text-gray-700 text-sm">Encourages students to explore their academic strengths through challenging content.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                          <div>
+                            <p className="font-semibold text-gray-900">Global Opportunities:</p>
+                            <p className="text-gray-700 text-sm mb-2">Qualifiers get access to some of the world&apos;s leading gifted and enrichment programs including:</p>
+                            <div className="grid md:grid-cols-2 gap-1 text-sm text-gray-600">
+                              <span>• Northwestern University&apos;s Center for Talent Development (CTD)</span>
+                              <span>• Johns Hopkins University&apos;s Center for Talented Youth (CTY)</span>
+                              <span>• Purdue University&apos;s Gifted Education Resource Institute (GERI)</span>
+                              <span>• UC Berkeley&apos;s Academic Talent Development Program (ATDP)</span>
+                              <span>• Summer Institute for the Gifted (SIG)</span>
+                              <span>• India&apos;s premier GenWise programs</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                          <div>
+                            <p className="font-semibold text-gray-900">Exclusive Community:</p>
+                            <p className="text-gray-700 text-sm">Students become part of a global gifted network, opening doors to academic mentoring and leadership development.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Why Take the Test */}
+                {region === "INT" && (
+                  <div>
+                    <h3 className="text-xl font-bold text-[#850101] mb-6">Why Take the Ei ATS International Test?</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <span className="text-gray-700 text-sm">Cultivates critical thinking and self-awareness of academic potential</span>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <span className="text-gray-700 text-sm">Enables access to top-tier global gifted education pathways</span>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <span className="text-gray-700 text-sm">Builds a global peer network and enhances college-readiness</span>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <span className="text-gray-700 text-sm">Develops life-long learning habits through enrichment</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Contact & Registration */}
+                <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-bold text-[#850101] mb-6 flex items-center gap-2">
+                    <Mail className="h-6 w-6" />
+                    Contact {region === "INT" ? "Us " : ""} & {region === "INT" ? "More Information" : "Registration"}:
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <Globe className="h-5 w-5 text-[#850101]" />
+                        <div>
+                          <p className="font-semibold text-gray-900">Website:</p>
+                          <a href="https://www.ats.ei.study" className="text-blue-600 hover:text-blue-800 underline">www.ats.ei.study</a>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Mail className="h-5 w-5 text-[#850101]" />
+                        <div>
+                          <p className="font-semibold text-gray-900">Email:</p>
+                          <a href={`mailto:${region === "INT" ? "atsinternational@ei.study" : "eitalentsearch@ei.study"}`} className="text-blue-600 hover:text-blue-800 underline">
+                            {region === "INT" ? "atsinternational@ei.study" : "eitalentsearch@ei.study"}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    {region === "INT" && (
+                      <div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Registration Deadlines (UAE GCC 2025):</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-700">Early Registration:</span>
+                            <span className="font-semibold text-gray-900">Until March 16, 2025</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-700">Regular Registration:</span>
+                            <span className="font-semibold text-gray-900">Until March 23, 2025</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-700">Late Registration:</span>
+                            <span className="font-semibold text-gray-900">Until March 28, 2025</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Call to Action */}
+                <div className="text-center py-6 bg-gradient-to-r from-[#850101] to-[#650101] rounded-lg text-white">
+                  <p className="text-lg font-semibold mb-4">
+                    {region === "INT" 
+                      ? "Challenge yourself. Discover your strengths. Join the Ei ATS International journey to academic excellence."
+                      : "Unlock your child's academic brilliance through Ei ATS – a gateway to a world of gifted learning and global excellence."
+                    }
+                  </p>
+                  <Button asChild className="bg-white text-[#850101] hover:bg-gray-100 font-semibold">
+                    <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+                      Register Now for Ei ATS 2025
+                    </a>
+                  </Button>
+                </div>
+
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-10 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Testimonials from Students, Parents & Schools
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Hear real success stories from our ATS community - students achieving their dreams, 
+            <p className="text-base text-gray-600 max-w-3xl mx-auto">
+              Hear real success stories from our Ei ATS community - students achieving their dreams, 
               parents sharing their experiences, and schools partnering with us for excellence
             </p>
           </div>
 
           {/* Video Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {testimonials.map((testimonial, index) => (
+            {testimonials.slice(0, visibleCount).map((testimonial, index) => (
               <Card key={index} className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
                 <div 
                   className="relative aspect-video overflow-hidden"
@@ -412,6 +803,15 @@ export default function ResourcesPage() {
             ))}
           </div>
 
+          {/* Load More Button */}
+          {visibleCount < testimonials.length && (
+            <div className="flex justify-center mt-10">
+              <Button onClick={() => setVisibleCount(prev => prev + 12)} className="bg-[#850101] hover:bg-[#650101]">
+                Load More
+              </Button>
+            </div>
+          )}
+
           {/* Summary Stats */}
           <div className="mt-16 grid md:grid-cols-3 gap-8 text-center">
             <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -431,19 +831,19 @@ export default function ResourcesPage() {
       )}
 
       {/* Quick Access Section */}
-      <section id="quick-access" className="py-20 bg-gray-50">
+      <section id="quick-access" className="py-10 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Quick Access</h2>
-            <p className="text-xl text-gray-600">Most popular resources for ATS preparation</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Quick Access</h2>
+            <p className="text-base text-gray-600">Most popular resources for Ei ATS preparation</p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
-            <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-8">
+            <Card className="flex flex-col h-full text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="flex flex-col flex-1 p-8 justify-between">
                 <FileText className="h-12 w-12 text-[#850101] mx-auto mb-4" />
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Sample Papers</h3>
-                <p className="text-gray-600 text-sm mb-4">Official ATS sample questions</p>
+                <p className="text-gray-600 text-sm mb-4">Official Ei ATS sample questions</p>
                 <Button asChild className="bg-[#850101] hover:bg-[#650101]">
                   <a
                     href="https://ei.study/wp-content/uploads/2025/01/Sample-Questions-Ei-ASSET-Final-File.pdf"
@@ -456,21 +856,21 @@ export default function ResourcesPage() {
               </CardContent>
             </Card>
 
-            <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-8">
+            <Card className="flex flex-col h-full text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="flex flex-col flex-1 p-8 justify-between">
                 <Video className="h-12 w-12 text-[#850101] mx-auto mb-4" />
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Live Webinars</h3>
                 <p className="text-gray-600 text-sm mb-4">Expert-led preparation sessions</p>
                 <Button asChild className="bg-[#850101] hover:bg-[#650101]">
-                  <a href="https://ei.study/webinars/" target="_blank" rel="noopener noreferrer">
+                  <a href="https://ei.study/ei-webinars/" target="_blank" rel="noopener noreferrer">
                     Join Webinar
                   </a>
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-8">
+            <Card className="flex flex-col h-full text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="flex flex-col flex-1 p-8 justify-between">
                 <Users className="h-12 w-12 text-[#850101] mx-auto mb-4" />
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Bulk Registration</h3>
                 <p className="text-gray-600 text-sm mb-4">Schools register multiple students</p>
@@ -482,8 +882,8 @@ export default function ResourcesPage() {
               </CardContent>
             </Card>
 
-            <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-8">
+            <Card className="flex flex-col h-full text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="flex flex-col flex-1 p-8 justify-between">
                 <Globe className="h-12 w-12 text-[#850101] mx-auto mb-4" />
                 <h3 className="text-lg font-bold text-gray-900 mb-2">AQAD Platform</h3>
                 <p className="text-gray-600 text-sm mb-4">Performance analytics dashboard</p>
@@ -499,15 +899,17 @@ export default function ResourcesPage() {
       </section>
 
       {/* CTA Section */}
-      <section id="resources-cta" className="py-16 bg-[#850101] text-white">
+      <section id="resources-cta" className="py-8 bg-[#850101] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Need More Support?</h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Our team is here to help you make the most of these resources and succeed in ATS 2025
+          <h2 className="text-4xl font-bold mb-4">Need More Support?</h2>
+          <p className="text-base text-gray-200 mb-8">
+            Our team is here to help you make the most of these resources and succeed in Ei ATS 2025
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold">
+            <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
+              <a href="/contact#send-message">
               Contact Support
+              </a>
             </Button>
             <Button
               size="lg"
@@ -516,7 +918,7 @@ export default function ResourcesPage() {
               asChild
             >
               <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
-                Register for ATS 2025
+                Register for Ei ATS 2025
               </a>
             </Button>
           </div>

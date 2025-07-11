@@ -4,12 +4,12 @@ import { Mail, Phone, MapPin, Clock } from "lucide-react"
 
 export function ContactSection() {
   return (
-    <section id="contact" className="py-20 bg-[#850101] text-white">
+    <section id="contact" className="py-10 bg-[#850101] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get in Touch</h2>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-            Have questions about the ATS program? Our team is here to help you navigate your child's academic journey.
+          <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
+          <p className="text-base text-gray-200 max-w-3xl mx-auto">
+            Have questions about the Ei ATS program? Our team is here to help you navigate your child's academic journey.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ export function ContactSection() {
         <div className="text-center">
           <h3 className="text-2xl font-bold mb-4">Ready to Get Started?</h3>
           <p className="text-gray-200 mb-8 max-w-2xl mx-auto">
-            Join thousands of families who have discovered their child's academic potential through ATS. Register today
+            Join thousands of families who have discovered their child's academic potential through Ei ATS. Register today
             and take the first step towards unlocking exceptional educational opportunities.
           </p>
           <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>

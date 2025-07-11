@@ -5,86 +5,14 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Search, ChevronDown } from "lucide-react"
 import { SearchDialog } from "@/components/search-dialog"
-
-// Navigation menu structure with page sections
-const navigationMenus = {
-  home: {
-    title: "Home",
-    href: "/",
-    sections: [
-      { name: "Success Stories", href: "/#media-carousel" },
-      { name: "About ATS", href: "/#about" },
-      { name: "History & Evolution", href: "/#history" },
-      { name: "University Partners", href: "/#partners" },
-      { name: "Recognition & Rewards", href: "/#rewards" },
-      { name: "Exam Information", href: "/#exam-info" },
-      { name: "Testimonials", href: "/#testimonials" },
-      { name: "Alumni Network", href: "/#alumni-cta" },
-      { name: "FAQ", href: "/#faq" },
-      { name: "Contact", href: "/#contact" }
-    ]
-  },
-  programmes: {
-    title: "Programmes",
-    href: "/programmes",
-    sections: [
-      { name: "Overview", href: "/programmes#hero" },
-      { name: "All Programmes", href: "/programmes#programmes" },
-      { name: "Johns Hopkins CTY", href: "/programmes#johns-hopkins" },
-      { name: "Northwestern CTD", href: "/programmes#northwestern" },
-      { name: "UC Berkeley ATDP", href: "/programmes#uc-berkeley" },
-      { name: "Purdue GERI", href: "/programmes#purdue" },
-      { name: "Summer Programs", href: "/programmes#summer-programs" }
-    ]
-  },
-  forStudents: {
-    title: "For Students",
-    href: "/for-students",
-    sections: [
-      { name: "Student Tools", href: "/for-students#student-tools" },
-      { name: "Student Portal", href: "https://ats.ei.study/student_portal/index.php" },
-      { name: "Register for ATS", href: "https://ats.ei.study/ats_registration.php" },
-      { name: "Why Join ATS", href: "/for-students#why-join-ats" }
-    ]
-  },
-  forSchools: {
-    title: "For Schools",
-    href: "/for-schools",
-    sections: [
-      { name: "Overview", href: "/for-schools#hero" },
-      { name: "Administration Tools", href: "/for-schools#school-tools" },
-      { name: "Bulk Registration", href: "/for-schools#bulk-registration" },
-      { name: "Non ASSET Schools", href: "/for-schools#non-asset-schools" },
-      { name: "Why Partner with ATS", href: "/for-schools#why-partner-ats" }
-    ]
-  },
-  resources: {
-    title: "Resources",
-    href: "/resources",
-    sections: [
-      { name: "Available Resources", href: "/resources#resources" },
-      { name: "Bulk Registrations", href: "/resources/bulk-registrations" },
-      { name: "Video Testimonials", href: "/resources#testimonials" },
-      { name: "Quick Access", href: "/resources#quick-access" },
-      { name: "Sample Papers", href: "https://ei.study/wp-content/uploads/2025/01/Sample-Questions-Ei-ASSET-Final-File.pdf" },
-      { name: "Webinars", href: "https://ei.study/webinars/" }
-    ]
-  },
-  contact: {
-    title: "Contact",
-    href: "/contact",
-    sections: [
-      { name: "Send Message", href: "/contact#send-message" },
-      { name: "Contact Information", href: "/contact" },
-      { name: "FAQ", href: "/contact#faq" }
-    ]
-  }
-}
+import { useRegion } from "@/components/region-context"
+import { navigationMenus } from "@/lib/navigation"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const { region, toggleRegion } = useRegion()
 
   // Close dropdown when clicking outside
   const handleDropdownEnter = (menuKey: string) => {
@@ -97,26 +25,18 @@ export function Header() {
 
   return (
     <>
-      <header className="bg-white shadow-professional border-b border-gray-200 sticky top-0 z-50 transition-all duration-300">
+      <header className="bg-white shadow-professional border-b border-gray-200 fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-10 h-10 bg-[#850101] rounded-lg flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:scale-110 group-hover:bg-[#650101]">
-                <span className="text-white font-bold text-lg">Ei</span>
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-[#850101] transition-all duration-300 group-hover:text-[#650101] text-hover-glow">
-                  Ei ASSET Talent Search
-                </h1>
-                <p className="text-xs text-gray-600 transition-colors duration-300 group-hover:text-gray-800">
-                  Educational Initiatives
-                </p>
+            <Link href="/" className="flex items-center space-x-2 group -ml-4 sm:-ml-6 lg:-ml-8">
+              <div className="w-48 h-12 bg-[#850101] rounded-lg flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:scale-110 group-hover:bg-[#650101] p-1 ml-[-1rem]">
+                <img src="/EiATSIndiaLogo.png" alt="Ei ASSET Talent Search Logo" className="w-full h-full object-contain" />
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-6">
               {Object.entries(navigationMenus).map(([key, menu]) => (
                 <div
                   key={key}
@@ -136,15 +56,29 @@ export function Header() {
                   
                   {/* Dropdown Menu */}
                   {activeDropdown === key && (
-                    <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-professional-lg border border-gray-200 py-2 z-50 animate-fade-in-up">
+                    <div className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-professional-lg border border-gray-200 py-2 z-50 animate-fade-in-up"
+                         onMouseEnter={() => handleDropdownEnter(key)}
+                         onMouseLeave={handleDropdownLeave}>
                       {menu.sections.map((section, index) => (
-                        <Link
-                          key={index}
-                          href={section.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:text-[#850101] hover:bg-gray-50 transition-all duration-200"
-                        >
-                          {section.name}
-                        </Link>
+                        section.external ? (
+                          <a
+                            key={index}
+                            href={section.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:text-[#850101] hover:bg-gray-50 transition-all duration-200"
+                          >
+                            {section.name}
+                          </a>
+                        ) : (
+                          <Link
+                            key={index}
+                            href={section.href}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:text-[#850101] hover:bg-gray-50 transition-all duration-200"
+                          >
+                            {section.name}
+                          </Link>
+                        )
                       ))}
                     </div>
                   )}
@@ -153,7 +87,7 @@ export function Header() {
             </nav>
 
             {/* Search and Register Buttons */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center gap-3">
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className="p-2 text-gray-500 hover:text-[#850101] transition-all duration-300 rounded-lg hover:bg-gray-100 icon-hover-bounce focus-ring"
@@ -168,6 +102,14 @@ export function Header() {
                 <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
                   Register
                 </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-[#850101] text-[#850101] hover:bg-[#850101] hover:text-white px-2 py-1 text-xs font-semibold rounded-md"
+                onClick={toggleRegion}
+              >
+                {region}
               </Button>
             </div>
 
@@ -213,27 +155,49 @@ export function Header() {
                     {activeDropdown === key && (
                       <div className="ml-4 space-y-2 border-l-2 border-gray-200 pl-4">
                         {menu.sections.map((section, index) => (
-                          <Link
-                            key={index}
-                            href={section.href}
-                            className="block text-sm text-gray-600 hover:text-[#850101] transition-all duration-200"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {section.name}
-                          </Link>
+                          section.external ? (
+                            <a
+                              key={index}
+                              href={section.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block text-sm text-gray-600 hover:text-[#850101] transition-all duration-200"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              {section.name}
+                            </a>
+                          ) : (
+                            <Link
+                              key={index}
+                              href={section.href}
+                              className="block text-sm text-gray-600 hover:text-[#850101] transition-all duration-200"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              {section.name}
+                            </Link>
+                          )
                         ))}
                       </div>
                     )}
                   </div>
                 ))}
-                <Button
-                  asChild
-                  className="bg-[#850101] hover:bg-[#650101] text-white w-full btn-hover-glow transition-all duration-300 mt-4"
-                >
-                  <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
-                    Register
-                  </a>
-                </Button>
+                <div className="flex gap-2 mt-4">
+                  <Button
+                    asChild
+                    className="bg-[#850101] hover:bg-[#650101] text-white flex-1 btn-hover-glow transition-all duration-300"
+                  >
+                    <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+                      Register
+                    </a>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-[#850101] text-[#850101] flex-1"
+                    onClick={() => { toggleRegion(); setIsMenuOpen(false) }}
+                  >
+                    {region}
+                  </Button>
+                </div>
               </nav>
             </div>
           )}

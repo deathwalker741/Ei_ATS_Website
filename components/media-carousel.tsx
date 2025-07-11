@@ -28,61 +28,54 @@ const getYouTubeThumbnail = (videoId: string): string => {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
 }
 
-// Debug function to check image loading
+// Debug function to check image loading (disabled for production)
 const debugImageLoad = (src: string, type: string) => {
-  console.log(`Loading ${type} image:`, src)
-  const img = new Image()
-  img.onload = () => console.log(`✅ Successfully loaded ${type}:`, src)
-  img.onerror = () => console.log(`❌ Failed to load ${type}:`, src)
-  img.src = src
+  // Debug logging disabled for production
+  // if (process.env.NODE_ENV === 'development') {
+  //   console.log(`Loading ${type} image:`, src)
+  //   const img = new Image()
+  //   img.onload = () => console.log(`✅ Successfully loaded ${type}:`, src)
+  //   img.onerror = () => console.log(`❌ Failed to load ${type}:`, src)
+  //   img.src = src
+  // }
 }
 
 const mediaItems: MediaItem[] = [
-  // First 5 videos now local high-quality
+  // First 5 YouTube videos from your list
   {
     id: 1,
-    type: "video",
-    src: "/media/carousel_video_1_hq_merged.mp4",
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=1YQ5a04xwVs",
+    youtubeId: "1YQ5a04xwVs",
     thumbnail: getYouTubeThumbnail("1YQ5a04xwVs"),
-    title: "Student Success Story: Academic Excellence",
-    description: "Watch how dedicated students achieve remarkable results through the Ei ASSET program",
-    duration: "3:45",
   },
   {
     id: 2,
-    type: "video",
-    src: "/media/carousel_video_2_hq_merged.mp4",
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=UgRI1PpDnBA",
+    youtubeId: "UgRI1PpDnBA",
     thumbnail: getYouTubeThumbnail("UgRI1PpDnBA"),
-    title: "Parent Testimonial: Life-Changing Experience",
-    description: "Hear from parents about the transformative impact of the ASSET program on their children's academic journey",
-    duration: "4:12",
   },
   {
     id: 3,
-    type: "video",
-    src: "/media/carousel_video_3_hq_merged.mp4",
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=2g1_Lv08CSY",
+    youtubeId: "2g1_Lv08CSY",
     thumbnail: getYouTubeThumbnail("2g1_Lv08CSY"),
-    title: "Student Journey: From Test to Achievement",
-    description: "Follow the inspiring journey of students who discovered their potential through ASSET testing",
-    duration: "3:28",
   },
   {
     id: 4,
-    type: "video",
-    src: "/media/carousel_video_4_hq_merged.mp4",
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=gu632GxLlts",
+    youtubeId: "gu632GxLlts",
     thumbnail: getYouTubeThumbnail("gu632GxLlts"),
-    title: "Parent & Student Interview: Gifted Education Impact",
-    description: "An in-depth conversation about how gifted education programs shape young minds",
-    duration: "5:15",
   },
   {
     id: 5,
-    type: "video",
-    src: "/media/carousel_video_5_hq_merged.mp4",
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=3cDx0llkItM",
+    youtubeId: "3cDx0llkItM",
     thumbnail: getYouTubeThumbnail("3cDx0llkItM"),
-    title: "Academic Achievement: Mathematics Prodigy",
-    description: "Discover how ASSET identifies and nurtures mathematical talent in young students",
-    duration: "2:21",
   },
   // Additional quality videos from second batch
   {
@@ -101,8 +94,8 @@ const mediaItems: MediaItem[] = [
     src: "https://www.youtube.com/watch?v=ZNHJBeTzLrY",
     youtubeId: "ZNHJBeTzLrY",
     thumbnail: getYouTubeThumbnail("ZNHJBeTzLrY"),
-    title: "Parent Interview: Discovering Hidden Potential",
-    description: "Parents share how the program revealed their child's exceptional capabilities",
+    title: "Parent Perspectives",
+    description: "Parents share how the programme revealed their child's exceptional capabilities",
     duration: "3:45",
   },
   {
@@ -111,7 +104,7 @@ const mediaItems: MediaItem[] = [
     src: "https://www.youtube.com/watch?v=5QVCcMoE-5w",
     youtubeId: "5QVCcMoE-5w",
     thumbnail: getYouTubeThumbnail("5QVCcMoE-5w"),
-    title: "Student Success: Advanced Learning Programs",
+    title: "Student Success: Advanced Learning Programmes",
     description: "Hear how students thrived in challenging academic environments",
     duration: "4:20",
   },
@@ -172,7 +165,7 @@ const mediaItems: MediaItem[] = [
     youtubeId: "CS76lx4rGZ8",
     thumbnail: getYouTubeThumbnail("CS76lx4rGZ8"),
     title: "Student Success: University Scholarships",
-    description: "Students who earned prestigious university scholarships through the program",
+    description: "Students who earned prestigious university scholarships through the programme",
     duration: "4:25",
   },
   {
@@ -181,8 +174,8 @@ const mediaItems: MediaItem[] = [
     src: "https://www.youtube.com/watch?v=uVKZ-_VFUNM",
     youtubeId: "uVKZ-_VFUNM",
     thumbnail: getYouTubeThumbnail("uVKZ-_VFUNM"),
-    title: "Parent Testimonial: Confidence Building",
-    description: "How the program built confidence and academic self-esteem in gifted children",
+    title: "Building Confidence",
+    description: "How the programme built confidence and academic self-esteem in gifted children",
     duration: "3:40",
   },
   {
@@ -202,7 +195,7 @@ const mediaItems: MediaItem[] = [
     youtubeId: "Cud46eSXwEs",
     thumbnail: getYouTubeThumbnail("Cud46eSXwEs"),
     title: "Parent & Student: Global Opportunities",
-    description: "Families share how the program opened global educational opportunities",
+    description: "Families share how the programme opened global educational opportunities",
     duration: "5:20",
   },
   {
@@ -251,8 +244,8 @@ const mediaItems: MediaItem[] = [
     src: "https://www.youtube.com/watch?v=3LQsUyaYR7U",
     youtubeId: "3LQsUyaYR7U",
     thumbnail: getYouTubeThumbnail("3LQsUyaYR7U"),
-    title: "Student Interview: Innovation & Leadership",
-    description: "Students developing innovation and leadership skills through the program",
+    title: "Innovation & Leadership",
+    description: "Students developing innovation and leadership skills through the programme",
     duration: "3:50",
   },
   {
@@ -265,57 +258,9 @@ const mediaItems: MediaItem[] = [
     description: "Complete life transformation through early talent identification and development",
     duration: "5:10",
   },
-  // Keep some image placeholders for university programs
+
   {
     id: 29,
-    type: "image",
-    src: "/media/ucbphoto1.webp",
-    thumbnail: "/media/ucbphoto1.webp",
-    title: "UC Berkeley Summer Program",
-    description: "Talented students engaged in advanced research projects at UC Berkeley ATDP program",
-  },
-  {
-    id: 30,
-    type: "image",
-    src: "/media/jhctyphoto1.jpg",
-    thumbnail: "/media/jhctyphoto1.jpg",
-    title: "Johns Hopkins CTY Program",
-    description: "Students participating in advanced mathematics and science courses at Johns Hopkins University",
-  },
-  {
-    id: 31,
-    type: "image",
-    src: "/media/summerprogrammephoto2.jpg",
-    thumbnail: "/media/summerprogrammephoto2.jpg",
-    title: "Summer Academic Program",
-    description: "Gifted students excelling in intensive summer academic programs and research",
-  },
-  {
-    id: 32,
-    type: "image",
-    src: "/media/sigphoto1.jpg",
-    thumbnail: "/media/sigphoto1.jpg",
-    title: "Singapore Excellence Program",
-    description: "International students participating in Singapore's advanced academic programs",
-  },
-  {
-    id: 33,
-    type: "image",
-    src: "/media/pgeriphoto1.jpg",
-    thumbnail: "/media/pgeriphoto1.jpg",
-    title: "PGERI Academic Excellence",
-    description: "Students achieving excellence in Post Graduate Education Research Institute programs",
-  },
-  {
-    id: 34,
-    type: "image",
-    src: "/media/nwphoto1.png",
-    thumbnail: "/media/nwphoto1.png",
-    title: "Northwestern University Program",
-    description: "Talented students at Northwestern University's gifted education initiatives",
-  },
-  {
-    id: 35,
     type: "image",
     src: "/media/testimonialphoto_vedika.png",
     thumbnail: "/media/testimonialphoto_vedika.png",
@@ -323,7 +268,7 @@ const mediaItems: MediaItem[] = [
     description: "Meet Vedika, who achieved remarkable success through early talent identification",
   },
   {
-    id: 36,
+    id: 30,
     type: "image",
     src: "/media/testimonialphoto_shivani.png",
     thumbnail: "/media/testimonialphoto_shivani.png",
@@ -331,7 +276,7 @@ const mediaItems: MediaItem[] = [
     description: "Shivani's inspiring journey from talent identification to academic excellence",
   },
   {
-    id: 37,
+    id: 31,
     type: "image",
     src: "/media/testimonialphoto_tejash.png",
     thumbnail: "/media/testimonialphoto_tejash.png",
@@ -339,7 +284,7 @@ const mediaItems: MediaItem[] = [
     description: "Tejash's remarkable achievements in science, technology, engineering, and mathematics",
   },
   {
-    id: 38,
+    id: 32,
     type: "image",
     src: "/media/testimonialphoto_yamini.png",
     thumbnail: "/media/testimonialphoto_yamini.png",
@@ -347,27 +292,165 @@ const mediaItems: MediaItem[] = [
     description: "Yamini's journey into advanced research and academic recognition",
   },
   {
-    id: 39,
-    type: "video",
-    src: "/media/video1.mp4",
-    thumbnail: "/media/testimonialphoto_rupasri.png",
-    title: "Student Testimonial: Success Stories",
-    description: "Watch inspiring success stories from students who excelled through our programs",
+    id: 33,
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=1YQ5a04xwVs",
+    youtubeId: "1YQ5a04xwVs",
+    thumbnail: getYouTubeThumbnail("1YQ5a04xwVs"),
+    title: "Success Stories Compilation",
+    description: "Watch inspiring success stories from students who excelled through our programmes",
     duration: "4:30",
   },
   {
-    id: 40,
-    type: "video",
-    src: "/media/video2.mp4",
-    thumbnail: "/media/testimonialphoto_shaashvat.png",
-    title: "Academic Journey: Achievement Highlights",
-    description: "Comprehensive overview of student achievements and program successes",
+    id: 34,
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=UgRI1PpDnBA",
+    youtubeId: "UgRI1PpDnBA",
+    thumbnail: getYouTubeThumbnail("UgRI1PpDnBA"),
+    title: "Student Achievements",
+    description: "Comprehensive overview of student achievements and programme successes",
     duration: "5:15",
   },
-]
+  {
+    id: 48,
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=2g1_Lv08CSY",
+    youtubeId: "2g1_Lv08CSY",
+    thumbnail: getYouTubeThumbnail("2g1_Lv08CSY"),
+    title: "Educational Excellence",
+    description: "Showcasing educational excellence and student achievements",
+    duration: "3:45",
+  },
+  {
+    id: 49,
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=gu632GxLlts",
+    youtubeId: "gu632GxLlts",
+    thumbnail: getYouTubeThumbnail("gu632GxLlts"),
+    title: "Talent Development",
+    description: "Talent development and academic recognition through ATS programmes",
+    duration: "4:20",
+  },
+  {
+    id: 50,
+    type: "youtube",
+    src: "https://www.youtube.com/watch?v=3cDx0llkItM",
+    youtubeId: "3cDx0llkItM",
+    thumbnail: getYouTubeThumbnail("3cDx0llkItM"),
+    title: "Student Success Stories",
+    description: "Inspiring success stories from students who excelled through our programmes",
+    duration: "3:55",
+  },
+  // ATS Posts - Educational content and achievements
+  {
+    id: 35,
+    type: "image",
+    src: "/ATS Posts/1.png",
+    thumbnail: "/ATS Posts/1.png",
+    title: "Educational Insights",
+    description: "Educational insights and achievements from ATS programme participants",
+  },
+  {
+    id: 36,
+    type: "image",
+    src: "/ATS Posts/2.png",
+    thumbnail: "/ATS Posts/2.png",
+    title: "Academic Excellence",
+    description: "Academic excellence and programme highlights from talented students",
+  },
+  {
+    id: 37,
+    type: "image",
+    src: "/ATS Posts/3.png",
+    thumbnail: "/ATS Posts/3.png",
+    title: "Talent Development",
+    description: "Talent development and academic recognition through ATS programmes",
+  },
+  {
+    id: 38,
+    type: "image",
+    src: "/ATS Posts/4.png",
+    thumbnail: "/ATS Posts/4.png",
+    title: "Student Achievements",
+    description: "Student achievements and educational excellence in ATS programmes",
+  },
+  {
+    id: 39,
+    type: "image",
+    src: "/ATS Posts/5.png",
+    thumbnail: "/ATS Posts/5.png",
+    title: "Educational Insights",
+    description: "Educational insights and programme achievements from ATS participants",
+  },
+  {
+    id: 40,
+    type: "image",
+    src: "/ATS Posts/6.png",
+    thumbnail: "/ATS Posts/6.png",
+    title: "Talent Identification",
+    description: "Talent identification and academic excellence through ATS programmes",
+  },
+  {
+    id: 41,
+    type: "image",
+    src: "/ATS Posts/7.png",
+    thumbnail: "/ATS Posts/7.png",
+    title: "Academic Recognition",
+    description: "Academic recognition and programme highlights from talented students",
+  },
+  {
+    id: 42,
+    type: "image",
+    src: "/ATS Posts/8.png",
+    thumbnail: "/ATS Posts/8.png",
+    title: "Educational Excellence",
+    description: "Educational excellence and achievement recognition in ATS programmes",
+  },
+  {
+    id: 43,
+    type: "image",
+    src: "/ATS Posts/9.png",
+    thumbnail: "/ATS Posts/9.png",
+    title: "Student Success Stories",
+    description: "Student success stories and educational achievements in ATS",
+  },
+  {
+    id: 44,
+    type: "image",
+    src: "/ATS Posts/10.png",
+    thumbnail: "/ATS Posts/10.png",
+    title: "Academic Recognition",
+          description: "Academic recognition and programme highlights from talented students",
+  },
+  {
+    id: 45,
+    type: "image",
+    src: "/ATS Posts/11.png",
+    thumbnail: "/ATS Posts/11.png",
+    title: "Educational Excellence",
+    description: "Educational excellence and achievement recognition in ATS programmes",
+  },
+  {
+    id: 46,
+    type: "image",
+    src: "/ATS Posts/12.png",
+    thumbnail: "/ATS Posts/12.png",
+    title: "Student Achievements",
+    description: "Student achievements and academic milestones through ATS",
+  },
+  {
+    id: 47,
+    type: "image",
+    src: "/ATS Posts/13.png",
+    thumbnail: "/ATS Posts/13.png",
+    title: "Talent Development",
+    description: "Talent development and educational success stories from ATS",
+  },
+
+] as MediaItem[]
 
 export function MediaCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(4)
+  const [currentIndex, setCurrentIndex] = useState(0) // Start at first item
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -377,16 +460,45 @@ export function MediaCarousel() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
+  // Un-mute and set volume to 40 % after the first user interaction
+  useEffect(() => {
+    const unmuteOnFirstGesture = () => {
+      setIsMuted(false)
+      if (videoRef.current) {
+        videoRef.current.muted = false
+        videoRef.current.volume = 0.4 // 40 % volume
+      }
+      window.removeEventListener("pointerdown", unmuteOnFirstGesture)
+      window.removeEventListener("keydown", unmuteOnFirstGesture)
+    }
+
+    // Attach once so it removes itself automatically
+    window.addEventListener("pointerdown", unmuteOnFirstGesture, { once: true })
+    window.addEventListener("keydown", unmuteOnFirstGesture, { once: true })
+
+    return () => {
+      window.removeEventListener("pointerdown", unmuteOnFirstGesture)
+      window.removeEventListener("keydown", unmuteOnFirstGesture)
+    }
+  }, [])
+
+  // Ensure volume stays at 40 % whenever the current video changes and audio is un-muted
+  useEffect(() => {
+    if (!isMuted && videoRef.current) {
+      videoRef.current.volume = 0.4
+    }
+  }, [isMuted, currentIndex])
+
   const currentItem = mediaItems[currentIndex]
 
-  // Debug image loading when component mounts
+  // Debug image loading when component mounts (disabled for production)
   useEffect(() => {
-    console.log('🔍 Testing image accessibility...')
-    mediaItems.forEach((item, index) => {
-      if (item.type === 'image' || item.type === 'video') {
-        debugImageLoad(item.thumbnail, `thumbnail-${index}`)
-      }
-    })
+    // console.log('🔍 Testing image accessibility...')
+    // mediaItems.forEach((item, index) => {
+    //   if (item.type === 'image' || item.type === 'video') {
+    //     debugImageLoad(item.thumbnail, `thumbnail-${index}`)
+    //   }
+    // })
   }, [])
 
   // Auto-advance for non-video content only (images, YouTube videos with no end detection)
@@ -424,8 +536,7 @@ export function MediaCarousel() {
       // Auto-play when video becomes current item
       setIsPlaying(true)
       videoRef.current.play().catch((error) => {
-        console.log("Auto-play failed:", error)
-        // If autoplay fails, set playing to false
+        // Auto-play failed, set playing to false
         setIsPlaying(false)
       })
     }
@@ -524,29 +635,18 @@ export function MediaCarousel() {
     <>
       <section
         id="media-carousel"
-        className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-[#850101] text-white overflow-hidden relative"
+        className="py-10 bg-gradient-to-b from-[#262626] via-[#262626] to-[#850101] text-white overflow-hidden relative"
       >
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-white rounded-full animate-float"></div>
-          <div
-            className="absolute bottom-20 right-20 w-24 h-24 bg-white rounded-full animate-float"
-            style={{ animationDelay: "1s" }}
-          ></div>
-          <div
-            className="absolute top-1/2 left-1/4 w-16 h-16 bg-white rounded-full animate-float"
-            style={{ animationDelay: "2s" }}
-          ></div>
-        </div>
+        {/* Removed floating background circles for cleaner design */}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Header */}
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-hover-glow">
-              Ei ASSET identifies top 2% of talented students
+          <div className="text-center mb-16 animate-fade-in-up group">
+            <h2 className="text-4xl font-bold mb-4 text-hover-glow">
+              Ei ASSET Talent Search identifies top 2% of talented students
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Discover the journey of exceptional students and their remarkable achievements through our comprehensive talent identification program
+            <p className="text-xl font-medium text-white bg-[#850101]/90 max-w-3xl mx-auto px-4 py-2 rounded-lg transition-transform duration-300 group-hover:scale-110">
+              Discover your child's true potential with the Ei ASSET Talent Search test. Unlock exclusive global opportunities through our prestigious partners like Johns Hopkins CTY and Northwestern CTD - and take the first step in nurturing exceptional talent by enrolling for the test.
             </p>
           </div>
 
@@ -631,17 +731,18 @@ export function MediaCarousel() {
                         e.stopPropagation()
                       }}
                     />
+
                   </div>
                 )}
               </div>
 
               {/* Fullscreen Icon (images & YouTube only) */}
               {currentItem.type !== "video" && (
-                <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="bg-black/50 text-white p-2 rounded-lg hover:bg-black/70 transition-colors duration-300">
-                    <Maximize className="h-4 w-4" />
-                  </div>
+              <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="bg-black/50 text-white p-2 rounded-lg hover:bg-black/70 transition-colors duration-300">
+                  <Maximize className="h-4 w-4" />
                 </div>
+              </div>
               )}
 
               {/* Media Controls Overlay - Only for YouTube videos */}
@@ -701,10 +802,10 @@ export function MediaCarousel() {
                       alt={item.title}
                       className="w-full h-full object-contain transition-transform duration-300 hover:scale-110"
                       onLoad={() => {
-                        console.log(`✅ Thumbnail loaded successfully:`, item.thumbnail)
+                        // Thumbnail loaded successfully
                       }}
                       onError={(e) => {
-                        console.log(`❌ Thumbnail failed to load:`, item.thumbnail)
+                        // Thumbnail failed to load
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder.svg";
                       }}

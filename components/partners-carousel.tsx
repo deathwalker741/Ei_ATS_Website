@@ -7,47 +7,53 @@ import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react"
 
 const partners = [
   {
-    name: "Johns Hopkins Center for Talented Youth (CTY)",
-    description: "Programs for grades 2-12 with online and campus-based courses",
-    eligibility: "98th percentile in English/Math",
-    image: "/John-Hopkins-CTY.png",
     id: "johns-hopkins",
+    name: "Johns Hopkins CTY",
+    logo: "/John-Hopkins-CTY.png",
+    description: "Programmes for grades 2-12 with online and campus-based courses",
+    url: "https://cty.jhu.edu/",
+    features: ["98th percentile requirement", "Online & campus courses", "College preparation"]
   },
   {
-    name: "UC Berkeley ATDP",
-    description: "Summer residential program and college preparation for grades 7-10",
-    eligibility: "80%+ priority, 50-79% with portfolio",
-    image: "/UC Berkeley ATDP.png",
     id: "uc-berkeley",
+    name: "UC Berkeley ATDP",
+    logo: "/UC Berkeley ATDP.png",
+    description: "Summer residential programme and college preparation for grades 7-10",
+    url: "https://atdp.berkeley.edu/",
+    features: ["Summer residential", "College preparation", "Academic excellence"]
   },
   {
-    name: "Northwestern University CTD",
-    description: "Programs for children age 3-12 with online and residential options",
-    eligibility: "90%+ direct, <90% with portfolio",
-    image: "/Northwestern CTD.png",
     id: "northwestern",
+    name: "Northwestern CTD",
+    logo: "/Northwestern CTD.png",
+    description: "Programmes for children age 3-12 with online and residential options",
+    url: "https://www.ctd.northwestern.edu/",
+    features: ["Early childhood focus", "Online & residential", "Talent development"]
   },
   {
-    name: "Purdue University GER²I",
-    description: "COMET, STAR & PULSAR programs for grades 5-12",
-    eligibility: "90%+ direct, 50-89% with portfolio",
-    image: "/Purdue GERI.png",
     id: "purdue",
+    name: "Purdue GERI",
+    logo: "/Purdue GERI.png",
+    description: "COMET, STAR & PULSAR programmes for grades 5-12",
+    url: "https://www.education.purdue.edu/geri/",
+    features: ["STEM focus", "Multiple programmes", "Research-based"]
   },
   {
-    name: "Summer Institute for the Gifted (SIG)",
-    description: "2-3 week residential programs at top universities, ages 5-17",
-    eligibility: "90th percentile",
-    image: "/sig.jpg",
     id: "sig",
+    name: "SIG",
+    logo: "/sig.jpg",
+    description: "2-3 week residential programmes at prestigious partner institutions, ages 5-17",
+    url: "https://www.giftedstudy.org/",
+    features: ["Residential programmes", "Prestigious institutions", "Ages 5-17"]
   },
   {
-    name: "GENWISE Programme",
-    description: "Focus on computational thinking, math puzzles and science investigations",
-    eligibility: "Higher-order skill development",
-    image: "/genwise.png",
     id: "genwise",
-  },
+    name: "GENWISE Programme",
+    logo: "/genwise.png",
+    description: "Higher-order skill development programme",
+    url: "https://genwise.in/",
+    features: ["Skill development", "Higher-order thinking", "Indian context"]
+  }
 ]
 
 export function PartnersCarousel() {
@@ -80,10 +86,15 @@ export function PartnersCarousel() {
     <section id="partners" className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 animate-fade-in-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-hover-glow">University Partners</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4 text-hover-glow">University Partners</h2>
+          <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
             Access world-class educational opportunities through our prestigious university partnerships
           </p>
+          <div className="bg-amber-50 border-l-4 border-amber-400 p-4 max-w-4xl mx-auto mt-4 rounded-r-lg">
+            <p className="text-sm text-amber-800 font-medium">
+              <span className="font-bold">Important Note:</span> Applicants to gifted programmes must directly contact the relevant university/organization and submit their ATS scores during application. The ASSET Talent Search team does not provide application assistance.
+            </p>
+          </div>
         </div>
 
         <div className="relative">
@@ -95,10 +106,10 @@ export function PartnersCarousel() {
                 className="card-hover group shadow-professional hover:shadow-professional-xl transition-all duration-500 border-0 overflow-hidden"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardContent className="p-0">
+                <CardContent className="p-0 flex flex-col h-full">
                   <div className="relative overflow-hidden">
                     <img
-                      src={partner.image || "/placeholder.svg"}
+                      src={partner.logo || "/placeholder.svg"}
                       alt={partner.name}
                       className="w-full h-32 object-contain bg-white transition-transform duration-700 group-hover:scale-105"
                     />
@@ -108,19 +119,14 @@ export function PartnersCarousel() {
                     </div>
                   </div>
 
-                  <div className="p-4">
+                  <div className="p-4 flex flex-col flex-1">
                     <h3 className="text-base font-semibold text-[#850101] mb-2 transition-all duration-300 group-hover:text-[#650101] text-hover-glow">
                       {partner.name}
                     </h3>
                     <p className="text-sm text-gray-600 mb-2 transition-colors duration-300 group-hover:text-gray-800">
                       {partner.description}
                     </p>
-                    <div className="bg-gray-50 p-2 rounded-lg transition-all duration-300 group-hover:bg-[#850101]/5 group-hover:border group-hover:border-[#850101]/20">
-                      <p className="text-xs font-medium text-gray-700 transition-colors duration-300 group-hover:text-[#850101]">
-                        <span className="text-[#850101] font-semibold">Eligibility:</span> {partner.eligibility}
-                      </p>
-                    </div>
-                    <div className="mt-3">
+                    <div className="mt-auto pt-4">
                       <Button
                         variant="outline"
                         className="w-full border-[#850101] text-xs text-[#850101] hover:bg-[#850101] hover:text-white btn-hover-lift transition-all duration-300 group-hover:shadow-lg"

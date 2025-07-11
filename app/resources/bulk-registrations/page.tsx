@@ -32,16 +32,16 @@ export default function BulkRegistrationsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-[#850101] to-[#650101] text-white py-20">
+      <section className="bg-gradient-to-r from-[#850101] to-[#650101] text-white py-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center mb-6">
               <Building2 className="h-12 w-12 mr-4" />
-              <h1 className="text-4xl md:text-5xl font-bold">
+              <h1 className="text-4xl font-bold">
                 Bulk Registrations for Ei ATS
               </h1>
             </div>
-            <p className="text-xl md:text-2xl text-gray-200 mb-8">
+            <p className="text-base text-gray-200 mb-8">
               Streamline your student registrations and save costs with our bulk registration program
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -70,7 +70,7 @@ export default function BulkRegistrationsPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16">
+      <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             
@@ -205,7 +205,7 @@ export default function BulkRegistrationsPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">Download the Excel Template</h3>
                       <p className="text-gray-700 mb-3">
-                        Download our standardized Excel file "ATS bulk registration form for schools-2025" which contains the required format and fields.
+                        Download our standardized Excel file "Ei ATS bulk registration form for schools-2025" which contains the required format and fields.
                       </p>
                       <Button onClick={handleDownload} variant="outline" className="border-[#850101] text-[#850101] hover:bg-[#850101] hover:text-white">
                         <Download className="mr-2 h-4 w-4" />
