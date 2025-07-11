@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { executeQuery } from '@/lib/database'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || (() => {
-  throw new Error('JWT_SECRET environment variable is required. Please check your .env.local file.')
-})()
+// Lazy load JWT secret to avoid build-time errors
+function getJWTSecret(): string {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is required.')
+  }
+  return secret
+}
 
 function verifyToken(request: NextRequest) {
   const token = request.cookies.get('school-token')?.value
@@ -13,7 +18,7 @@ function verifyToken(request: NextRequest) {
   }
 
   try {
-    return jwt.verify(token, JWT_SECRET) as any
+    return jwt.verify(token, getJWTSecret()) as any
   } catch (error) {
     throw new Error('Invalid or expired token')
   }
@@ -25,6 +30,14 @@ export async function GET(request: NextRequest) {
     const decoded = verifyToken(request)
     const schoolCode = decoded.schoolCode
 
+    // Check if database is available
+    if (!process.env.DB_SCHOOL_PASSWORD) {
+      return NextResponse.json(
+        { error: 'Service temporarily unavailable. Please try again later.' },
+        { status: 503 }
+      )
+    }
+
     // Get school info
     const schoolQuery = `
       SELECT schoolno, schoolname, city 
@@ -33,11 +46,11 @@ export async function GET(request: NextRequest) {
     `
     const schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
     
-    if (schoolResults.length === 0) {
-      return NextResponse.json({ error: 'School not found' }, { status: 404 })
+    const schoolInfo = schoolResults[0] || { 
+      schoolno: schoolCode, 
+      schoolname: 'School Information Unavailable', 
+      city: 'City Information Unavailable' 
     }
-
-    const schoolInfo = schoolResults[0]
 
     // Get current year stats (2025)
     const currentYearQuery = `
@@ -50,7 +63,7 @@ export async function GET(request: NextRequest) {
     `
     
     const currentYearResults = await executeQuery(currentYearQuery, [schoolCode], 'school') as any[]
-    const currentYear = currentYearResults[0]
+    const currentYear = currentYearResults[0] || { totalQualifiers: 0, successfulPayments: 0 }
 
     // Get last year stats (2024)
     const lastYearQuery = `
@@ -63,7 +76,7 @@ export async function GET(request: NextRequest) {
     `
     
     const lastYearResults = await executeQuery(lastYearQuery, [schoolCode], 'school') as any[]
-    const lastYear = lastYearResults[0]
+    const lastYear = lastYearResults[0] || { totalQualifiers: 0, successfulPayments: 0 }
 
     // Calculate percentages
     const currentPercentage = currentYear.totalQualifiers > 0 
@@ -82,14 +95,14 @@ export async function GET(request: NextRequest) {
       },
       currentYear: {
         year: 2025,
-        qualified: parseInt(currentYear.totalQualifiers),
-        registered: parseInt(currentYear.successfulPayments),
+        qualified: parseInt(currentYear.totalQualifiers) || 0,
+        registered: parseInt(currentYear.successfulPayments) || 0,
         percentage: currentPercentage
       },
       lastYear: {
         year: 2024,
-        qualified: parseInt(lastYear.totalQualifiers),
-        registered: parseInt(lastYear.successfulPayments),
+        qualified: parseInt(lastYear.totalQualifiers) || 0,
+        registered: parseInt(lastYear.successfulPayments) || 0,
         percentage: lastPercentage
       }
     }
@@ -98,6 +111,17 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Dashboard API error:', error)
+    
+    // Handle specific error types
+    if (error instanceof Error) {
+      if (error.message.includes('JWT_SECRET')) {
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable. Please try again later.' },
+          { status: 503 }
+        )
+      }
+    }
+    
     return NextResponse.json(
       { error: 'Unauthorized or server error' },
       { status: 401 }

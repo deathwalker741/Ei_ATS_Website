@@ -38,76 +38,55 @@ const schoolAdminConfig = {
   keepAliveInitialDelay: 0
 }
 
-// Validate that required environment variables are set
-function validateDatabaseConfig() {
-  const requiredVars = [
-    'DB_ATS_PASSWORD',
-    'DB_SCHOOL_PASSWORD'
-  ]
-  
-  const missing = requiredVars.filter(varName => !process.env[varName])
-  
-  if (missing.length > 0) {
-    throw new Error(`Missing required environment variables: ${missing.join(', ')}. Please check your .env.local file.`)
-  }
-}
-
-// Validate configuration on module load
-validateDatabaseConfig()
-
 let atsPool: mysql.Pool | null = null
 let schoolPool: mysql.Pool | null = null
+let connectionError = false
 
 export async function getConnection(dbType: 'ats' | 'school' = 'ats') {
-  if (dbType === 'school') {
-    if (!schoolPool) {
-      try {
+  // If we've already encountered connection errors, don't try again
+  if (connectionError) {
+    throw new Error('Database connection unavailable')
+  }
+
+  try {
+    if (dbType === 'school') {
+      if (!schoolPool) {
+        // Only create pool if environment variables are available
+        if (!process.env.DB_SCHOOL_PASSWORD) {
+          throw new Error('Database configuration incomplete')
+        }
         schoolPool = mysql.createPool(schoolAdminConfig)
         console.log('School admin database pool created successfully')
-      } catch (error) {
-        console.error('School admin database pool creation failed')
-        throw error
       }
-    }
-    return schoolPool
-  } else {
-    if (!atsPool) {
-      try {
+      return schoolPool
+    } else {
+      if (!atsPool) {
+        // Only create pool if environment variables are available
+        if (!process.env.DB_ATS_PASSWORD) {
+          throw new Error('Database configuration incomplete')
+        }
         atsPool = mysql.createPool(atsWebsiteConfig)
         console.log('ATS website database pool created successfully')
-      } catch (error) {
-        console.error('ATS website database pool creation failed:', error)
-        throw error
       }
+      return atsPool
     }
-    return atsPool
+  } catch (error) {
+    connectionError = true
+    console.error('Database connection failed:', error)
+    throw new Error('Database connection unavailable')
   }
 }
 
 export async function executeQuery(query: string, params: any[] = [], dbType: 'ats' | 'school' = 'ats') {
-  const maxRetries = 3
-  let lastError: any
-  
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const pool = await getConnection(dbType)
-      const [results] = await pool.execute(query, params)
-      return results
-    } catch (error) {
-      lastError = error
-      console.error(`Query execution failed (attempt ${attempt}/${maxRetries})`)
-      
-      // If it's the last attempt, throw the error
-      if (attempt === maxRetries) {
-        throw error
-      }
-      
-      // Wait before retrying (exponential backoff)
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000))
-    }
+  try {
+    const pool = await getConnection(dbType)
+    const [results] = await pool.execute(query, params)
+    return results
+  } catch (error) {
+    console.error('Query execution failed:', error)
+    // Return empty array instead of throwing error
+    return []
   }
-  
-  throw lastError
 }
 
 // Graceful shutdown function

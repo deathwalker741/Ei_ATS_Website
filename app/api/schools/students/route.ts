@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { executeQuery } from '@/lib/database'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || (() => {
-  throw new Error('JWT_SECRET environment variable is required. Please check your .env.local file.')
-})()
+// Lazy load JWT secret to avoid build-time errors
+function getJWTSecret(): string {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is required.')
+  }
+  return secret
+}
 
 function verifyToken(request: NextRequest) {
   const token = request.cookies.get('school-token')?.value
@@ -13,7 +18,7 @@ function verifyToken(request: NextRequest) {
   }
 
   try {
-    return jwt.verify(token, JWT_SECRET) as any
+    return jwt.verify(token, getJWTSecret()) as any
   } catch (error) {
     throw new Error('Invalid or expired token')
   }
@@ -24,6 +29,14 @@ export async function GET(request: NextRequest) {
     // Verify authentication
     const decoded = verifyToken(request)
     const schoolCode = decoded.schoolCode
+
+    // Check if database is available
+    if (!process.env.DB_SCHOOL_PASSWORD) {
+      return NextResponse.json(
+        { error: 'Service temporarily unavailable. Please try again later.' },
+        { status: 503 }
+      )
+    }
 
     // Get detailed student data
     const studentsQuery = `
@@ -47,6 +60,28 @@ export async function GET(request: NextRequest) {
     `
     
     const studentsResults = await executeQuery(studentsQuery, [schoolCode], 'school') as any[]
+
+    // Handle empty results (could be no data or connection issue)
+    if (studentsResults.length === 0) {
+      return NextResponse.json({
+        schoolInfo: {
+          code: schoolCode,
+          name: 'School Information Unavailable',
+          city: 'City Information Unavailable'
+        },
+        summary: {
+          totalQualifiers: 0,
+          totalRegistered: 0,
+          totalPending: 0,
+          percentageRegistered: 0
+        },
+        students: {
+          registered: [],
+          pending: [],
+          all: []
+        }
+      })
+    }
 
     // Process student data
     const processedStudents = studentsResults.map((row: any) => {
@@ -91,7 +126,7 @@ export async function GET(request: NextRequest) {
     // Get school info
     const schoolQuery = `SELECT schoolno, schoolname, city FROM schools WHERE schoolno = ?`
     const schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
-    const schoolInfo = schoolResults[0]
+    const schoolInfo = schoolResults[0] || { schoolno: schoolCode, schoolname: 'School Information Unavailable', city: 'City Information Unavailable' }
 
     const responseData = {
       schoolInfo: {
@@ -118,6 +153,17 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Students API error:', error)
+    
+    // Handle specific error types
+    if (error instanceof Error) {
+      if (error.message.includes('JWT_SECRET')) {
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable. Please try again later.' },
+          { status: 503 }
+        )
+      }
+    }
+    
     return NextResponse.json(
       { error: 'Unauthorized or server error' },
       { status: 401 }

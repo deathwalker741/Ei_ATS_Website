@@ -2,13 +2,22 @@ import { NextRequest, NextResponse } from 'next/server'
 import { executeQuery } from '@/lib/database'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || (() => {
-  throw new Error('JWT_SECRET environment variable is required. Please check your .env.local file.')
-})()
+// Lazy load environment variables to avoid build-time errors
+function getJWTSecret(): string {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is required.')
+  }
+  return secret
+}
 
-const SCHOOL_AUTH_PASSWORD = process.env.SCHOOL_AUTH_PASSWORD || (() => {
-  throw new Error('SCHOOL_AUTH_PASSWORD environment variable is required. Please check your .env.local file.')
-})()
+function getSchoolAuthPassword(): string {
+  const password = process.env.SCHOOL_AUTH_PASSWORD
+  if (!password) {
+    throw new Error('SCHOOL_AUTH_PASSWORD environment variable is required.')
+  }
+  return password
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,7 +40,16 @@ export async function POST(request: NextRequest) {
     
     const schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
 
+    // Handle database connection issues gracefully
     if (schoolResults.length === 0) {
+      // Check if it's a database connection issue
+      if (!process.env.DB_SCHOOL_PASSWORD) {
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable. Please try again later.' },
+          { status: 503 }
+        )
+      }
+      
       return NextResponse.json(
         { error: 'Invalid school code or no qualified students found' },
         { status: 401 }
@@ -39,7 +57,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Use secure environment variable for authentication
-    const validPassword = password === SCHOOL_AUTH_PASSWORD || password === schoolCode
+    const validPassword = password === getSchoolAuthPassword() || password === schoolCode
 
     if (!validPassword) {
       return NextResponse.json(
@@ -57,7 +75,7 @@ export async function POST(request: NextRequest) {
         schoolName: schoolInfo.schoolname,
         city: schoolInfo.city
       },
-      JWT_SECRET,
+      getJWTSecret(),
       { expiresIn: '24h' }
     )
 
@@ -81,7 +99,18 @@ export async function POST(request: NextRequest) {
     return response
 
   } catch (error) {
-    // Don't log sensitive information
+    console.error('School login error:', error)
+    
+    // Handle specific error types
+    if (error instanceof Error) {
+      if (error.message.includes('JWT_SECRET') || error.message.includes('SCHOOL_AUTH_PASSWORD')) {
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable. Please try again later.' },
+          { status: 503 }
+        )
+      }
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
