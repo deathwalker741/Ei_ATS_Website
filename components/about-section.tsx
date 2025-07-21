@@ -4,6 +4,12 @@ import { Users, BookOpen, Clock, Globe } from "lucide-react"
 export function AboutSection() {
   const stats = [
     {
+      icon: Globe,
+      number: "25000+",
+      label: "Gifted students",
+      description: "Identified through Ei ATS",
+    },
+    {
       icon: Users,
       number: "1000+",
       label: "Alumni",
@@ -20,12 +26,6 @@ export function AboutSection() {
       number: "15+",
       label: "Years",
       description: "Of excellence in talent identification",
-    },
-    {
-      icon: Globe,
-      number: "Top 2%",
-      label: "Global Reach",
-      description: "Identifying gifted students worldwide",
     },
   ]
 

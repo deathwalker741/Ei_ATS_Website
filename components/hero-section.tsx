@@ -53,7 +53,7 @@ export function HeroSection() {
     return () => clearInterval(interval)
   }, [images.length])
   return (
-    <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-10">
+    <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white pt-0 pb-10 -mt-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -78,18 +78,24 @@ export function HeroSection() {
                 </a>
               </Button>
             </div>
-            <div className="flex items-center gap-8 text-sm">
+            <div className="space-y-4 text-sm">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                <span>1000+ Alumni</span>
+                <span>25000+ Students Identified</span>
               </div>
-              <div className="flex items-center gap-2">
-                <GraduationCap className="h-5 w-5" />
-                <span>100+ Courses</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award className="h-5 w-5" />
-                <span>15+ Years</span>
+              <div className="flex items-center gap-8">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  <span>1000+ Alumni</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <GraduationCap className="h-5 w-5" />
+                  <span>100+ Courses</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Award className="h-5 w-5" />
+                  <span>15+ Years</span>
+                </div>
               </div>
             </div>
           </div>

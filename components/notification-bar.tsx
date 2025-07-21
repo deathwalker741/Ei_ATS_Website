@@ -5,15 +5,11 @@ import { useRegion } from "@/components/region-context"
 
 const regionMessages = {
   IND: [
-    "Early Registration Close Date: Sunday, 2 Nov, 2025",
-    "Regular Registration Close Date: Sunday, 23 Nov, 2025",
-    "Late Registration Close Date: Sunday, 30 Nov, 2025",
+    "Early Bird Registration Close Date: Sunday, 2 Nov, 2025",
     "Test Dates: Friday, 28 Nov – Monday, 1 Dec, 2025",
   ],
   INT: [
-    "Early Registration Close Date: Sunday, 16 Mar, 2025",
-    "Regular Registration Close Date: Sunday, 23 Mar, 2025",
-    "Late Registration Close Date: Friday, 28 Mar, 2025",
+    "Early Bird Registration Close Date: Sunday, 16 Mar, 2025",
     "Test Dates: Tuesday, 25 Mar – Saturday, 29 Mar, 2025",
   ],
 } as const

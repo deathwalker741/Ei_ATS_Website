@@ -9,6 +9,7 @@ import FloatingChat from "@/components/floating-chat"
 import { Toaster } from "@/components/ui/toaster"
 import NotificationBar from "@/components/notification-bar"
 import { RegionProvider } from "@/components/region-context"
+import { FloatingRegisterButton } from "@/components/floating-register-button"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -37,6 +38,7 @@ export default function RootLayout({
         </RegionProvider>
         <FloatingChat />
         <BackToTopButton />
+        <FloatingRegisterButton />
         <Toaster />
       </body>
     </html>

@@ -26,7 +26,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/media/*.mp4',
+        source: '/media/:path*.mp4',
         headers: [
           {
             key: 'Content-Type',

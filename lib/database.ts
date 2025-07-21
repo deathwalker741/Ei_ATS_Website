@@ -11,9 +11,6 @@ const atsWebsiteConfig = {
   timezone: '+05:30', // IST
   // Connection pool settings
   connectionLimit: 10,
-  acquireTimeout: 60000,
-  timeout: 60000,
-  reconnect: true,
   idleTimeout: 300000,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0
@@ -30,9 +27,6 @@ const schoolAdminConfig = {
   timezone: '+05:30', // IST
   // Connection pool settings
   connectionLimit: 10,
-  acquireTimeout: 60000,
-  timeout: 60000,
-  reconnect: true,
   idleTimeout: 300000,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0

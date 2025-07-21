@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX, X, Maximize } from "lucide-react"
@@ -457,8 +458,31 @@ export function MediaCarousel() {
   const [fullscreenItem, setFullscreenItem] = useState<MediaItem | null>(null)
   const [isHovered, setIsHovered] = useState(false)
   const [hasPlayedFirstFive, setHasPlayedFirstFive] = useState(false)
+  const [block1ImageIndex, setBlock1ImageIndex] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Block 1 images array
+  const block1Images = [
+    "/block 1/sigphoto1.jpg",
+    "/block 1/sigphoto2.jpg", 
+    "/block 1/sigphoto3.jpg",
+    "/block 1/sigphoto4.jpg",
+    "/block 1/nwphoto1.png",
+    "/block 1/nwphoto2.png",
+    "/block 1/nwphoto3.png",
+    "/block 1/pgeriphoto1.jpg",
+    "/block 1/pgeriphoto2.jpg",
+    "/block 1/pgeriphoto3.jpg",
+    "/block 1/pgeriphoto4.jpg",
+    "/block 1/pgeriphoto5.jpg",
+    "/block 1/pgeriphoto6.jpg",
+    "/block 1/pgeriphoto7.jpg",
+    "/block 1/jhctyphoto.jpg",
+    "/block 1/jhctyphoto1.jpg",
+    "/block 1/jhctyphoto.2jpg.jpg",
+    "/block 1/jhctyphoto3.jpg"
+  ]
 
   // Un-mute and set volume to 40 % after the first user interaction
   useEffect(() => {
@@ -529,6 +553,15 @@ export function MediaCarousel() {
     setCurrentIndex(4)  // Start with video 5 (index 4)
     setHasPlayedFirstFive(false)
   }, [])
+
+  // Block 1 image rotation every 1 second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBlock1ImageIndex((prevIndex) => (prevIndex + 1) % block1Images.length)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [block1Images.length])
 
   // Handle video play/pause
   useEffect(() => {
@@ -642,19 +675,74 @@ export function MediaCarousel() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Header */}
           <div className="text-center mb-16 animate-fade-in-up group">
-            <h2 className="text-4xl font-bold mb-4 text-hover-glow">
-              Ei ASSET Talent Search identifies top 2% of talented students
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-hover-glow">
+              We identify the top 2% of talented students
             </h2>
-            <p className="text-xl font-medium text-white bg-[#850101]/90 max-w-3xl mx-auto px-4 py-2 rounded-lg transition-transform duration-300 group-hover:scale-110">
-              Discover your child's true potential with the Ei ASSET Talent Search test. Unlock exclusive global opportunities through our prestigious partners like Johns Hopkins CTY and Northwestern CTD - and take the first step in nurturing exceptional talent by enrolling for the test.
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
+              <Link href="/#about" className="text-center border-0 shadow-professional hover:shadow-professional-xl card-hover group transition-all duration-500 bg-white/95 backdrop-blur-sm rounded-lg p-4 md:p-6 lg:p-8 cursor-pointer">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-[#850101] mb-4 md:mb-6 transition-all duration-300 group-hover:scale-110 text-hover-glow">
+                  Discover your child's true potential
+                </h3>
+                <div className="flex items-center justify-center">
+                  <img 
+                    src={block1Images[block1ImageIndex]} 
+                    alt="Ei ATS Programme" 
+                    className="h-20 md:h-24 lg:h-32 w-auto object-contain rounded-lg shadow-lg transition-all duration-500"
+                  />
+                </div>
+              </Link>
+
+              <Link href="/programmes" className="text-center border-0 shadow-professional hover:shadow-professional-xl card-hover group transition-all duration-500 bg-white/95 backdrop-blur-sm rounded-lg p-4 md:p-6 lg:p-8 col-span-1 md:col-span-2 lg:col-span-2 cursor-pointer">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-[#850101] mb-4 md:mb-6 transition-all duration-300 group-hover:scale-110 text-hover-glow">
+                  Access prestigious programs worldwide through our university partnerships
+                </h3>
+                
+                {/* Partner Logos Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
+                  <div className="flex items-center justify-center">
+                    <img src="/John-Hopkins-CTY.png" alt="Johns Hopkins CTY" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <img src="/UC Berkeley ATDP.png" alt="UC Berkeley ATDP" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <img src="/Northwestern CTD.png" alt="Northwestern CTD" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <img src="/Purdue GERI.png" alt="Purdue GERI" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <img src="/sig.jpg" alt="SIG" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <img src="/genwise.png" alt="GENWISE" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
+                  </div>
+                </div>
+              </Link>
+
+              <Link href="/#rewards" className="text-center border-0 shadow-professional hover:shadow-professional-xl card-hover group transition-all duration-500 bg-white/95 backdrop-blur-sm rounded-lg p-4 md:p-6 lg:p-8 cursor-pointer">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-[#850101] mb-4 transition-all duration-300 group-hover:scale-110 text-hover-glow">
+                  Win Exciting Prizes
+                </h3>
+                <div className="flex items-center justify-center gap-3 md:gap-4 lg:gap-6">
+                  <div className="flex flex-col items-center">
+                    <img src="/media/ipad.png" alt="iPad Prize" className="h-20 md:h-24 lg:h-32 w-auto object-contain mb-2 -mt-2 md:-mt-4" />
+                    <span className="text-xs md:text-sm font-medium text-[#850101]">iPad</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <img src="/media/watch.png" alt="Apple Watch Prize" className="h-16 md:h-18 lg:h-20 w-auto object-contain mb-2 mt-2 md:mt-4" />
+                    <span className="text-xs md:text-sm font-medium text-[#850101] mt-2 md:mt-4">Apple Watch</span>
+                  </div>
+                </div>
+              </Link>
+            </div>
           </div>
 
           {/* Main Carousel */}
           <div className="relative animate-scale-in">
             {/* Main Media Display */}
             <div
-              className="relative h-[500px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10 card-hover-glow group cursor-pointer"
+              className="relative h-[300px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10 card-hover-glow group cursor-pointer"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               onClick={(e) => {

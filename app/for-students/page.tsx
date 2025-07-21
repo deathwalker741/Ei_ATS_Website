@@ -64,17 +64,17 @@ export default function ForStudentsPage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {studentResources.map((resource, index) => (
-              <Card key={index} className="hover:shadow-xl transition-shadow duration-300 border-0 shadow-lg">
+              <Card key={index} className="hover:shadow-xl transition-shadow duration-300 border-0 shadow-lg flex flex-col h-full">
                 <CardHeader>
                   <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${resource.color}`}>
                     <resource.icon className="h-8 w-8" />
                   </div>
                   <CardTitle className="text-xl text-[#850101]">{resource.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-1 flex flex-col">
                   <p className="text-gray-600">{resource.description}</p>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 flex-1">
                     <h4 className="font-semibold text-sm text-gray-800">Features:</h4>
                     <ul className="space-y-1">
                       {resource.features.map((feature, idx) => (
@@ -86,7 +86,7 @@ export default function ForStudentsPage() {
                     </ul>
                   </div>
 
-                  <Button asChild className="w-full bg-[#850101] hover:bg-[#650101]">
+                  <Button asChild className="w-full bg-[#850101] hover:bg-[#650101] mt-auto">
                     <a href={resource.link} target="_blank" rel="noopener noreferrer">
                       Access {resource.title} <ExternalLink className="h-4 w-4 ml-2" />
                     </a>

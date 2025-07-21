@@ -14,8 +14,8 @@ import { FAQSection } from "@/components/faq-section"
 export default function HomePage() {
   return (
     <main className="min-h-screen">
-      <MediaCarousel />
       <HeroSection />
+      <MediaCarousel />
       <GiftednessWithVideo />
       <AboutSection />
       <RoadmapSection />

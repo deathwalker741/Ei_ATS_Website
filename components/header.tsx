@@ -20,7 +20,10 @@ export function Header() {
   }
 
   const handleDropdownLeave = () => {
-    setActiveDropdown(null)
+    // Add a small delay to prevent accidental closing when moving to dropdown
+    setTimeout(() => {
+      setActiveDropdown(null)
+    }, 100)
   }
 
   return (
@@ -56,7 +59,7 @@ export function Header() {
                   
                   {/* Dropdown Menu */}
                   {activeDropdown === key && (
-                    <div className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-professional-lg border border-gray-200 py-2 z-50 animate-fade-in-up"
+                    <div className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-professional-lg border border-gray-200 py-2 z-[9998] animate-fade-in-up"
                          onMouseEnter={() => handleDropdownEnter(key)}
                          onMouseLeave={handleDropdownLeave}>
                       {menu.sections.map((section, index) => (
@@ -74,7 +77,8 @@ export function Header() {
                           <Link
                             key={index}
                             href={section.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:text-[#850101] hover:bg-gray-50 transition-all duration-200"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:text-[#850101] hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+                            onClick={() => setActiveDropdown(null)}
                           >
                             {section.name}
                           </Link>
@@ -170,8 +174,11 @@ export function Header() {
                             <Link
                               key={index}
                               href={section.href}
-                              className="block text-sm text-gray-600 hover:text-[#850101] transition-all duration-200"
-                              onClick={() => setIsMenuOpen(false)}
+                              className="block text-sm text-gray-600 hover:text-[#850101] transition-all duration-200 cursor-pointer"
+                              onClick={() => {
+                                setIsMenuOpen(false)
+                                setActiveDropdown(null)
+                              }}
                             >
                               {section.name}
                             </Link>
