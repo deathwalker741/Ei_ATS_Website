@@ -112,6 +112,7 @@ export function Header() {
                 size="sm"
                 className="border-[#850101] text-[#850101] hover:bg-[#850101] hover:text-white px-2 py-1 text-xs font-semibold rounded-md"
                 onClick={toggleRegion}
+                key={region}
               >
                 {region}
               </Button>
@@ -201,6 +202,7 @@ export function Header() {
                     variant="outline"
                     className="border-[#850101] text-[#850101] flex-1"
                     onClick={() => { toggleRegion(); setIsMenuOpen(false) }}
+                    key={region}
                   >
                     {region}
                   </Button>

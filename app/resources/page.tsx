@@ -3,7 +3,7 @@
 import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Video, BookOpen, FileText, Globe, Download, ExternalLink, Users, GraduationCap, School, ClipboardList, Calendar, DollarSign, Award, CheckCircle, Mail, Phone } from "lucide-react"
+import { Video, BookOpen, FileText, Globe, Download, ExternalLink, Users, GraduationCap, School, ClipboardList, Calendar, CreditCard, Award, CheckCircle, Mail, Phone } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRegion } from "@/components/region-context"
 
@@ -345,58 +345,60 @@ export default function ResourcesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold mb-6">Resources & Support</h1>
-          <p className="text-base text-gray-100 max-w-3xl mx-auto">
-            Access comprehensive resources to help you prepare for Ei ATS 2025, understand university programs, and
-            maximize your academic potential.
-          </p>
+      <section className="bg-gradient-to-b from-[#850101] to-[#650101] text-white py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">Resources & Support</h1>
+            <p className="text-sm sm:text-base text-gray-100 max-w-3xl mx-auto px-4">
+              Access comprehensive resources to help you prepare for Ei ATS 2025, understand university programs, and
+              maximize your academic potential.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Main Resources */}
-      <section id="resources" className="py-10 bg-white">
+      <section id="resources" className="py-8 sm:py-10 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Available Resources</h2>
-            <p className="text-base text-gray-600 max-w-3xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Available Resources</h2>
+            <p className="text-sm sm:text-base text-gray-600 max-w-3xl mx-auto px-4">
               Access all the tools and materials you need for Ei ATS success
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
             {resources.map((resource, index) => (
               <Card
                 key={index}
                 className="flex flex-col h-full hover:shadow-xl transition-shadow duration-300 border-0 shadow-lg"
               >
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    <div className={`w-16 h-16 rounded-full flex items-center justify-center ${resource.color}`}>
-                      <resource.icon className="h-8 w-8" />
+                <CardHeader className="p-4 sm:p-6">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center ${resource.color} flex-shrink-0`}>
+                      <resource.icon className="h-6 w-6 sm:h-8 sm:w-8" />
                     </div>
-                    <div>
-                      <CardTitle className="text-xl text-[#850101]">{resource.title}</CardTitle>
-                      <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{resource.type}</span>
+                    <div className="min-w-0 flex-1">
+                      <CardTitle className="text-lg sm:text-xl text-[#850101] break-words">{resource.title}</CardTitle>
+                      <span className="text-xs sm:text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{resource.type}</span>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="flex flex-col flex-1 space-y-4 justify-between">
-                  <p className="text-gray-600">{resource.description}</p>
+                <CardContent className="flex flex-col flex-1 space-y-4 justify-between p-4 sm:p-6">
+                  <p className="text-sm sm:text-base text-gray-600">{resource.description}</p>
 
-                  <div className="grid md:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {resource.features.map((feature: any, idx: number) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#850101] rounded-full"></div>
+                      <div key={idx} className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 bg-[#850101] rounded-full mt-2 flex-shrink-0"></div>
                         {typeof feature === 'string' ? (
-                        <span className="text-sm text-gray-600">{feature}</span>
+                        <span className="text-xs sm:text-sm text-gray-600 break-words">{feature}</span>
                         ) : (
                           <a
                             href={feature.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-blue-600 underline"
+                            className="text-xs sm:text-sm text-blue-600 underline break-words"
                           >
                             {feature.title}
                           </a>
@@ -405,14 +407,14 @@ export default function ResourcesPage() {
                     ))}
                   </div>
 
-                  <Button asChild className="w-full bg-[#850101] hover:bg-[#650101]">
+                  <Button asChild className="w-full bg-[#850101] hover:bg-[#650101] text-sm sm:text-base">
                     {resource.link.startsWith('/') ? (
                       <a href={resource.link}>
                         Access {resource.title}
                       </a>
                     ) : (
                     <a href={resource.link} target="_blank" rel="noopener noreferrer">
-                      Access {resource.title} <ExternalLink className="h-4 w-4 ml-2" />
+                      Access {resource.title} <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 ml-2" />
                     </a>
                     )}
                   </Button>
@@ -424,26 +426,26 @@ export default function ResourcesPage() {
       </section>
 
       {/* Test Details Section */}
-      <section id="test-details" className="py-16 bg-white">
+      <section id="test-details" className="py-12 sm:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Test Details</h2>
-            <p className="text-base text-gray-600 max-w-3xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Test Details</h2>
+            <p className="text-sm sm:text-base text-gray-600 max-w-3xl mx-auto px-4">
               Everything you need to know about the <strong>Ei ASSET</strong> Talent Search {region === "INT" ? "International" : ""} test
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
             <Card className="border-0 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-[#850101] to-[#650101] text-white">
-                <CardTitle className="text-2xl text-center">
+              <CardHeader className="bg-gradient-to-r from-[#850101] to-[#650101] text-white p-4 sm:p-6">
+                <CardTitle className="text-xl sm:text-2xl text-center">
                   {region === "INT" 
                     ? "Ei ASSET Talent Search International (Ei ATS International) – Test Details"
                     : "Ei ASSET Talent Search (Ei ATS) – Test Details"
                   }
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-8 space-y-8">
+              <CardContent className="p-4 sm:p-8 space-y-6 sm:space-y-8">
                 
                 {/* Introduction */}
                 <div className="prose prose-lg max-w-none">
@@ -510,25 +512,25 @@ export default function ResourcesPage() {
                 </div>
 
                 {/* Test Dates & Fees */}
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="bg-gray-50 p-6 rounded-lg">
-                    <h4 className="text-lg font-bold text-[#850101] mb-4 flex items-center gap-2">
-                      <Calendar className="h-5 w-5" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
+                  <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
+                    <h4 className="text-base sm:text-lg font-bold text-[#850101] mb-3 sm:mb-4 flex items-center gap-2">
+                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
                       Test Dates{region === "INT" ? " (UAE & GCC 2025)" : ""}:
                     </h4>
-                    <p className="text-gray-700 font-semibold">
+                    <p className="text-gray-700 font-semibold text-sm sm:text-base">
                       {region === "INT" 
                         ? "March 25 to March 29, 2025"
                         : "November 28 to November 30, 2025"
                       }
                     </p>
                   </div>
-                  <div className="bg-gray-50 p-6 rounded-lg">
-                    <h4 className="text-lg font-bold text-[#850101] mb-4 flex items-center gap-2">
-                      <DollarSign className="h-5 w-5" />
+                  <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
+                    <h4 className="text-base sm:text-lg font-bold text-[#850101] mb-3 sm:mb-4 flex items-center gap-2">
+                      <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
                       {region === "INT" ? "Registration " : ""}Fees:
                     </h4>
-                    <div className="space-y-2 text-sm text-gray-700">
+                    <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-700">
                       {region === "INT" ? (
                         <>
                           <p>• 1 Subject: AED 170</p>
@@ -548,90 +550,90 @@ export default function ResourcesPage() {
 
                 {/* Recognition & Awards */}
                 <div>
-                  <h3 className="text-xl font-bold text-[#850101] mb-6 flex items-center gap-2">
-                    <Award className="h-6 w-6" />
+                  <h3 className="text-lg sm:text-xl font-bold text-[#850101] mb-4 sm:mb-6 flex items-center gap-2">
+                    <Award className="h-5 w-5 sm:h-6 sm:w-6" />
                     Recognition & {region === "INT" ? "Scholarships" : "Awards"}:
                   </h3>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div className="bg-amber-50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-amber-700 mb-2">85-89%</div>
-                      <p className="font-semibold text-amber-800">{region === "INT" ? "Ei ATS " : ""}Bronze Scholar</p>
-                      <p className="text-sm text-amber-700">Certificate + {region === "INT" ? "Bronze " : ""}Medal</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="bg-yellow-50 p-3 sm:p-4 rounded-lg text-center">
+                      <div className="text-xl sm:text-2xl font-bold text-yellow-700 mb-2">95-99%</div>
+                      <p className="font-semibold text-yellow-800 text-sm sm:text-base">{region === "INT" ? "Ei ATS " : ""}Gold Scholar</p>
+                      <p className="text-xs sm:text-sm text-yellow-700">Certificate + {region === "INT" ? "Gold " : ""}Medal</p>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-gray-700 mb-2">90-94%</div>
-                      <p className="font-semibold text-gray-800">{region === "INT" ? "Ei ATS " : ""}Silver Scholar</p>
-                      <p className="text-sm text-gray-700">Certificate + {region === "INT" ? "Silver " : ""}Medal</p>
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg text-center">
+                      <div className="text-xl sm:text-2xl font-bold text-gray-700 mb-2">90-94%</div>
+                      <p className="font-semibold text-gray-800 text-sm sm:text-base">{region === "INT" ? "Ei ATS " : ""}Silver Scholar</p>
+                      <p className="text-xs sm:text-sm text-gray-700">Certificate + {region === "INT" ? "Silver " : ""}Medal</p>
                     </div>
-                    <div className="bg-yellow-50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-yellow-700 mb-2">95-99%</div>
-                      <p className="font-semibold text-yellow-800">{region === "INT" ? "Ei ATS " : ""}Gold Scholar</p>
-                      <p className="text-sm text-yellow-700">Certificate + {region === "INT" ? "Gold " : ""}Medal</p>
+                    <div className="bg-amber-50 p-3 sm:p-4 rounded-lg text-center">
+                      <div className="text-xl sm:text-2xl font-bold text-amber-700 mb-2">85-89%</div>
+                      <p className="font-semibold text-amber-800 text-sm sm:text-base">{region === "INT" ? "Ei ATS " : ""}Bronze Scholar</p>
+                      <p className="text-xs sm:text-sm text-amber-700">Certificate + {region === "INT" ? "Bronze " : ""}Medal</p>
                     </div>
                   </div>
-                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                    <p className="text-blue-800 font-semibold mb-2">{region === "INT" ? "Top Grade Toppers" : "Grade-level toppers"} are eligible for prizes such as:</p>
-                    <p className="text-blue-700 text-sm">iPads, {region === "INT" ? "Apple Watches, " : ""}tablets, Kindles, and more.</p>
+                  <div className="mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg">
+                    <p className="text-blue-800 font-semibold mb-2 text-sm sm:text-base">{region === "INT" ? "Top Grade Toppers" : "Grade-level toppers"} are eligible for prizes such as:</p>
+                    <p className="text-blue-700 text-xs sm:text-sm">iPads, {region === "INT" ? "Apple Watches, " : ""}tablets, Kindles, and more.</p>
                     {region === "INT" && (
-                      <p className="text-blue-700 text-sm mt-2"><strong>GiftedWorld Incentive:</strong> All students who register by March 23 receive a 25% discount on GiftedWorld Courses.</p>
+                      <p className="text-blue-700 text-xs sm:text-sm mt-2"><strong>GiftedWorld Incentive:</strong> All students who register by March 23 receive a 25% discount on GiftedWorld Courses.</p>
                     )}
                   </div>
                 </div>
 
                 {/* Benefits/Enrichment Opportunities */}
                 <div>
-                  <h3 className="text-xl font-bold text-[#850101] mb-6 flex items-center gap-2">
-                    <GraduationCap className="h-6 w-6" />
+                  <h3 className="text-lg sm:text-xl font-bold text-[#850101] mb-4 sm:mb-6 flex items-center gap-2">
+                    <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6" />
                     {region === "INT" ? "Enrichment Opportunities" : "Benefits of Participating"}:
                   </h3>
                   
                   {region === "INT" ? (
-                    <div className="space-y-4">
-                      <p className="text-gray-700">Qualifying students are eligible to apply for global gifted programmes such as:</p>
-                      <div className="grid md:grid-cols-2 gap-3">
+                    <div className="space-y-3 sm:space-y-4">
+                      <p className="text-gray-700 text-sm sm:text-base">Qualifying students are eligible to apply for global gifted programmes such as:</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                         <div className="flex items-start gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">Johns Hopkins University Center for Talented Youth (CTY)</span>
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm text-gray-700">Johns Hopkins University Center for Talented Youth (CTY)</span>
                         </div>
                         <div className="flex items-start gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">Northwestern University – CTD Summer & Online Programs</span>
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm text-gray-700">Northwestern University – CTD Summer & Online Programs</span>
                         </div>
                         <div className="flex items-start gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">Purdue University&apos;s Gifted Education Resource Institute (GERI)</span>
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm text-gray-700">Purdue University&apos;s Gifted Education Resource Institute (GERI)</span>
                         </div>
                         <div className="flex items-start gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">UC Berkeley&apos;s Academic Talent Development Program (ATDP)</span>
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm text-gray-700">UC Berkeley&apos;s Academic Talent Development Program (ATDP)</span>
                         </div>
                         <div className="flex items-start gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">Summer Institute for the Gifted (SIG) – Yale, UCLA, UC Berkeley, and more</span>
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm text-gray-700">Summer Institute for the Gifted (SIG) – Yale, UCLA, UC Berkeley, and more</span>
                         </div>
                         <div className="flex items-start gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">GenWise India – Gifted Summer and Online Programmes</span>
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm text-gray-700">GenWise India – Gifted Summer and Online Programmes</span>
                         </div>
                       </div>
-                      <p className="text-gray-700 text-sm">These world-class opportunities offer students a chance to explore STEM, humanities, and leadership through hands-on, high-order learning experiences with globally diverse peers.</p>
+                      <p className="text-gray-700 text-xs sm:text-sm">These world-class opportunities offer students a chance to explore STEM, humanities, and leadership through hands-on, high-order learning experiences with globally diverse peers.</p>
                     </div>
                   ) : (
-                    <div className="space-y-6">
-                      <div className="space-y-4">
-                        <div className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                    <div className="space-y-4 sm:space-y-6">
+                      <div className="space-y-3 sm:space-y-4">
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-1 flex-shrink-0" />
                           <div>
-                            <p className="font-semibold text-gray-900">Self-Discovery:</p>
-                            <p className="text-gray-700 text-sm">Encourages students to explore their academic strengths through challenging content.</p>
+                            <p className="font-semibold text-gray-900 text-sm sm:text-base">Self-Discovery:</p>
+                            <p className="text-gray-700 text-xs sm:text-sm">Encourages students to explore their academic strengths through challenging content.</p>
                           </div>
                         </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-1 flex-shrink-0" />
                           <div>
-                            <p className="font-semibold text-gray-900">Global Opportunities:</p>
-                            <p className="text-gray-700 text-sm mb-2">Qualifiers get access to some of the world&apos;s leading gifted and enrichment programs including:</p>
-                            <div className="grid md:grid-cols-2 gap-1 text-sm text-gray-600">
+                            <p className="font-semibold text-gray-900 text-sm sm:text-base">Global Opportunities:</p>
+                            <p className="text-gray-700 text-xs sm:text-sm mb-2">Qualifiers get access to some of the world&apos;s leading gifted and enrichment programs including:</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs sm:text-sm text-gray-600">
                               <span>• Northwestern University&apos;s Center for Talent Development (CTD)</span>
                               <span>• Johns Hopkins University&apos;s Center for Talented Youth (CTY)</span>
                               <span>• Purdue University&apos;s Gifted Education Resource Institute (GERI)</span>
@@ -641,11 +643,11 @@ export default function ResourcesPage() {
                             </div>
                           </div>
                         </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-1 flex-shrink-0" />
                           <div>
-                            <p className="font-semibold text-gray-900">Exclusive Community:</p>
-                            <p className="text-gray-700 text-sm">Students become part of a global gifted network, opening doors to academic mentoring and leadership development.</p>
+                            <p className="font-semibold text-gray-900 text-sm sm:text-base">Exclusive Community:</p>
+                            <p className="text-gray-700 text-xs sm:text-sm">Students become part of a global gifted network, opening doors to academic mentoring and leadership development.</p>
                           </div>
                         </div>
                       </div>

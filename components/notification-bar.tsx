@@ -2,26 +2,19 @@
 
 import React from "react"
 import { useRegion } from "@/components/region-context"
-
-const regionMessages = {
-  IND: [
-    "Early Bird Registration Close Date: Sunday, 2 Nov, 2025",
-    "Test Dates: Friday, 28 Nov – Monday, 1 Dec, 2025",
-  ],
-  INT: [
-    "Early Bird Registration Close Date: Sunday, 16 Mar, 2025",
-    "Test Dates: Tuesday, 25 Mar – Saturday, 29 Mar, 2025",
-  ],
-} as const
+import { REGIONAL_DATES } from "@/lib/dates"
 
 export default function NotificationBar() {
   const { region } = useRegion()
+  const dates = REGIONAL_DATES[region]
+  
   const messages = React.useMemo(() => {
-    if (region === "INT") {
-      return regionMessages.INT.map((m) => m.replace(/November/g, "March"))
-    }
-    return regionMessages[region] || []
-  }, [region])
+    return [
+      `Early Bird Registration Close Date: ${dates.early}`,
+      `Test Dates: ${dates.testWindow}`,
+    ]
+  }, [dates])
+
   return (
     <div className="bg-[#650101] text-white overflow-hidden whitespace-nowrap fixed top-16 left-0 right-0 z-40 h-8 flex items-center">
       <div className="inline-block animate-[marquee_25s_linear_infinite] px-4">

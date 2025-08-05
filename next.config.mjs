@@ -9,6 +9,12 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Allow cross-origin requests in development
+  allowedDevOrigins: [
+    '192.168.0.111',
+    'localhost',
+    '127.0.0.1'
+  ],
   // Add headers for video files
   async headers() {
     return [

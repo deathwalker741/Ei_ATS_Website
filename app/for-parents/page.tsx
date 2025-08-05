@@ -1,42 +1,49 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { HelpCircle } from "lucide-react"
-
-const testDetails = [
-  {
-    title: "Test Format",
-    description: "Online, computer-based assessment covering English, Math, and Science (60 minutes each).",
-  },
-  {
-    title: "Eligibility",
-    description: "Students in grades 4-8 who scored in the top 15th percentile (any subject) are eligible.",
-  },
-  {
-    title: "Important Dates",
-    description: "Registrations: Early Bird till 9-Nov-2025, Regular till 23-Nov-2025, Late till 30-Nov-2025.",
-  },
-  {
-    title: "Test & Result Dates",
-    description: "Tests: 28 Nov – 1 Dec 2025; Results announced 13 Dec 2025.",
-  },
-]
-
-const faqs = [
-  {
-    q: "How do I register my child?",
-    a: "Visit the registration portal and complete the online form. For bulk registrations, schools can use the bulk upload template.",
-  },
-  {
-    q: "My child is not from an ASSET school. Can they still appear?",
-    a: "Absolutely! See the Non-ASSET Students section below for detailed steps.",
-  },
-  {
-    q: "When will results be declared?",
-    a: "Results will be published on the student portal within 4-6 weeks of the test window.",
-  },
-]
+import { useRegion } from "@/components/region-context"
+import { REGIONAL_DATES } from "@/lib/dates"
 
 export default function ForParentsPage() {
+  const { region } = useRegion()
+  const dates = REGIONAL_DATES[region]
+
+  const testDetails = [
+    {
+      title: "Test Format",
+      description: "Online, computer-based assessment covering English, Math, and Science (60 minutes each).",
+    },
+    {
+      title: "Eligibility",
+      description: "Students in grades 4-8 who scored in the top 15th percentile (any subject) are eligible.",
+    },
+    {
+      title: "Important Dates",
+      description: `Registrations: Early Bird till ${dates.early}, Regular till ${dates.regular}, Late till ${dates.late}.`,
+    },
+    {
+      title: "Test & Result Dates",
+      description: `Tests: ${dates.testWindowShort}; Results announced ${dates.results}.`,
+    },
+  ]
+
+  const faqs = [
+    {
+      q: "How do I register my child?",
+      a: "Visit the registration portal and complete the online form. For bulk registrations, schools can use the bulk upload template.",
+    },
+    {
+      q: "My child is not from an ASSET school. Can they still appear?",
+      a: "Absolutely! See the Non-ASSET Students section below for detailed steps.",
+    },
+    {
+      q: "When will results be declared?",
+      a: "Results will be published on the student portal within 4-6 weeks of the test window.",
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero / Intro */}

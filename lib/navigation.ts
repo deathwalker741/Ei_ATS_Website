@@ -78,8 +78,7 @@ const pageConfigs = {
       "why-partner-ats"
     ],
     manualSections: [
-      { name: "School Login", href: "/for-schools/login", external: false }
-      // Removed 'Dashboard' and 'Students' to avoid duplication
+      // School Login removed from dropdown menu
     ]
   },
   forParents: {

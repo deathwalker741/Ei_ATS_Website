@@ -35,8 +35,8 @@ export default function RootLayout({
             {children}
             <Footer />
           </main>
+          <FloatingChat />
         </RegionProvider>
-        <FloatingChat />
         <BackToTopButton />
         <FloatingRegisterButton />
         <Toaster />

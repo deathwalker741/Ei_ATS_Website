@@ -37,7 +37,7 @@ function buildFaqs(region: "IND" | "INT") {
     {
       question: "What is the registration fee?",
       answer:
-        "The registration fee is 250 AED or equivalent in local currency. This fee covers the comprehensive assessment and all associated materials.",
+        `The registration fee is ${region === "INT" ? "AED 170-300" : "INR 1700-3300"} depending on the number of subjects and registration timing. This fee covers the comprehensive assessment and all associated materials.`,
     },
   ]
 }

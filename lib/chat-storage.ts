@@ -376,7 +376,9 @@ class ChatStorageManager {
 
   private getRegion(): string {
     // Get region from your existing region context or browser
-    return localStorage.getItem('ats_region') || 'IND'
+    // Try to get from localStorage first, then fallback to 'IND'
+    const storedRegion = localStorage.getItem('ats_region')
+    return storedRegion === 'INT' ? 'INT' : 'IND'
   }
 
   // Getters

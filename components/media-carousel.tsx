@@ -42,20 +42,25 @@ const debugImageLoad = (src: string, type: string) => {
 }
 
 const mediaItems: MediaItem[] = [
-  // First 5 YouTube videos from your list
   {
     id: 1,
     type: "youtube",
-    src: "https://www.youtube.com/watch?v=1YQ5a04xwVs",
-    youtubeId: "1YQ5a04xwVs",
-    thumbnail: getYouTubeThumbnail("1YQ5a04xwVs"),
+    src: "https://www.youtube.com/watch?v=3cDx0llkItM",
+    youtubeId: "3cDx0llkItM",
+    thumbnail: getYouTubeThumbnail("3cDx0llkItM"),
+    title: "Aarav Ei ATS",
+    description: "ATS explanation video with an example Aarav",
+    duration: "2:21",
   },
   {
     id: 2,
     type: "youtube",
-    src: "https://www.youtube.com/watch?v=UgRI1PpDnBA",
-    youtubeId: "UgRI1PpDnBA",
-    thumbnail: getYouTubeThumbnail("UgRI1PpDnBA"),
+    src: "https://www.youtube.com/watch?v=1YQ5a04xwVs",
+    youtubeId: "1YQ5a04xwVs",
+    thumbnail: getYouTubeThumbnail("1YQ5a04xwVs"),
+    title: "Ei ASSET Talent Search 2024 | Celebrating Giftedness",
+    description: "ATS explanation video",
+    duration: "1:56",
   },
   {
     id: 3,
@@ -63,6 +68,9 @@ const mediaItems: MediaItem[] = [
     src: "https://www.youtube.com/watch?v=2g1_Lv08CSY",
     youtubeId: "2g1_Lv08CSY",
     thumbnail: getYouTubeThumbnail("2g1_Lv08CSY"),
+    title: "Ei ASSET Talent Search Testimonial - Lasya Mohan",
+    description: "Student Testimonial",
+    duration: "2:06",
   },
   {
     id: 4,
@@ -70,385 +78,21 @@ const mediaItems: MediaItem[] = [
     src: "https://www.youtube.com/watch?v=gu632GxLlts",
     youtubeId: "gu632GxLlts",
     thumbnail: getYouTubeThumbnail("gu632GxLlts"),
+    title: "Ei ATS Scholar | Mariah Ann Mathew",
+    description: "Student Testimonial",
+    duration: "1:28",
   },
   {
     id: 5,
     type: "youtube",
-    src: "https://www.youtube.com/watch?v=3cDx0llkItM",
-    youtubeId: "3cDx0llkItM",
-    thumbnail: getYouTubeThumbnail("3cDx0llkItM"),
-  },
-  // Additional quality videos from second batch
-  {
-    id: 11,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=hczA9M2bU1E",
-    youtubeId: "hczA9M2bU1E",
-    thumbnail: getYouTubeThumbnail("hczA9M2bU1E"),
-    title: "Student Testimonial: University Preparation",
-    description: "Students discuss how early identification prepared them for university success",
-    duration: "4:30",
-  },
-  {
-    id: 12,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=ZNHJBeTzLrY",
-    youtubeId: "ZNHJBeTzLrY",
-    thumbnail: getYouTubeThumbnail("ZNHJBeTzLrY"),
-    title: "Parent Perspectives",
-    description: "Parents share how the programme revealed their child's exceptional capabilities",
-    duration: "3:45",
-  },
-  {
-    id: 13,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=5QVCcMoE-5w",
-    youtubeId: "5QVCcMoE-5w",
-    thumbnail: getYouTubeThumbnail("5QVCcMoE-5w"),
-    title: "Student Success: Advanced Learning Programmes",
-    description: "Hear how students thrived in challenging academic environments",
-    duration: "4:20",
-  },
-  {
-    id: 14,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=3bApdGVwq-8",
-    youtubeId: "3bApdGVwq-8",
-    thumbnail: getYouTubeThumbnail("3bApdGVwq-8"),
-    title: "Parent Testimonial: Academic Excellence Journey",
-    description: "Families reflect on their journey toward academic excellence and achievement",
-    duration: "5:15",
-  },
-  {
-    id: 15,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=qopgHA9FXF0",
-    youtubeId: "qopgHA9FXF0",
-    thumbnail: getYouTubeThumbnail("qopgHA9FXF0"),
-    title: "Student Achievement: International Recognition",
-    description: "Students who gained international recognition through their academic achievements",
-    duration: "3:55",
-  },
-  {
-    id: 16,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=8G0MbpNPq_0",
-    youtubeId: "8G0MbpNPq_0",
-    thumbnail: getYouTubeThumbnail("8G0MbpNPq_0"),
-    title: "Parent & Student: STEM Excellence",
-    description: "Families share their success stories in science, technology, engineering, and mathematics",
-    duration: "4:45",
-  },
-  {
-    id: 17,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=MOygUsrkk9c",
-    youtubeId: "MOygUsrkk9c",
-    thumbnail: getYouTubeThumbnail("MOygUsrkk9c"),
-    title: "Student Testimonial: Research Opportunities",
-    description: "How talent identification opened doors to advanced research opportunities",
-    duration: "4:10",
-  },
-  {
-    id: 18,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=_PoOWP6YLMQ",
-    youtubeId: "_PoOWP6YLMQ",
-    thumbnail: getYouTubeThumbnail("_PoOWP6YLMQ"),
-    title: "Parent Interview: Educational Transformation",
-    description: "Parents discuss the comprehensive transformation in their child's educational journey",
-    duration: "5:30",
-  },
-  {
-    id: 19,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=CS76lx4rGZ8",
-    youtubeId: "CS76lx4rGZ8",
-    thumbnail: getYouTubeThumbnail("CS76lx4rGZ8"),
-    title: "Student Success: University Scholarships",
-    description: "Students who earned prestigious university scholarships through the programme",
-    duration: "4:25",
-  },
-  {
-    id: 20,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=uVKZ-_VFUNM",
-    youtubeId: "uVKZ-_VFUNM",
-    thumbnail: getYouTubeThumbnail("uVKZ-_VFUNM"),
-    title: "Building Confidence",
-    description: "How the programme built confidence and academic self-esteem in gifted children",
-    duration: "3:40",
-  },
-  {
-    id: 21,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=ccy1XVWfThU",
-    youtubeId: "ccy1XVWfThU",
-    thumbnail: getYouTubeThumbnail("ccy1XVWfThU"),
-    title: "Student Interview: Future Leaders",
-    description: "Meet the future leaders who started their journey with talent identification",
-    duration: "4:50",
-  },
-  {
-    id: 22,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=Cud46eSXwEs",
-    youtubeId: "Cud46eSXwEs",
-    thumbnail: getYouTubeThumbnail("Cud46eSXwEs"),
-    title: "Parent & Student: Global Opportunities",
-    description: "Families share how the programme opened global educational opportunities",
-    duration: "5:20",
-  },
-  {
-    id: 23,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=FpdbYIMh7c0",
-    youtubeId: "FpdbYIMh7c0",
-    thumbnail: getYouTubeThumbnail("FpdbYIMh7c0"),
-    title: "Student Testimonial: Creative Excellence",
-    description: "Students who excelled in creative and artistic fields through early identification",
-    duration: "3:35",
-  },
-  {
-    id: 24,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=OlwJreipL0w",
-    youtubeId: "OlwJreipL0w",
-    thumbnail: getYouTubeThumbnail("OlwJreipL0w"),
-    title: "Parent Interview: Supporting Gifted Children",
-    description: "Parents share strategies for supporting and nurturing gifted children's potential",
-    duration: "4:15",
-  },
-  {
-    id: 25,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=AM5ye-7S7eQ",
-    youtubeId: "AM5ye-7S7eQ",
-    thumbnail: getYouTubeThumbnail("AM5ye-7S7eQ"),
-    title: "Student Success: Academic Achievement",
-    description: "Outstanding academic achievements through comprehensive talent development",
-    duration: "4:05",
-  },
-  {
-    id: 26,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=jsnrysIM_gY",
-    youtubeId: "jsnrysIM_gY",
-    thumbnail: getYouTubeThumbnail("jsnrysIM_gY"),
-    title: "Parent Testimonial: Educational Impact",
-    description: "Long-term educational impact and life-changing experiences",
-    duration: "4:35",
-  },
-  {
-    id: 27,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=3LQsUyaYR7U",
-    youtubeId: "3LQsUyaYR7U",
-    thumbnail: getYouTubeThumbnail("3LQsUyaYR7U"),
-    title: "Innovation & Leadership",
-    description: "Students developing innovation and leadership skills through the programme",
-    duration: "3:50",
-  },
-  {
-    id: 28,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=0hKIiG_oMvU",
-    youtubeId: "0hKIiG_oMvU",
-    thumbnail: getYouTubeThumbnail("0hKIiG_oMvU"),
-    title: "Parent & Student: Life Transformation",
-    description: "Complete life transformation through early talent identification and development",
-    duration: "5:10",
-  },
-
-  {
-    id: 29,
-    type: "image",
-    src: "/media/testimonialphoto_vedika.png",
-    thumbnail: "/media/testimonialphoto_vedika.png",
-    title: "Student Success: Vedika's Achievement",
-    description: "Meet Vedika, who achieved remarkable success through early talent identification",
-  },
-  {
-    id: 30,
-    type: "image",
-    src: "/media/testimonialphoto_shivani.png",
-    thumbnail: "/media/testimonialphoto_shivani.png",
-    title: "Academic Excellence: Shivani's Journey",
-    description: "Shivani's inspiring journey from talent identification to academic excellence",
-  },
-  {
-    id: 31,
-    type: "image",
-    src: "/media/testimonialphoto_tejash.png",
-    thumbnail: "/media/testimonialphoto_tejash.png",
-    title: "STEM Success: Tejash's Story",
-    description: "Tejash's remarkable achievements in science, technology, engineering, and mathematics",
-  },
-  {
-    id: 32,
-    type: "image",
-    src: "/media/testimonialphoto_yamini.png",
-    thumbnail: "/media/testimonialphoto_yamini.png",
-    title: "Research Excellence: Yamini's Experience",
-    description: "Yamini's journey into advanced research and academic recognition",
-  },
-  {
-    id: 33,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=1YQ5a04xwVs",
-    youtubeId: "1YQ5a04xwVs",
-    thumbnail: getYouTubeThumbnail("1YQ5a04xwVs"),
-    title: "Success Stories Compilation",
-    description: "Watch inspiring success stories from students who excelled through our programmes",
-    duration: "4:30",
-  },
-  {
-    id: 34,
-    type: "youtube",
     src: "https://www.youtube.com/watch?v=UgRI1PpDnBA",
     youtubeId: "UgRI1PpDnBA",
     thumbnail: getYouTubeThumbnail("UgRI1PpDnBA"),
-    title: "Student Achievements",
-    description: "Comprehensive overview of student achievements and programme successes",
-    duration: "5:15",
+    title: "Ei ATS Promo Video",
+    description: "ATS explanation video",
+    duration: "4:16",
   },
-  {
-    id: 48,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=2g1_Lv08CSY",
-    youtubeId: "2g1_Lv08CSY",
-    thumbnail: getYouTubeThumbnail("2g1_Lv08CSY"),
-    title: "Educational Excellence",
-    description: "Showcasing educational excellence and student achievements",
-    duration: "3:45",
-  },
-  {
-    id: 49,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=gu632GxLlts",
-    youtubeId: "gu632GxLlts",
-    thumbnail: getYouTubeThumbnail("gu632GxLlts"),
-    title: "Talent Development",
-    description: "Talent development and academic recognition through ATS programmes",
-    duration: "4:20",
-  },
-  {
-    id: 50,
-    type: "youtube",
-    src: "https://www.youtube.com/watch?v=3cDx0llkItM",
-    youtubeId: "3cDx0llkItM",
-    thumbnail: getYouTubeThumbnail("3cDx0llkItM"),
-    title: "Student Success Stories",
-    description: "Inspiring success stories from students who excelled through our programmes",
-    duration: "3:55",
-  },
-  // ATS Posts - Educational content and achievements
-  {
-    id: 35,
-    type: "image",
-    src: "/ATS Posts/1.png",
-    thumbnail: "/ATS Posts/1.png",
-    title: "Educational Insights",
-    description: "Educational insights and achievements from ATS programme participants",
-  },
-  {
-    id: 36,
-    type: "image",
-    src: "/ATS Posts/2.png",
-    thumbnail: "/ATS Posts/2.png",
-    title: "Academic Excellence",
-    description: "Academic excellence and programme highlights from talented students",
-  },
-  {
-    id: 37,
-    type: "image",
-    src: "/ATS Posts/3.png",
-    thumbnail: "/ATS Posts/3.png",
-    title: "Talent Development",
-    description: "Talent development and academic recognition through ATS programmes",
-  },
-  {
-    id: 38,
-    type: "image",
-    src: "/ATS Posts/4.png",
-    thumbnail: "/ATS Posts/4.png",
-    title: "Student Achievements",
-    description: "Student achievements and educational excellence in ATS programmes",
-  },
-  {
-    id: 39,
-    type: "image",
-    src: "/ATS Posts/5.png",
-    thumbnail: "/ATS Posts/5.png",
-    title: "Educational Insights",
-    description: "Educational insights and programme achievements from ATS participants",
-  },
-  {
-    id: 40,
-    type: "image",
-    src: "/ATS Posts/6.png",
-    thumbnail: "/ATS Posts/6.png",
-    title: "Talent Identification",
-    description: "Talent identification and academic excellence through ATS programmes",
-  },
-  {
-    id: 41,
-    type: "image",
-    src: "/ATS Posts/7.png",
-    thumbnail: "/ATS Posts/7.png",
-    title: "Academic Recognition",
-    description: "Academic recognition and programme highlights from talented students",
-  },
-  {
-    id: 42,
-    type: "image",
-    src: "/ATS Posts/8.png",
-    thumbnail: "/ATS Posts/8.png",
-    title: "Educational Excellence",
-    description: "Educational excellence and achievement recognition in ATS programmes",
-  },
-  {
-    id: 43,
-    type: "image",
-    src: "/ATS Posts/9.png",
-    thumbnail: "/ATS Posts/9.png",
-    title: "Student Success Stories",
-    description: "Student success stories and educational achievements in ATS",
-  },
-  {
-    id: 44,
-    type: "image",
-    src: "/ATS Posts/10.png",
-    thumbnail: "/ATS Posts/10.png",
-    title: "Academic Recognition",
-          description: "Academic recognition and programme highlights from talented students",
-  },
-  {
-    id: 45,
-    type: "image",
-    src: "/ATS Posts/11.png",
-    thumbnail: "/ATS Posts/11.png",
-    title: "Educational Excellence",
-    description: "Educational excellence and achievement recognition in ATS programmes",
-  },
-  {
-    id: 46,
-    type: "image",
-    src: "/ATS Posts/12.png",
-    thumbnail: "/ATS Posts/12.png",
-    title: "Student Achievements",
-    description: "Student achievements and academic milestones through ATS",
-  },
-  {
-    id: 47,
-    type: "image",
-    src: "/ATS Posts/13.png",
-    thumbnail: "/ATS Posts/13.png",
-    title: "Talent Development",
-    description: "Talent development and educational success stories from ATS",
-  },
-
-] as MediaItem[]
+]
 
 export function MediaCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0) // Start at first item
@@ -515,6 +159,16 @@ export function MediaCarousel() {
 
   const currentItem = mediaItems[currentIndex]
 
+  // Debug: Log which video is currently playing
+  useEffect(() => {
+    console.log(`🎬 Now playing: Video ${currentIndex + 1} - "${currentItem?.title}"`)
+  }, [currentIndex, currentItem?.title])
+
+  // Safety check - don't render if currentItem is undefined
+  if (!currentItem) {
+    return null
+  }
+
   // Debug image loading when component mounts (disabled for production)
   useEffect(() => {
     // console.log('🔍 Testing image accessibility...')
@@ -527,7 +181,8 @@ export function MediaCarousel() {
 
   // Auto-advance for non-video content only (images, YouTube videos with no end detection)
   useEffect(() => {
-    if (!isFullscreen && !isHovered && currentItem.type !== "video") {
+    // Don't auto-advance for YouTube videos - let them play completely
+    if (!isFullscreen && !isHovered && currentItem?.type === "image") {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prev) => {
           if (!hasPlayedFirstFive && prev < 4) {
@@ -546,13 +201,10 @@ export function MediaCarousel() {
         clearInterval(intervalRef.current)
       }
     }
-  }, [isFullscreen, isHovered, hasPlayedFirstFive, currentItem.type])
+  }, [isFullscreen, isHovered, hasPlayedFirstFive, currentItem?.type])
 
-  // Reset to video 5 and replay first five on reload
-  useEffect(() => {
-    setCurrentIndex(4)  // Start with video 5 (index 4)
-    setHasPlayedFirstFive(false)
-  }, [])
+  // Start with the first video (index 0)
+  // Removed the useEffect that was setting currentIndex to 4
 
   // Block 1 image rotation every 1 second
   useEffect(() => {
@@ -565,7 +217,7 @@ export function MediaCarousel() {
 
   // Handle video play/pause
   useEffect(() => {
-    if (videoRef.current && currentItem.type === "video") {
+    if (videoRef.current && currentItem?.type === "video") {
       // Auto-play when video becomes current item
       setIsPlaying(true)
       videoRef.current.play().catch((error) => {
@@ -609,7 +261,9 @@ export function MediaCarousel() {
       rel: '0',
       modestbranding: '1',
       playsinline: '1',
-      enablejsapi: '1'
+      enablejsapi: '1',
+      start: '0',
+      end: '0' // Let video play to end
     })
     return `https://www.youtube.com/embed/${videoId}?${params.toString()}`
   }
@@ -629,40 +283,43 @@ export function MediaCarousel() {
 
   // Auto-advance slides every 10 seconds for non-video content
   useEffect(() => {
-    if (currentItem.type === "image") {
+    if (currentItem?.type === "image") {
       const timer = setInterval(() => {
         nextSlide()
       }, 10000)
       return () => clearInterval(timer)
     }
-  }, [currentIndex, currentItem.type])
+  }, [currentIndex, currentItem?.type])
 
-  // Handle video end event for auto-advance
+  // Handle YouTube video end event for auto-advance
   useEffect(() => {
-    const video = videoRef.current
-    if (video && currentItem.type === "video") {
-      const handleEnded = () => {
-        // Auto-advance to next video when current video ends
-        setCurrentIndex((prev) => {
-          if (!hasPlayedFirstFive && prev < 4) {
-            return prev + 1
-          } else if (!hasPlayedFirstFive && prev === 4) {
-            setHasPlayedFirstFive(true)
-            return 5 // jump to the next item after the first five
-          } else {
-            return (prev + 1) % mediaItems.length
+    if (currentItem?.type === "youtube") {
+      console.log(`🎬 Setting up YouTube end detection for: "${currentItem?.title}"`)
+      
+      // For YouTube videos, we need to listen for messages from the iframe
+      const handleMessage = (event: MessageEvent) => {
+        if (event.origin !== 'https://www.youtube.com') return
+        
+        if (event.data && typeof event.data === 'object') {
+          console.log('📡 YouTube message received:', event.data)
+          
+          // YouTube sends various events, we're interested in when video ends
+          if (event.data.event === 'onStateChange' && event.data.info === 0) {
+            // Video ended (state 0 = ended)
+            console.log('✅ YouTube video ended, advancing to next')
+            nextSlide()
           }
-        })
-        setIsPlaying(false)
+        }
       }
       
-      video.addEventListener("ended", handleEnded)
+      window.addEventListener('message', handleMessage)
       
       return () => {
-        video.removeEventListener("ended", handleEnded)
+        console.log('🧹 Cleaning up YouTube message listener')
+        window.removeEventListener('message', handleMessage)
       }
     }
-  }, [currentItem, hasPlayedFirstFive])
+  }, [currentItem, currentIndex])
 
   return (
     <>
@@ -740,14 +397,14 @@ export function MediaCarousel() {
 
           {/* Main Carousel */}
           <div className="relative animate-scale-in">
-            {/* Main Media Display */}
+            {/* Main Media Container */}
             <div
               className="relative h-[300px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10 card-hover-glow group cursor-pointer"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               onClick={(e) => {
                 // For local videos, only allow fullscreen if clicking on the video content area (not controls)
-                if (currentItem.type === "video") {
+                if (currentItem?.type === "video") {
                   const target = e.target as HTMLElement
                   const video = target.closest('video')
                   
@@ -780,72 +437,47 @@ export function MediaCarousel() {
               }}
             >
               <div className="absolute inset-0">
-                {currentItem.type === "image" ? (
-                  <img
-                    src={currentItem.src || "/placeholder.svg"}
-                    alt={currentItem.title}
-                    className="w-full h-full object-contain img-hover-zoom"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/placeholder.svg";
+                {currentItem?.type === "video" ? (
+                  <video
+                    ref={videoRef}
+                    src={currentItem?.src}
+                    className="w-full h-full object-cover"
+                    controls
+                    autoPlay
+                    muted
+                    onEnded={() => {
+                      if (videoRef.current && currentItem?.type === "video") {
+                        nextSlide()
+                      }
                     }}
-                    loading="eager"
                   />
-                ) : currentItem.type === "youtube" && currentItem.youtubeId ? (
-                  <div className="relative w-full h-full">
-                    <iframe
-                      src={getYouTubeEmbedUrl(currentItem.youtubeId, true, true)}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      title={currentItem.title}
-                    />
-                  </div>
+                ) : currentItem?.type === "image" ? (
+                  <img
+                    src={currentItem?.src || "/placeholder.svg"}
+                    alt={currentItem?.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : currentItem?.type === "youtube" && currentItem?.youtubeId ? (
+                  <iframe
+                    src={getYouTubeEmbedUrl(currentItem?.youtubeId, true, true)}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title={currentItem?.title}
+                    onLoad={() => {
+                      // YouTube iframe loaded
+                      console.log('YouTube iframe loaded for:', currentItem?.title)
+                    }}
+                  />
                 ) : (
-                  <div className="relative w-full h-full">
-                    <video
-                      ref={videoRef}
-                      src={currentItem.src}
-                      className="w-full h-full object-contain bg-black"
-                      controls
-                      autoPlay
-                      muted={isMuted}
-                      preload="metadata"
-                      style={{ outline: 'none' }}
-                      onPlay={() => setIsPlaying(true)}
-                      onPause={() => setIsPlaying(false)}
-                      onClick={(e) => {
-                        // Allow native video control interactions
-                        e.stopPropagation()
-                      }}
-                    />
-
-                  </div>
+                  <img
+                    src={currentItem?.src}
+                    alt="Media content"
+                    className="w-full h-full object-cover"
+                  />
                 )}
               </div>
-
-              {/* Fullscreen Icon (images & YouTube only) */}
-              {currentItem.type !== "video" && (
-              <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <div className="bg-black/50 text-white p-2 rounded-lg hover:bg-black/70 transition-colors duration-300">
-                  <Maximize className="h-4 w-4" />
-                </div>
-              </div>
-              )}
-
-              {/* Media Controls Overlay - Only for YouTube videos */}
-              {currentItem.type === "youtube" && (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
-                  <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex items-end justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold mb-2 text-hover-glow">{currentItem.title}</h3>
-                        <p className="text-gray-200 max-w-2xl">{currentItem.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {/* Navigation Arrows */}
               <Button
@@ -855,7 +487,7 @@ export function MediaCarousel() {
                   e.stopPropagation()
                   prevSlide()
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm btn-hover-lift transition-all duration-300 opacity-0 group-hover:opacity-100"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm btn-hover-lift transition-all duration-300 z-10"
               >
                 <ChevronLeft className="h-6 w-6" />
               </Button>
@@ -866,7 +498,7 @@ export function MediaCarousel() {
                   e.stopPropagation()
                   nextSlide()
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm btn-hover-lift transition-all duration-300 opacity-0 group-hover:opacity-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm btn-hover-lift transition-all duration-300 z-10"
               >
                 <ChevronRight className="h-6 w-6" />
               </Button>
@@ -921,8 +553,14 @@ export function MediaCarousel() {
                   className={`w-3 h-3 rounded-full transition-all duration-300 hover:scale-125 ${
                     index === currentIndex ? "bg-white animate-glow" : "bg-white/30 hover:bg-white/60"
                   }`}
+                  aria-label={`Go to video ${index + 1}`}
                 />
               ))}
+            </div>
+            
+            {/* Video Progress Text */}
+            <div className="text-center mt-4 text-white/80 text-sm">
+              Video {currentIndex + 1} of {mediaItems.length}: {currentItem?.title}
             </div>
           </div>
         </div>
@@ -971,10 +609,12 @@ export function MediaCarousel() {
               )}
 
               {/* Fullscreen Info */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                <h3 className="text-2xl font-bold text-white mb-2 text-hover-glow">{fullscreenItem.title}</h3>
-                <p className="text-gray-200">{fullscreenItem.description}</p>
-              </div>
+              {currentItem?.type !== "video" && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-2xl font-bold text-white mb-2 text-hover-glow">{currentItem?.title}</h3>
+                  <p className="text-gray-200">{currentItem?.description}</p>
+                </div>
+              )}
             </div>
           )}
         </DialogContent>

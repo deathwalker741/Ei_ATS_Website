@@ -2,11 +2,13 @@
 
 import React from "react"
 import { useRegion } from "@/components/region-context"
+import { REGIONAL_DATES } from "@/lib/dates"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle, Calendar, Award, GraduationCap } from "lucide-react"
 
 export const RoadmapSection = () => {
   const { region } = useRegion()
+  const dates = REGIONAL_DATES[region]
   
   const roadmapSteps = [
     {
@@ -19,9 +21,9 @@ export const RoadmapSection = () => {
       id: 2,
       title: "Registration",
       description: [
-        "Early Bird closes on Nov 2, 2025",
-        "Regular registration closes on Nov 23, 2025", 
-        "Late Registration Closes on Nov 30, 2025"
+        `Early Bird closes on ${dates.early}`,
+        `Regular registration closes on ${dates.regular}`, 
+        `Late Registration Closes on ${dates.late}`
       ],
       icon: Calendar
     },
@@ -29,8 +31,8 @@ export const RoadmapSection = () => {
       id: 3,
       title: "Test and Results",
       description: [
-        "Test dates are Nov 28, 2025 to Dec 1, 2025",
-        "Results announcement on Dec 13, 2025"
+        `Test dates are ${dates.testWindow}`,
+        `Results announcement on ${dates.results}`
       ],
       icon: Award
     },

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 
 export function HeroSection() {
   const images = [
+    "/media/asp-image.jpg", // ASP/GenWise Summer Programme
     "/media/ucbphoto1.webp",
     "/media/jhctyphoto.jpg",
     "/media/jhctyphoto1.jpg",
@@ -36,6 +37,7 @@ export function HeroSection() {
 
   // Helper to map filename tokens to full university / programme names
   const getProgrammeName = (src: string): string => {
+    if (src.includes("asp-image")) return "ASP/GenWise Summer Programme"
     if (src.includes("ucb")) return "UC Berkeley ATDP Programme"
     if (src.includes("jhcty")) return "Johns Hopkins CTY Programme"
     if (src.includes("nw")) return "Northwestern CTD Programme"
@@ -53,10 +55,10 @@ export function HeroSection() {
     return () => clearInterval(interval)
   }, [images.length])
   return (
-    <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white pt-0 pb-10 -mt-4">
+    <section id="hero" className="bg-gradient-to-br from-[#850101] to-[#650101] text-white pt-8 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="lg:-mt-8">
             <h1 className="text-4xl font-bold mb-6 leading-tight">Give Your Child the Opportunity to Discover Their True Potential</h1>
             <p className="text-base md:text-lg mb-8 text-gray-100">
               Enroll Them in the Ei ASSET Talent Search 2025 Today!
@@ -81,7 +83,7 @@ export function HeroSection() {
             <div className="space-y-4 text-sm">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                <span>25000+ Students Identified</span>
+                <span>25000+ Gifted Students Identified</span>
               </div>
               <div className="flex items-center gap-8">
                 <div className="flex items-center gap-2">

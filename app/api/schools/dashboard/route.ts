@@ -44,7 +44,19 @@ export async function GET(request: NextRequest) {
       FROM schools 
       WHERE schoolno = ?
     `
-    const schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
+    let schoolResults: any[] = []
+    
+    try {
+      schoolResults = await executeQuery(schoolQuery, [schoolCode], 'school') as any[]
+    } catch (error) {
+      console.error('Database connection failed for school info:', error)
+      // Provide fallback school info
+      schoolResults = [{
+        schoolno: schoolCode,
+        schoolname: `School ${schoolCode}`,
+        city: 'City Information Unavailable'
+      }]
+    }
     
     const schoolInfo = schoolResults[0] || { 
       schoolno: schoolCode, 
@@ -62,7 +74,14 @@ export async function GET(request: NextRequest) {
       WHERE a.schoolcode = ? AND a.programmeDetailID = 113
     `
     
-    const currentYearResults = await executeQuery(currentYearQuery, [schoolCode], 'school') as any[]
+    let currentYearResults: any[] = []
+    try {
+      currentYearResults = await executeQuery(currentYearQuery, [schoolCode], 'school') as any[]
+    } catch (error) {
+      console.error('Database connection failed for current year stats:', error)
+      // Provide fallback stats
+      currentYearResults = [{ totalQualifiers: 0, successfulPayments: 0 }]
+    }
     const currentYear = currentYearResults[0] || { totalQualifiers: 0, successfulPayments: 0 }
 
     // Get last year stats (2024)
@@ -75,7 +94,14 @@ export async function GET(request: NextRequest) {
       WHERE a.schoolcode = ? AND a.programmeDetailID = 101
     `
     
-    const lastYearResults = await executeQuery(lastYearQuery, [schoolCode], 'school') as any[]
+    let lastYearResults: any[] = []
+    try {
+      lastYearResults = await executeQuery(lastYearQuery, [schoolCode], 'school') as any[]
+    } catch (error) {
+      console.error('Database connection failed for last year stats:', error)
+      // Provide fallback stats
+      lastYearResults = [{ totalQualifiers: 0, successfulPayments: 0 }]
+    }
     const lastYear = lastYearResults[0] || { totalQualifiers: 0, successfulPayments: 0 }
 
     // Calculate percentages

@@ -9,8 +9,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Phone, Send } from "lucide-react"
+import { useRegion } from "@/components/region-context"
+import { REGIONAL_DATES } from "@/lib/dates"
 
 export default function ContactPage() {
+  const { region } = useRegion()
+  const dates = REGIONAL_DATES[region]
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -57,7 +62,7 @@ export default function ContactPage() {
   const faqs = [
     {
       question: "When is the registration deadline?",
-      answer: "Registration deadlines for ATS 2025 are: Early Bird – 9 Nov 2025, Regular – 23 Nov 2025, and Late – 30 Nov 2025.",
+      answer: `Registration deadlines for ATS 2025 are: Early Bird – ${dates.early}, Regular – ${dates.regular}, and Late – ${dates.late}.`,
     },
     {
       question: "What is the exam format?",
