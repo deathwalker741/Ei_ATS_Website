@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// CodeRabbit V2 Review: Configuration analysis for optimization recommendations
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,

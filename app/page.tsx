@@ -11,6 +11,8 @@ import { TestimonialsCarousel } from "@/components/testimonials-carousel"
 import { AlumniCTA } from "@/components/alumni-cta"
 import { FAQSection } from "@/components/faq-section"
 
+// CodeRabbit Full Review V2 - Comprehensive codebase analysis trigger
+// This comment triggers a complete review of the entire repository
 export default function HomePage() {
   return (
     <main className="min-h-screen">
