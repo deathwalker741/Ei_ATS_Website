@@ -1,139 +1,101 @@
-import mysql from 'mysql2/promise'
+// Database connection utility - equivalent to PHP hsdbconnect.cls.php
+import * as mysql from 'mysql2/promise';
 
-// Database configuration for ATS Website (forms, general data)
-const atsWebsiteConfig = {
-  host: process.env.DB_ATS_HOST || '172.16.12.83',
-  port: parseInt(process.env.DB_ATS_PORT || '3306'),
-  user: process.env.DB_ATS_USER || 'appuser',
-  password: process.env.DB_ATS_PASSWORD,
-  database: process.env.DB_ATS_DATABASE || 'ats_website',
-  charset: 'utf8mb4',
-  timezone: '+05:30', // IST
-  // Connection pool settings
-  connectionLimit: 10,
-  idleTimeout: 300000,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0
+interface DatabaseResult {
+  rows: any[];
+  affectedRows: number;
 }
 
-// Database configuration for School Admin Login (legacy system)
-const schoolAdminConfig = {
-  host: process.env.DB_SCHOOL_HOST || '10.0.6.122',
-  port: parseInt(process.env.DB_SCHOOL_PORT || '3306'),
-  user: process.env.DB_SCHOOL_USER || 'bindu.pillai1',
-  password: process.env.DB_SCHOOL_PASSWORD,
-  database: process.env.DB_SCHOOL_DATABASE || 'educatio_educat',
-  charset: 'utf8mb4',
-  timezone: '+05:30', // IST
-  // Connection pool settings
-  connectionLimit: 10,
-  idleTimeout: 300000,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0
-}
+class Database {
+  private connection: mysql.Connection | null = null;
 
-let atsPool: mysql.Pool | null = null
-let schoolPool: mysql.Pool | null = null
-let connectionError = false
+  async connect(): Promise<void> {
+    if (this.connection) return;
 
-export async function getConnection(dbType: 'ats' | 'school' = 'ats') {
-  // If we've already encountered connection errors, don't try again
-  if (connectionError) {
-    throw new Error('Database connection unavailable')
+    // EXACT same database credentials as PHP system (CONNECTION=2)
+    // From ats/asset_talent_search/ATSReportGeneration/otherfiles/hsdbconnect.cls.php lines 39-44
+    // Host: 172.16.12.157, User: assetd, Pass: assetd123, DB: educatio_educat
+    this.connection = await mysql.createConnection({
+      host: '172.16.12.157',        // HARDCODED - Same as PHP $host = "172.16.12.157"
+      user: 'assetd',               // HARDCODED - Same as PHP $user = "assetd"  
+      password: 'assetd123',        // HARDCODED - Same as PHP $pass = "assetd123"
+      database: 'educatio_educat',  // HARDCODED - Same as PHP default database
+      timezone: '+00:00',              // Same as PHP
+      charset: 'utf8mb4',
+    });
   }
 
-  try {
-    if (dbType === 'school') {
-      if (!schoolPool) {
-        // Only create pool if environment variables are available
-        if (!process.env.DB_SCHOOL_PASSWORD) {
-          throw new Error('Database configuration incomplete')
-        }
-        schoolPool = mysql.createPool(schoolAdminConfig)
-        console.log('School admin database pool created successfully')
+  async execute(query: string, params: any[] = []): Promise<DatabaseResult> {
+    let connection: mysql.Connection | null = null;
+    
+    try {
+      console.log('🔍 Creating database connection...');
+      // Create a fresh connection for each query to avoid connection state issues
+      connection = await mysql.createConnection({
+        host: '172.16.12.157',
+        user: 'assetd',
+        password: 'assetd123',
+        database: 'educatio_educat',
+        timezone: '+00:00',
+        charset: 'utf8mb4',
+      });
+      
+      console.log('✅ Database connection established');
+      console.log('🔍 Executing query:', query.substring(0, 100) + '...');
+      console.log('🔍 Params:', params);
+
+      const [results] = await connection.execute(query, params);
+      
+      console.log('✅ Query executed successfully');
+      console.log('🔍 Results type:', typeof results);
+      console.log('🔍 Results is array:', Array.isArray(results));
+      console.log('🔍 Results length:', Array.isArray(results) ? results.length : 'N/A');
+      
+      if (Array.isArray(results)) {
+        console.log('✅ Returning array results, length:', results.length);
+        return {
+          rows: results,
+          affectedRows: results.length,
+        };
+      } else {
+        console.log('✅ Returning non-array results');
+        return {
+          rows: [],
+          affectedRows: (results as any).affectedRows || 0,
+        };
       }
-      return schoolPool
-    } else {
-      if (!atsPool) {
-        // Only create pool if environment variables are available
-        if (!process.env.DB_ATS_PASSWORD) {
-          throw new Error('Database configuration incomplete')
+    } catch (error) {
+      console.error('❌ Database query error:', error);
+      console.error('❌ Query:', query);
+      console.error('❌ Params:', params);
+      console.error('❌ Connection state:', connection ? 'exists' : 'null');
+      throw error;
+    } finally {
+      // Always close the connection
+      if (connection) {
+        console.log('🔐 Closing database connection...');
+        try {
+          await connection.end();
+          console.log('✅ Database connection closed');
+        } catch (closeError) {
+          console.error('❌ Error closing connection:', closeError);
         }
-        atsPool = mysql.createPool(atsWebsiteConfig)
-        console.log('ATS website database pool created successfully')
       }
-      return atsPool
     }
-  } catch (error) {
-    connectionError = true
-    console.error('Database connection failed:', error)
-    throw new Error('Database connection unavailable')
+  }
+
+  async close(): Promise<void> {
+    if (this.connection) {
+      await this.connection.end();
+      this.connection = null;
+    }
   }
 }
 
-export async function executeQuery(query: string, params: any[] = [], dbType: 'ats' | 'school' = 'ats') {
-  try {
-    const pool = await getConnection(dbType)
-    const [results] = await pool.execute(query, params)
-    return results
-  } catch (error) {
-    console.error('Query execution failed:', error)
-    // Return empty array instead of throwing error
-    return []
-  }
-}
+// Export singleton instance (similar to PHP dbconnect pattern)
+export const db = new Database();
 
-// Graceful shutdown function
-export async function closeDatabaseConnections() {
-  const promises = []
-  
-  if (atsPool) {
-    promises.push(atsPool.end())
-    atsPool = null
-  }
-  
-  if (schoolPool) {
-    promises.push(schoolPool.end())
-    schoolPool = null
-  }
-  
-  if (promises.length > 0) {
-    await Promise.all(promises)
-    console.log('Database connections closed gracefully')
-  }
-}
-
-// Types for our data structures
-export interface SchoolInfo {
-  schoolno: string
-  schoolname: string
-  city: string
-}
-
-export interface StudentData {
-  panNumber: string
-  studentName: string
-  class: string
-  section: string
-  school_student_id: string
-  epirt: number
-  mpirt: number
-  spirt: number
-  paymentStatus: string | null
-}
-
-export interface SchoolStats {
-  schoolCode: string
-  schoolName: string
-  city: string
-  currentYear: {
-    qualified: number
-    registered: number
-    percentage: number
-  }
-  lastYear: {
-    qualified: number
-    registered: number
-    percentage: number
-  }
-} 
+// Export executeQuery function for backward compatibility
+export const executeQuery = async (query: string, params?: any[]) => {
+  return await db.execute(query, params);
+};

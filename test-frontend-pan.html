@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test PAN Validation</title>
+</head>
+<body>
+    <h1>Test PAN Validation</h1>
+    
+    <form>
+        <label>ASSET PAN:</label>
+        <input 
+            type="text" 
+            id="panInput" 
+            maxlength="9" 
+            placeholder="Enter 9-digit PAN"
+        />
+        <div id="result"></div>
+    </form>
+
+    <script>
+        const panInput = document.getElementById('panInput');
+        const resultDiv = document.getElementById('result');
+
+        panInput.addEventListener('blur', async function() {
+            const panNumber = this.value;
+            console.log('PAN blur event triggered with:', panNumber);
+            
+            if (!panNumber || panNumber.length === 0) {
+                console.log('PAN is empty');
+                return;
+            }
+
+            try {
+                console.log('Making API call...');
+                const response = await fetch('/api/registration/validate-pan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        panNumber: panNumber,
+                        country: 'India'
+                    }),
+                });
+
+                const result = await response.json();
+                console.log('API Response:', result);
+                
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+                
+                if (result.valid === '1' && result.eligible === '1') {
+                    resultDiv.innerHTML += '<p style="color: green;">✅ Valid PAN - Would auto-fill form</p>';
+                } else {
+                    resultDiv.innerHTML += '<p style="color: orange;">❌ PAN not found in database</p>';
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        });
+    </script>
+</body>
+</html>

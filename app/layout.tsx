@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     generator: 'v0.dev'
 }
 
+// CodeRabbit Full Review - Dummy PR to trigger comprehensive codebase analysis
 export default function RootLayout({
   children,
 }: {
