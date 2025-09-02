@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 export function ContactSection() {
   return (
@@ -54,7 +55,7 @@ export function ContactSection() {
             and take the first step towards unlocking exceptional educational opportunities.
           </p>
           <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
-            <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+            <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
               Register Now
             </a>
           </Button>

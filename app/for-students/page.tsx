@@ -1,13 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { User, FileText, Award, Download, ExternalLink } from "lucide-react"
+import { QUALIFIER_CERTIFICATE_URL } from "@/lib/constants"
+import { STUDENT_PORTAL_URL } from "@/lib/constants"
+import { REWARD_WINNERS_URL } from "@/lib/constants"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 const studentResources = [
   {
     title: "Download your Ei ATS Qualifying Certificate",
     description: "Download your official Ei ATS certificates.",
     icon: Download,
-    link: "https://ats.ei.study/ats_qualifier_certificate.php",
+    link: QUALIFIER_CERTIFICATE_URL,
     color: "bg-purple-100 text-purple-700",
     features: ["Download certificates"],
   },
@@ -24,7 +28,7 @@ const studentResources = [
     description:
       "Access your personalized dashboard, view test results, track progress, practice with mock tests, and take the Ei ATS test on the Ei ATS Test Portal.",
     icon: User,
-    link: "https://ats.ei.study/student_portal/index.php",
+    link: STUDENT_PORTAL_URL,
     color: "bg-blue-100 text-blue-700",
     features: ["View test results", "Track progress", "Ei ATS test portal", "Mock test portal"],
   },
@@ -32,7 +36,7 @@ const studentResources = [
     title: "Awards & Recognition",
     description: "View the complete list of Ei ATS winners, scholars, and achievers. See where you stand among the best.",
     icon: Award,
-    link: "https://ats.ei.study/reward_winners_india.php",
+    link: REWARD_WINNERS_URL,
     color: "bg-yellow-100 text-yellow-700",
     features: ["View winners list", "Scholar recognition", "Achievement gallery", "Success stories"],
   },
@@ -138,7 +142,7 @@ export default function ForStudentsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
-              <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+              <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
                 Register for Ei ATS 2025
               </a>
             </Button>
@@ -148,7 +152,7 @@ export default function ForStudentsPage() {
               className="border-white text-white bg-transparent hover:bg-white hover:text-[#850101] font-semibold"
               asChild
             >
-              <a href="https://ats.ei.study/student_portal/index.php" target="_blank" rel="noopener noreferrer">
+              <a href={STUDENT_PORTAL_URL} target="_blank" rel="noopener noreferrer">
                 Access Student Test Portal
               </a>
             </Button>

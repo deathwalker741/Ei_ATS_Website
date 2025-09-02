@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Video, BookOpen, FileText, Globe, Download, ExternalLink, Users, GraduationCap, School, ClipboardList, Calendar, CreditCard, Award, CheckCircle, Mail, Phone } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRegion } from "@/components/region-context"
+import { BROCHURE_INDIA_URL, BROCHURE_INTERNATIONAL_URL } from "@/lib/constants"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 interface Testimonial {
   id: string
@@ -81,7 +83,7 @@ const baseResources = [
     description:
       "Download the comprehensive Ei ATS brochure with detailed information about the program, benefits, and registration process.",
     icon: Download,
-    link: "https://ats.ei.study/documents/ATS-India2024.pdf", // will be overridden for INT
+    link: BROCHURE_INDIA_URL, // will be overridden for INT
     color: "bg-yellow-100 text-yellow-700",
     type: "PDF Brochure",
     features: ["Program overview", "University partners", "Registration guide", "Success metrics"],
@@ -270,8 +272,8 @@ export default function ResourcesPage() {
       regionResources[brochureIndex] = {
         ...regionResources[brochureIndex],
         link: region === "INT" 
-          ? "https://ats.ei.study/documents/ATS-International2025.pdf" 
-          : "https://ats.ei.study/documents/ATS-India2024.pdf"
+          ? BROCHURE_INTERNATIONAL_URL 
+          : BROCHURE_INDIA_URL
       }
     }
     
@@ -737,7 +739,7 @@ export default function ResourcesPage() {
                     }
                   </p>
                   <Button asChild className="bg-white text-[#850101] hover:bg-gray-100 font-semibold">
-                    <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+                    <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
                       Register Now for Ei ATS 2025
                     </a>
                   </Button>
@@ -919,7 +921,7 @@ export default function ResourcesPage() {
               className="border-white text-white bg-transparent hover:bg-white hover:text-[#850101] font-semibold"
               asChild
             >
-              <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+              <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
                 Register for Ei ATS 2025
               </a>
             </Button>

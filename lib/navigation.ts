@@ -61,10 +61,10 @@ const pageConfigs = {
       "why-join-ats"
     ],
     manualSections: [
-      { name: "Student Portal", href: "https://ats.ei.study/student_portal/index.php", external: true },
-      { name: "Ei ATS Qualifying Certificate", href: "https://ats.ei.study/ats_qualifier_certificate.php", external: true },
+      { name: "Student Portal", href: "https://registration.ei.study/student_portal/index.php", external: true },
+      { name: "Ei ATS Qualifying Certificate", href: "https://registration.ei.study/ats_qualifier_certificate.php", external: true },
       { name: "Ei ASSET PAN ID Retriever", href: "https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html", external: true },
-      { name: "Register for Ei ATS", href: "https://ats.ei.study/ats_registration.php", external: true }
+      { name: "Register for Ei ATS", href: "https://registration.ei.study/ats_registration.php", external: true }
     ]
   },
   forSchools: {

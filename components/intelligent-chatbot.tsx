@@ -9,6 +9,7 @@ import { chatStorage, saveChatMessage, getChatHistory, endChatSession, clearChat
 import { useRegion } from "@/components/region-context"
 import { REGIONAL_DATES } from "@/lib/dates"
 import type { ChatMessage } from "@/lib/chat-storage"
+import { REGISTRATION_URL, REWARD_WINNERS_URL, STUDENT_PORTAL_URL, QUALIFIER_CERTIFICATE_URL } from "@/lib/constants"
 
 interface Props {
   open: boolean
@@ -37,12 +38,12 @@ COMPREHENSIVE WEBSITE KNOWLEDGE:
 - Subjects: English, Maths, Science (choose 1, 2, or all 3)
 - Level: Two grades above student's current level
 - No preparation required, no negative marking
-- Registration: https://ats.ei.study/ats_registration.php
+- Registration: ${REGISTRATION_URL}
 
 💰 **FEES & REGISTRATION:**
 - ${isInternational ? "International" : "India"} Fees: ${isInternational ? "AED 170-300 per subject" : "INR 1700-3300 per subject"}
 - Registration Deadlines: Early (${dates.early}), Regular (${dates.regular}), Late (${dates.late})
-- Registration Link: https://ats.ei.study/ats_registration.php
+- Registration Link: ${REGISTRATION_URL}
 
 ✅ **ELIGIBILITY & QUALIFICATION CRITERIA:**
 
@@ -263,28 +264,28 @@ COMPREHENSIVE WEBSITE KNOWLEDGE:
 - View test results and track progress
 - Practice with mock tests
 - Take Ei ATS test
-- Link: https://ats.ei.study/student_portal/index.php
+- Link: ${STUDENT_PORTAL_URL}
 
 **Where Students Take the ATS Test:**
 - Once registered for ATS test, students can take the test from Student Test Portal
-- Test Portal Link: https://ats.ei.study/student_portal/index.php
+- Test Portal Link: ${STUDENT_PORTAL_URL}
 - Login with credentials shared via email after registration
 - Test is conducted online through the student portal
 - Students receive login credentials by email after successful registration
 
 **Ei ATS Qualifying Certificate:**
 - Download certificates
-- Link: https://ats.ei.study/ats_qualifier_certificate.php
+- Link: ${QUALIFIER_CERTIFICATE_URL}
 
 **Awards & Recognition:**
 - View complete list of winners and scholars
 - See where you stand among the best
-- Link: https://ats.ei.study/reward_winners_india.php
+- Link: ${REWARD_WINNERS_URL}
 
 🔗 **IMPORTANT LINKS:**
 
 **Registration & Main Pages:**
-- Main Registration: https://ats.ei.study/ats_registration.php
+- Main Registration: ${REGISTRATION_URL}
 - Homepage: /
 - For Parents: /for-parents
 - For Schools: /for-schools
@@ -294,10 +295,10 @@ COMPREHENSIVE WEBSITE KNOWLEDGE:
 - Contact: /contact
 
 **Student Tools:**
-- Student Portal: https://ats.ei.study/student_portal/index.php
+- Student Portal: ${STUDENT_PORTAL_URL}
 - PAN ID Retriever: https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html
-- Qualifying Certificate: https://ats.ei.study/ats_qualifier_certificate.php
-- Awards & Recognition: https://ats.ei.study/reward_winners_india.php
+- Qualifying Certificate: ${QUALIFIER_CERTIFICATE_URL}
+- Awards & Recognition: ${REWARD_WINNERS_URL}
 
 **School Tools:**
 - School Login: /for-schools/login
@@ -320,7 +321,7 @@ COMPREHENSIVE WEBSITE KNOWLEDGE:
 - Always provide specific, accurate information
 - Include direct links when relevant
 - Be helpful and guide users to exact information
-- For registration questions: Direct to https://ats.ei.study/ats_registration.php
+- For registration questions: Direct to ${REGISTRATION_URL}
 - For PAN ID questions: Direct users to the specific PAN ID Retriever tool
 - For qualification questions: Provide the specific 85 percentile criteria and CAT4 Stanine 9 alternative
 - For registration process: Explain the step-by-step PAN ID requirement and retrieval process
@@ -339,10 +340,10 @@ Remember: You have COMPLETE knowledge of the website and can guide users to any 
 const getDirectLinks = (query: string, isInternational: boolean) => {
   const links: { [key: string]: string } = {
     // Core pages
-    'register': 'https://ats.ei.study/ats_registration.php',
-    'registration': 'https://ats.ei.study/ats_registration.php',
-    'sign up': 'https://ats.ei.study/ats_registration.php',
-    'apply': 'https://ats.ei.study/ats_registration.php',
+    'register': REGISTRATION_URL,
+    'registration': REGISTRATION_URL,
+    'sign up': REGISTRATION_URL,
+    'apply': REGISTRATION_URL,
     
     // University partners
     'university': '/programmes',
@@ -407,13 +408,13 @@ const getDirectLinks = (query: string, isInternational: boolean) => {
     'asset pan': 'https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html',
     'forgot pan': 'https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html',
     'retrieve pan': 'https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html',
-    'student portal': 'https://ats.ei.study/student_portal/index.php',
-    'results access': 'https://ats.ei.study/student_portal/index.php',
-    'certificate': 'https://ats.ei.study/ats_qualifier_certificate.php',
-    'qualifying certificate': 'https://ats.ei.study/ats_qualifier_certificate.php',
-    'awards': 'https://ats.ei.study/reward_winners_india.php',
-    'recognition': 'https://ats.ei.study/reward_winners_india.php',
-    'winners': 'https://ats.ei.study/reward_winners_india.php',
+    'student portal': STUDENT_PORTAL_URL,
+    'results access': STUDENT_PORTAL_URL,
+    'certificate': QUALIFIER_CERTIFICATE_URL,
+    'qualifying certificate': QUALIFIER_CERTIFICATE_URL,
+    'awards': REWARD_WINNERS_URL,
+    'recognition': REWARD_WINNERS_URL,
+    'winners': REWARD_WINNERS_URL,
     
     // Additional resources
     'articles': '/resources/articles',
@@ -428,8 +429,8 @@ const getDirectLinks = (query: string, isInternational: boolean) => {
     
     // Brochures
     'brochure': isInternational ? 
-      'https://ats.ei.study/documents/ATS-International2024.pdf' : 
-      'https://ats.ei.study/documents/ATS-India2024.pdf',
+      'https://registration.ei.study/documents/ATS-International2025.pdf' : 
+      'https://registration.ei.study/documents/ATS-India2024.pdf',
     
     // Non-ASSET school form
     'non asset form': '/ATS%20Registration%20Form%20for%20non%20ASSET%20schools-2025.xlsx',

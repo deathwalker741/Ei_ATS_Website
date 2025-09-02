@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Globe, GraduationCap, Users, Award, Lightbulb } from "lucide-react"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 const timelineEvents = [
   {
@@ -194,7 +195,7 @@ export function HistorySection() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://ats.ei.study/ats_registration.php"
+                  href={REGISTRATION_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 bg-white text-[#850101] font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"

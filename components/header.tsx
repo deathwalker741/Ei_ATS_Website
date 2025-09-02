@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { REGISTRATION_URL } from "@/lib/constants"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Search, ChevronDown } from "lucide-react"
@@ -103,7 +104,7 @@ export function Header() {
                 asChild
                 className="bg-[#850101] hover:bg-[#650101] text-white btn-hover-lift btn-hover-glow transition-all duration-300"
               >
-                <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+                <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
                   Register
                 </a>
               </Button>
@@ -194,7 +195,7 @@ export function Header() {
                     asChild
                     className="bg-[#850101] hover:bg-[#650101] text-white flex-1 btn-hover-glow transition-all duration-300"
                   >
-                    <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+                    <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
                       Register
                     </a>
                   </Button>

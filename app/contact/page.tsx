@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Phone, Send } from "lucide-react"
 import { useRegion } from "@/components/region-context"
 import { REGIONAL_DATES } from "@/lib/dates"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 export default function ContactPage() {
   const { region } = useRegion()
@@ -281,7 +282,7 @@ export default function ContactPage() {
             Don't wait! Register for Ei ATS 2025 and unlock your academic potential
           </p>
           <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
-            <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+            <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
               Register for Ei ATS 2025
             </a>
           </Button>

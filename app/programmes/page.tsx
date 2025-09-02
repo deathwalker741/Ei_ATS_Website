@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Mail } from "lucide-react"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 const partners = [
   {
@@ -184,7 +185,7 @@ export default function ProgrammesPage() {
             Register for Ei ATS 2025 and unlock opportunities at world's leading partner programs
           </p>
           <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
-            <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+            <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
               Register for Ei ATS 2025
             </a>
           </Button>

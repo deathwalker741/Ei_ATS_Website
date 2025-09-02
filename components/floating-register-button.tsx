@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
 import { ExternalLink, X } from "lucide-react"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 export function FloatingRegisterButton() {
   const [isVisible, setIsVisible] = useState(true)
@@ -29,7 +30,7 @@ export function FloatingRegisterButton() {
     }
     
     // Open registration page in new tab
-    window.open('https://ats.ei.study/ats_registration.php', '_blank', 'noopener,noreferrer')
+    window.open(REGISTRATION_URL, '_blank', 'noopener,noreferrer')
   }
 
   // Handle dismiss button

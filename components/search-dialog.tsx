@@ -37,7 +37,7 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
     {
       title: "Registration",
       description: "Registration for Ei ASSET Talent Search 2025",
-      url: "https://ats.ei.study/ats_registration.php",
+      url: "https://registration.ei.study/ats_registration.php",
       type: "content",
     },
     {
@@ -173,7 +173,7 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
     {
       title: "Download your Ei ATS Qualifying Certificate",
       description: "Download your official Ei ATS certificates.",
-      url: "https://ats.ei.study/ats_qualifier_certificate.php",
+      url: "https://registration.ei.study/ats_qualifier_certificate.php",
       type: "resource",
     },
     {
@@ -664,7 +664,7 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
     {
       title: "Download Ei ATS Certificate",
       description: "Get your Ei ATS Qualifying Certificate",
-      url: "https://ats.ei.study/ats_qualifier_certificate.php",
+      url: "https://registration.ei.study/ats_qualifier_certificate.php",
       type: "resource",
     },
     {

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { GraduationCap, Users, Award } from "lucide-react"
 import { useState, useEffect } from "react"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 export function HeroSection() {
   const images = [
@@ -65,7 +66,7 @@ export function HeroSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>
-                <a href="https://ats.ei.study/ats_registration.php" target="_blank" rel="noopener noreferrer">
+                <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
                   Register Now
                 </a>
               </Button>

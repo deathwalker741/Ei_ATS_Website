@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Facebook, Twitter, Linkedin, Youtube } from "lucide-react"
 import { footerConfig } from "@/lib/footer-config"
+import { REGISTRATION_URL } from "@/lib/constants"
 
 export function Footer() {
   return (
@@ -94,7 +95,7 @@ export function Footer() {
         {/* Quick registration CTA */}
         <div className="mt-8 text-center">
           <Link
-            href="https://ats.ei.study/ats_registration.php"
+            href={REGISTRATION_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-[#850101] hover:bg-[#650101] text-white font-semibold px-6 py-3 rounded-md transition-colors"

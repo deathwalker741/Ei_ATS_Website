@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { STUDENT_PORTAL_URL } from '@/lib/constants'
+import { REWARD_WINNERS_URL } from '@/lib/constants'
+import { QUALIFIER_CERTIFICATE_URL } from '@/lib/constants'
 
 interface Message {
   role: 'system' | 'user' | 'assistant'
@@ -119,9 +122,9 @@ function generateFallbackResponse(userMessage: string, isInternational: boolean 
     💰 **Fee:** ${isInternational ? "170-250 AED per subject" : "INR 1700-2700 per subject"}
 
 🌐 **How to Register:**
-Visit https://ats.ei.study/ats_registration.php and complete the online form.
+Visit https://registration.ei.study/ats_registration.php and complete the online form.
 
-    🔗 **Direct Link:** [Register Now](https://ats.ei.study/ats_registration.php)
+    🔗 **Direct Link:** [Register Now](https://registration.ei.study/ats_registration.php)
 
 Would you like me to explain any specific part of the registration process in more detail?`
   }
@@ -143,7 +146,7 @@ Would you like me to explain any specific part of the registration process in mo
     • Top 15th percentile in ASSET test
     • OR Stanine 9 in CAT4
     
-    🔗 **Registration:** https://ats.ei.study/ats_registration.php
+    🔗 **Registration:** https://registration.ei.study/ats_registration.php
     
     Need more specific information about the exam format or preparation?`
   }
@@ -307,7 +310,7 @@ Would you like me to explain any specific part of the registration process in mo
     • 10% discount available
     • Contact: eitalentsearch@ei.study
     
-    🔗 **Register Now:** https://ats.ei.study/ats_registration.php
+    🔗 **Register Now:** https://registration.ei.study/ats_registration.php
     
     Need help with payment or registration?`
   }
@@ -539,23 +542,23 @@ Are you checking eligibility for yourself or your school?`
 - View test results and track progress
 - Practice with mock tests
 - Take Ei ATS test
-- **Link**: https://ats.ei.study/student_portal/index.php
+- **Link**: ${STUDENT_PORTAL_URL}
 
 ### Where Students Take the ATS Test
 - Once registered for ATS test, students can take the test from Student Test Portal
-- **Test Portal Link**: https://ats.ei.study/student_portal/index.php
+- **Test Portal Link**: ${STUDENT_PORTAL_URL}
 - Login with credentials shared via email after registration
 - Test is conducted online through the student portal
 - Students receive login credentials by email after successful registration
 
 ### Ei ATS Qualifying Certificate
 - Download certificates
-- **Link**: https://ats.ei.study/ats_qualifier_certificate.php
+- **Link**: ${QUALIFIER_CERTIFICATE_URL}
 
 ### Awards & Recognition
 - View complete list of winners and scholars
 - See where you stand among the best
-- **Link**: https://ats.ei.study/reward_winners_india.php
+- **Link**: ${REWARD_WINNERS_URL}
 
 ### Results Access
 - Available through student portal using PAN ID
@@ -563,9 +566,9 @@ Are you checking eligibility for yourself or your school?`
 
 ## Direct Links
 - [PAN ID Retriever](https://learn.lab-ei.study/asset/ATS/ASSET_PAN/asset_pan_gpt/forgot_asset_pan.html)
-- [Student Portal](https://ats.ei.study/student_portal/index.php)
-- [Qualifying Certificate](https://ats.ei.study/ats_qualifier_certificate.php)
-- [Awards & Recognition](https://ats.ei.study/reward_winners_india.php)
+- [Student Portal](${STUDENT_PORTAL_URL})
+- [Qualifying Certificate](${QUALIFIER_CERTIFICATE_URL})
+- [Awards & Recognition](${REWARD_WINNERS_URL})
 
 Need help with any specific student tool?`
   }
@@ -645,7 +648,7 @@ Which university program interests you most?`
     • "How do I schedule a call with alumni?"
     
     🔗 **Quick Access:**
-    • [Registration](https://ats.ei.study/ats_registration.php)
+    • [Registration](https://registration.ei.study/ats_registration.php)
     • [University Programs](/programmes)
     • [Resources](/resources)
     • [Contact](/contact)
@@ -669,7 +672,7 @@ Which university program interests you most?`
   • "How do I schedule a call with alumni?"
   
   🔗 **Quick Access:**
-  • [Registration](https://ats.ei.study/ats_registration.php)
+  • [Registration](https://registration.ei.study/ats_registration.php)
   • [University Programs](/programmes)
   • [Resources](/resources)
   • [Sample Papers](https://ei.study/wp-content/uploads/2025/01/Sample-Questions-Ei-ASSET-Final-File.pdf)
