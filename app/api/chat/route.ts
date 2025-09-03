@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { STUDENT_PORTAL_URL } from '@/lib/constants'
 import { REWARD_WINNERS_URL } from '@/lib/constants'
 import { QUALIFIER_CERTIFICATE_URL } from '@/lib/constants'
+import { BROCHURE_INDIA_URL, BROCHURE_INTERNATIONAL_URL } from '@/lib/constants'
+import { REGIONAL_DATES } from '@/lib/dates'
 
 interface Message {
   role: 'system' | 'user' | 'assistant'
@@ -109,15 +111,16 @@ function generateFallbackResponse(userMessage: string, isInternational: boolean 
   const currency = isInternational ? "AED" : "INR"
   const contact = isInternational ? "atsinternational@ei.study" : "eitalentsearch@ei.study"
   const phone = isInternational ? "" : " or call +91 80 4718 7451"
+  const dates = isInternational ? REGIONAL_DATES.INT : REGIONAL_DATES.IND
   
   // Registration related
   if (message.includes('register') || message.includes('registration') || message.includes('apply') || message.includes('sign up')) {
     return `Great question about ${region} registration! Here's what you need to know:
     
     📅 **Registration Deadlines for Ei ATS ${region} 2025:**
-    • Early Bird: ${isInternational ? "March 16, 2025" : "November 2, 2025"}
-    • Regular: ${isInternational ? "March 23, 2025" : "November 23, 2025"}  
-    • Late Registration: ${isInternational ? "March 28, 2025" : "November 30, 2025"}
+    • Early Bird: ${dates.early}
+    • Regular: ${dates.regular}  
+    • Late Registration: ${dates.late}
     
     💰 **Fee:** ${isInternational ? "170-250 AED per subject" : "INR 1700-2700 per subject"}
 
@@ -134,7 +137,7 @@ Would you like me to explain any specific part of the registration process in mo
     return `Here's everything about the Ei ATS ${region} 2025 exam:
     
     📋 **Test Details:**
-    • Test Window: ${isInternational ? "March 28-30, 2025" : "November 28 - December 1, 2025"}
+    • Test Window: ${dates.testWindow}
     • Format: Online proctored test
     • Duration: 60 minutes per subject
     • Subjects: English, Maths, Science (choose 1, 2, or all 3)
@@ -213,7 +216,7 @@ Would you like me to explain any specific part of the registration process in mo
     • Blog: https://ei.study/blogs/
     
     **Brochures:**
-    • ${region} Brochure: https://ats.ei.study/documents/ATS-${isInternational ? "International" : "India"}2024.pdf
+    • ${region} Brochure: ${isInternational ? BROCHURE_INTERNATIONAL_URL : BROCHURE_INDIA_URL}
     
     **Resources Page:** /resources
     **Articles & Research:** /resources/articles

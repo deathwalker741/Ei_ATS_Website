@@ -1,3 +1,34 @@
+/* Consolidated on 2025-09-03: Commented duplicate top block to keep today's additions below
+import { NextRequest, NextResponse } from 'next/server'
+import { executeQuery } from '@/lib/database'
+import jwt from 'jsonwebtoken'
+
+function getJWTSecret(): string {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is required.')
+  }
+  return secret
+}
+
+function verifyToken(request: NextRequest) {
+  const token = request.cookies.get('school-token')?.value
+  if (!token) {
+    throw new Error('No authentication token provided')
+  }
+
+  try {
+    return jwt.verify(token, getJWT_SECRET()) as any
+  } catch (error) {
+    throw new Error('Invalid or expired token')
+  }
+}
+
+export async function GET(request: NextRequest) {
+  // ... original handler commented out
+}
+*/
+
 import { NextRequest, NextResponse } from 'next/server'
 import { executeQuery } from '@/lib/database'
 import jwt from 'jsonwebtoken'

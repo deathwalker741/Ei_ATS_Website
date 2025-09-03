@@ -3,6 +3,15 @@ import { executeQuery } from '@/lib/database'
 
 export async function GET() {
   try {
+    // Skip DB check if ATS DB envs are not configured to avoid log noise in dev
+    if (!process.env.DB_ATS_PASSWORD || !process.env.DB_ATS_HOST) {
+      return NextResponse.json({ 
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        database: 'skipped'
+      })
+    }
+
     // Simple query to test database connection
     await executeQuery('SELECT 1', [], 'ats')
     

@@ -13,6 +13,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // If ATS DB is not configured, skip persistence and return success to avoid log noise in dev
+    if (!process.env.DB_ATS_PASSWORD || !process.env.DB_ATS_HOST) {
+      return NextResponse.json({ success: true, id: chatMessage.id, stored: false })
+    }
+
     // Insert chat message into database
     const query = `
       INSERT INTO chat_messages (
