@@ -6,6 +6,8 @@ import { REGIONAL_DATES } from "@/lib/dates"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle, Calendar, Award, GraduationCap } from "lucide-react"
 import { REGISTRATION_URL } from "@/lib/constants"
+import { SUMMER_PROGRAMMES_START_LABEL } from "@/lib/site"
+import { CURRENT_SEASON_LABEL } from "@/lib/site"
 
 export const RoadmapSection = () => {
   const { region } = useRegion()
@@ -40,7 +42,7 @@ export const RoadmapSection = () => {
     {
       id: 4,
       title: "Talent Development",
-      description: "Summer programmes starts in May 2026",
+      description: `Summer programmes starts in ${SUMMER_PROGRAMMES_START_LABEL}`,
       icon: GraduationCap
     }
   ]
@@ -124,7 +126,7 @@ export const RoadmapSection = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center w-full sm:w-auto px-4 sm:px-6 py-3 bg-white text-[#850101] font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg text-sm sm:text-base"
               >
-                Register Now for Ei ATS 2025
+                Register Now for Ei ATS {CURRENT_SEASON_LABEL}
               </a>
             </CardContent>
           </Card>

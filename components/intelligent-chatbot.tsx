@@ -10,6 +10,7 @@ import { useRegion } from "@/components/region-context"
 import { REGIONAL_DATES } from "@/lib/dates"
 import type { ChatMessage } from "@/lib/chat-storage"
 import { REGISTRATION_URL, REWARD_WINNERS_URL, STUDENT_PORTAL_URL, QUALIFIER_CERTIFICATE_URL } from "@/lib/constants"
+import { CURRENT_SEASON_LABEL } from "@/lib/site"
 
 interface Props {
   open: boolean
@@ -32,7 +33,7 @@ STRICT GUIDELINES:
 
 COMPREHENSIVE WEBSITE KNOWLEDGE:
 
-📋 **MAIN TEST INFORMATION (${isInternational ? "International" : "India"} 2025):**
+📋 **MAIN TEST INFORMATION (${isInternational ? "International" : "India"} ${CURRENT_SEASON_LABEL}):**
 - Test Window: ${dates.testWindow}
 - Format: Online proctored test, 60 minutes per subject
 - Subjects: English, Maths, Science (choose 1, 2, or all 3)
@@ -42,7 +43,7 @@ COMPREHENSIVE WEBSITE KNOWLEDGE:
 
 💰 **FEES & REGISTRATION:**
 - ${isInternational ? "International" : "India"} Fees: ${isInternational ? "AED 170-300 per subject" : "INR 1700-3300 per subject"}
-- Registration Deadlines: Early (${dates.early}), Regular (${dates.regular}), Late (${dates.late})
+- Registration Deadlines (${CURRENT_SEASON_LABEL}): Early (${dates.early}), Regular (${dates.regular}), Late (${dates.late})
 - Registration Link: ${REGISTRATION_URL}
 
 ✅ **ELIGIBILITY & QUALIFICATION CRITERIA:**

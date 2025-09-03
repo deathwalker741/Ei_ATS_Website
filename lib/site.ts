@@ -1,0 +1,4 @@
+export const CURRENT_SEASON_LABEL = "2025"
+export const SUMMER_PROGRAMMES_START_LABEL = "May 2026"
+
+

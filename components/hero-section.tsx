@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { GraduationCap, Users, Award } from "lucide-react"
 import { useState, useEffect } from "react"
 import { REGISTRATION_URL } from "@/lib/constants"
+import { CURRENT_SEASON_LABEL } from "@/lib/site"
 
 export function HeroSection() {
   const images = [
@@ -62,7 +63,7 @@ export function HeroSection() {
           <div className="lg:-mt-8">
             <h1 className="text-4xl font-bold mb-6 leading-tight">Give Your Child the Opportunity to Discover Their True Potential</h1>
             <p className="text-base md:text-lg mb-8 text-gray-100">
-              Enroll Them in the Ei ASSET Talent Search 2025 Today!
+              Enroll Them in the Ei ASSET Talent Search {CURRENT_SEASON_LABEL} Today!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Button size="lg" className="bg-white text-[#850101] hover:bg-gray-100 font-semibold" asChild>

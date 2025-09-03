@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Search, ExternalLink, FileText, Users, School, Globe, Award, Calendar, BookOpen, Video, Download, Mail, Phone, MapPin, Clock } from "lucide-react"
 import { useRegion } from "@/components/region-context"
 import { REGIONAL_DATES } from "@/lib/dates"
+import { CURRENT_SEASON_LABEL } from "@/lib/site"
 
 interface SearchResult {
   title: string
@@ -29,14 +30,14 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
   const searchData: SearchResult[] = [
     // Main Content
     {
-      title: "Ei ASSET Talent Search 2025",
-      description: "Find out by enrolling your child for the Ei ASSET Talent Search 2025",
+      title: `Ei ASSET Talent Search ${CURRENT_SEASON_LABEL}`,
+      description: `Find out by enrolling your child for the Ei ASSET Talent Search ${CURRENT_SEASON_LABEL}`,
       url: "/",
       type: "content",
     },
     {
       title: "Registration",
-      description: "Registration for Ei ASSET Talent Search 2025",
+      description: `Registration for Ei ASSET Talent Search ${CURRENT_SEASON_LABEL}`,
       url: "https://registration.ei.study/ats_registration.php",
       type: "content",
     },
@@ -287,7 +288,7 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
       type: "content",
     },
     {
-      title: "Test Dates 2025",
+      title: `Test Dates ${CURRENT_SEASON_LABEL}`,
       description: `Test window: ${dates.testWindow}`,
       url: "/resources#test-details",
       type: "content",

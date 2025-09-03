@@ -4,6 +4,7 @@ import { REWARD_WINNERS_URL } from '@/lib/constants'
 import { QUALIFIER_CERTIFICATE_URL } from '@/lib/constants'
 import { BROCHURE_INDIA_URL, BROCHURE_INTERNATIONAL_URL } from '@/lib/constants'
 import { REGIONAL_DATES } from '@/lib/dates'
+import { CURRENT_SEASON_LABEL } from '@/lib/site'
 
 interface Message {
   role: 'system' | 'user' | 'assistant'
@@ -117,7 +118,7 @@ function generateFallbackResponse(userMessage: string, isInternational: boolean 
   if (message.includes('register') || message.includes('registration') || message.includes('apply') || message.includes('sign up')) {
     return `Great question about ${region} registration! Here's what you need to know:
     
-    📅 **Registration Deadlines for Ei ATS ${region} 2025:**
+    📅 **Registration Deadlines for Ei ATS ${region} ${CURRENT_SEASON_LABEL}:**
     • Early Bird: ${dates.early}
     • Regular: ${dates.regular}  
     • Late Registration: ${dates.late}
@@ -134,7 +135,7 @@ Would you like me to explain any specific part of the registration process in mo
 
   // Exam related
   if (message.includes('exam') || message.includes('test') || message.includes('when') || message.includes('format') || message.includes('duration')) {
-    return `Here's everything about the Ei ATS ${region} 2025 exam:
+    return `Here's everything about the Ei ATS ${region} ${CURRENT_SEASON_LABEL} exam:
     
     📋 **Test Details:**
     • Test Window: ${dates.testWindow}
@@ -289,7 +290,7 @@ Would you like me to explain any specific part of the registration process in mo
   
   // Fees
   if (message.includes('fee') || message.includes('cost') || message.includes('price') || message.includes('payment')) {
-    return `Here are the fees for Ei ATS ${region} 2025:
+    return `Here are the fees for Ei ATS ${region} ${CURRENT_SEASON_LABEL}:
     
     💰 **Fee Structure:**
     
@@ -300,9 +301,9 @@ Would you like me to explain any specific part of the registration process in mo
     }
     
     **Registration Deadlines:**
-    • Early Bird: ${isInternational ? "March 16, 2025" : "November 2, 2025"}
-    • Regular: ${isInternational ? "March 23, 2025" : "November 23, 2025"}
-    • Late: ${isInternational ? "March 28, 2025" : "November 30, 2025"}
+    • Early Bird: ${dates.early}
+    • Regular: ${dates.regular}
+    • Late: ${dates.late}
     
     **Payment:**
     • Online payment only
